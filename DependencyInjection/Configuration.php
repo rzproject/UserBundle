@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
         $node = $treeBuilder->root('rz_user');
         $this->addBundleSettings($node);
         $this->addAdminSettings($node);
+
         return $treeBuilder;
     }
 

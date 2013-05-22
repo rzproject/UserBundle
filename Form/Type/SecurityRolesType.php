@@ -3,13 +3,11 @@
 namespace Rz\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Sonata\AdminBundle\Admin\Pool;
-
 
 class SecurityRolesType extends AbstractTypeExtension
 {
@@ -30,7 +28,7 @@ class SecurityRolesType extends AbstractTypeExtension
     {
         parent::buildView($view, $form, $options);
 
-        if($options['expanded']) {
+        if ($options['expanded']) {
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled']= false;
             $view->vars['chosen_enabled'] = $options['chosen_enabled'] =  false;
             $view->vars['multiselect_enabled'] = $options['multiselect_enabled'] = false;
@@ -46,7 +44,7 @@ class SecurityRolesType extends AbstractTypeExtension
             $view->vars['attr']['chosen_data_placeholder'] = array_key_exists('chosen_data_placeholder', $options) ? $options['chosen_data_placeholder'] : 'Choose one of the following...';
             $view->vars['attr']['chosen_no_results_text'] = array_key_exists('chosen_no_results_text', $options) ? $options['chosen_no_results_text'] : 'No record found.';
 
-        } elseif($options['selectpicker_enabled']) {
+        } elseif ($options['selectpicker_enabled']) {
 
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled'] = true;
             $view->vars['chosen_enabled'] = $options['chosen_enabled'] = false;
@@ -71,7 +69,6 @@ class SecurityRolesType extends AbstractTypeExtension
 
             $view->vars['attr']['data-size'] = array_key_exists('selectpicker_data_size', $options) ? $options['selectpicker_data_size'] : '5';
 
-
             if (array_key_exists('selectpicker_data_width', $options)) {
                 $view->vars['attr']['data-width'] = $options['selectpicker_data_width'];
             }
@@ -83,7 +80,7 @@ class SecurityRolesType extends AbstractTypeExtension
             if (array_key_exists('selectpicker_dropup', $options)) {
                 $view->vars['attr']['class'] = sprintf("%s dropup", $view->vars['attr']['class']);
             }
-        } elseif($options['multiselect_enabled']) {
+        } elseif ($options['multiselect_enabled']) {
             $view->vars['multiple'] = true;
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled'] = false;
             $view->vars['chosen_enabled'] = $options['chosen_enabled'] = false;
@@ -93,7 +90,7 @@ class SecurityRolesType extends AbstractTypeExtension
             if (array_key_exists('class', $view->vars['attr'])) {
                 $view->vars['attr']['class'] = sprintf("multiselect %s", $view->vars['attr']['class']);
             }
-        } elseif($options['multiselect_search_enabled']) {
+        } elseif ($options['multiselect_search_enabled']) {
             $view->vars['multiple'] = true;
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled'] = false;
             $view->vars['chosen_enabled'] = $options['chosen_enabled'] = false;
@@ -192,7 +189,8 @@ class SecurityRolesType extends AbstractTypeExtension
 
     }
 
-    private function humanize($text) {
+    private function humanize($text)
+    {
         return trim(strtoupper(preg_replace('/[_\s]+/', ' ', $text)));
     }
 

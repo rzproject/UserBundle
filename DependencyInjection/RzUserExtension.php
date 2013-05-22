@@ -56,6 +56,7 @@ class RzUserExtension extends Extension
 
         $defaultConfig['class']['user']  = sprintf('Application\\Sonata\\UserBundle\\%s\\User', $modelType);
         $defaultConfig['class']['group'] = sprintf('Application\\Sonata\\UserBundle\\%s\\Group', $modelType);
+
         return array_replace_recursive($defaultConfig, $config);
     }
 

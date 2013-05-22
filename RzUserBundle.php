@@ -21,4 +21,3 @@ class RzUserBundle extends Bundle
         $container->addCompilerPass(new OverrideServiceCompilerPass());
     }
 }
-
