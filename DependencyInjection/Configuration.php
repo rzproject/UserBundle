@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RzUserBundle package.
+ *
+ * (c) mell m. zamora <mell@rzproject.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rz\UserBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -92,7 +101,7 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('edit')->defaultValue('RzUserBundle:Admin:CRUD/edit.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('history')->defaultValue('RzAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('history_revision')->defaultValue('RzAdminBundle:CRUD:history_revision.html.twig')->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
