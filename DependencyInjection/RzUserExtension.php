@@ -34,6 +34,8 @@ class RzUserExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('fields.xml');
+        # addition of service on compiler pass
+        //$loader->load('form.xml');
 
         $config = $this->addDefaults($config);
         $this->configureAdminClass($config, $container);

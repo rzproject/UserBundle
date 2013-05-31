@@ -1,0 +1,14 @@
+<div class="row-fluid">
+    <div class="span4 offset4">
+        <div class="sonata-user-edit-authentication">
+            <h4>{{ "title_user_account" | trans({}, 'SonataUserBundle')}} - {{ "title_user_edit_authentication" | trans({}, 'RzUserBundle')}}</h4>
+            <form action="{{ path('sonata_user_profile_edit_authentication') }}" method="POST">
+                {{ form_rest(form) }}
+                <div class="form-actions">
+                    <input class="btn btn-inverse" type="submit" name="submit" value="{{ 'form.profile_submit'|trans({}, 'RzUserBundle') }}" />
+                    <a class="btn btn-danger" type="button" href="{{ path('sonata_user_profile_show') }}"/>{{ 'form.profile_cancel' | trans({}, 'RzUserBundle') }}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
