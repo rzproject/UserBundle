@@ -34,6 +34,7 @@ class RzUserExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('fields.xml');
+        $loader->load('listeners.xml');
         # addition of service on compiler pass
         //$loader->load('form.xml');
 
