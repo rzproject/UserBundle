@@ -136,6 +136,7 @@ class RzUserExtension extends Extension
     {
         $container->setParameter('rz_user.configuration.user.templates', $config['admin']['user']['templates']);
         $container->setParameter('rz_user.configuration.group.templates', $config['admin']['group']['templates']);
+        $container->setParameter('rz_user.templates', $config['templates']);
     }
 
     /**

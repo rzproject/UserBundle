@@ -53,4 +53,18 @@ class SecurityController extends BaseSecurityController
             'csrf_token' => $csrfToken,
         ));
     }
+
+    /**
+     * Renders the login template with the given parameters. Overwrite this function in
+     * an extended controller to provide additional data for the login template.
+     *
+     * @param array $data
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderLogin(array $data)
+    {
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.login'], $data);
+    }
 }
