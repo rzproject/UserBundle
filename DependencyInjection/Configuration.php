@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
         $node = $treeBuilder->root('rz_user');
         $this->addBundleSettings($node);
         //$this->addAdminSettings($node);
+        $this->addTemplates($node);
         return $treeBuilder;
     }
 
@@ -161,63 +162,25 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
     }
-
-//    /**
-//     * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node
-//     */
-//    private function addAdminSettings(ArrayNodeDefinition $node)
-//    {
-//        $node
-//            ->children()
-//                ->arrayNode('orm')
-//                    ->addDefaultsIfNotSet()
-//                    ->children()
-//                        ->arrayNode('admin')
-//                            ->addDefaultsIfNotSet()
-//                            ->children()
-//                                ->arrayNode('user')
-//                                    ->addDefaultsIfNotSet()
-//                                    ->children()
-//                                        ->scalarNode('class')->cannotBeEmpty()->defaultValue('Rz\\UserBundle\\Admin\\Entity\\UserAdmin')->end()
-//                                        ->scalarNode('controller')->cannotBeEmpty()->defaultValue('SonataAdminBundle:CRUD')->end()
-//                                        ->scalarNode('translation')->cannotBeEmpty()->defaultValue('SonataUserBundle')->end()
-//                                        ->arrayNode('templates')
-//                                            ->addDefaultsIfNotSet()
-//                                            ->children()
-//                                                ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('edit')->defaultValue('SonataAdminBundle:CRUD:edit.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('history_revision')->defaultValue('SonataAdminBundle:CRUD:history_revision.html.twig')->cannotBeEmpty()->end()
-//                                            ->end()
-//                                        ->end()
-//                                    ->end()
-//                                ->end()
-//                                ->arrayNode('group')
-//                                    ->addDefaultsIfNotSet()
-//                                    ->children()
-//                                        ->scalarNode('class')->cannotBeEmpty()->defaultValue('Rz\\UserBundle\\Admin\\Entity\\GroupAdmin')->end()
-//                                        ->scalarNode('controller')->cannotBeEmpty()->defaultValue('SonataAdminBundle:CRUD')->end()
-//                                        ->scalarNode('translation')->cannotBeEmpty()->defaultValue('SonataUserBundle')->end()
-//                                        ->arrayNode('templates')
-//                                            ->addDefaultsIfNotSet()
-//                                            ->children()
-//                                                ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('edit')->defaultValue('SonataAdminBundle:CRUD:edit.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
-//                                                ->scalarNode('history_revision')->defaultValue('SonataAdminBundle:CRUD:history_revision.html.twig')->cannotBeEmpty()->end()
-//                                            ->end()
-//                                        ->end()
-//                                    ->end()
-//                                ->end()
-//                            ->end()
-//                        ->end()
-//                    ->end()
-//                ->end()
-//            ->end()
-//         ;
-//    }
+        /**
+     * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node
+     *
+     * @return void
+     */
+    private function addTemplates(ArrayNodeDefinition $node)
+    {
+        //TODO: add other templates for configuration
+        $node
+            ->children()
+                ->arrayNode('templates')
+                        ->addDefaultsIfNotSet()
+                        ->canBeUnset()
+                        ->children()
+                            ->scalarNode('layout')->defaultValue('RzUserBundle::layout.html.twig')->end()
+                            ->scalarNode('login')->defaultValue('RzUserBundle:Security:login.html.twig')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
 }
