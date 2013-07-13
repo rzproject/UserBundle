@@ -1,6 +1,6 @@
 <?php
 
-namespace Rz\userBundle\EventListener;
+namespace Rz\UserBundle\EventListener;
 
 use Rz\UserBundle\RzUserEvents;
 use Rz\UserBundle\Event\UserLoginEvent;

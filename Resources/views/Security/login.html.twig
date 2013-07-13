@@ -21,11 +21,13 @@
 
             <label for="password">{{ 'security.login.password'|trans }}</label>
             <input class="span12" type="password" id="password" name="_password" required="required" />
-
             <label for="remember_me"><input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'security.login.remember_me'|trans }} </label>
-
-            <input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+            {{ block('action_buttons') }}
         </form>
     </div>
 </div>
 {% endblock fos_user_content %}
+
+{% block action_buttons %}
+    <input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+{% endblock action_buttons %}

@@ -11,10 +11,12 @@ class UserLoginEvent extends Event
 {
     private $request;
     private $response;
+    private $error = '';
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, $error)
     {
         $this->request = $request;
+        $this->error = $error;
         $this->response = null;
     }
 
@@ -24,6 +26,14 @@ class UserLoginEvent extends Event
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 
     public function setResponse(Response $response)

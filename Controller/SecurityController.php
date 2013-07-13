@@ -29,7 +29,7 @@ class SecurityController extends BaseSecurityController
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->container->get('event_dispatcher');
 
-        $event = new UserLoginEvent($request);
+        $event = new UserLoginEvent($request, $error);
         $dispatcher->dispatch(RzUserEvents::RZ_LOGIN_PROCESS, $event);
 
         if (null !== $event->getResponse()) {
