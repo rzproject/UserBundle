@@ -27,7 +27,6 @@ class GroupAdmin extends BaseGroupAdmin
     {
         $listMapper
             ->addIdentifier('name', null, array('footable'=>array('attr'=>array('data_toggle'=>true))))
-            ->add('roles', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
         ;
     }
 
@@ -40,6 +39,7 @@ class GroupAdmin extends BaseGroupAdmin
             ->add('name')
             ->add('roles', 'sonata_security_roles', array(
                              'multiple' => true,
+                             'multiselect_enabled' => true,
                              'required' => false
                          ))
         ;
