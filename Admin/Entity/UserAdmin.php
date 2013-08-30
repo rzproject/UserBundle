@@ -17,9 +17,12 @@ use Sonata\UserBundle\Model\UserInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class UserAdmin extends BaseUserAdmin
 {
+    protected $securityContext;
+
     /**
      * {@inheritdoc}
      */
@@ -67,10 +70,10 @@ class UserAdmin extends BaseUserAdmin
         $listMapper
             ->addIdentifier('username', null, array('footable'=>array('attr'=>array('data_toggle'=>true))))
             ->add('email', null, array('footable'=>array('attr'=>array('data_hide'=>'phone'))))
-//            ->add('groups', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
+            ->add('groups', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('enabled', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('locked', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
-//            ->add('createdAt', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
+            ->add('createdAt', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
         ;
 
         if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
@@ -168,5 +171,13 @@ class UserAdmin extends BaseUserAdmin
             ->add('groups', null ,array('field_options'=> array('selectpicker_dropup' => true,),
                                         'operator_options'=>array('selectpicker_dropup' => true)))
         ;
+    }
+
+    public function setSecurityContext(SecurityContextInterface $securityContext) {
+        $this->securityContext = $securityContext;
+    }
+
+    public function getSecurityContext() {
+        return $this->securityContext;
     }
 }
