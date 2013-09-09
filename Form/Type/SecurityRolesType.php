@@ -49,7 +49,7 @@ class SecurityRolesType extends AbstractTypeExtension
             $view->vars['multiselect_enabled'] = $options['multiselect_enabled'] = false;
             $view->vars['multiselect_search_enabled'] = $options['multiselect_search_enabled'] = false;
 
-            $view->vars['attr']['class'] = sprintf(($options['multiple']) ? "chzn-select-multiple %s" : "chzn-select %s", $view->vars['attr']['class']);
+            $view->vars['attr']['class'] = sprintf(($options['multiple']) ? "chosen-select-multiple %s" : "chosen-select %s", $view->vars['attr']['class']);
             $view->vars['attr']['chosen_data_placeholder'] = array_key_exists('chosen_data_placeholder', $options) ? $options['chosen_data_placeholder'] : 'Choose one of the following...';
             $view->vars['attr']['chosen_no_results_text'] = array_key_exists('chosen_no_results_text', $options) ? $options['chosen_no_results_text'] : 'No record found.';
 
