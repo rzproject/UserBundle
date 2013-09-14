@@ -140,7 +140,7 @@ class UserAdmin extends BaseUserAdmin
                 ->add('roles', 'sonata_security_roles', array(
                                  'multiple' => true,
                                  'multiselect_enabled' => true,
-                                 'required' => false
+                                 'required' => false,
                              ))
                 ->add('locked', 'checkbox', array('required' => false))
                 ->add('expired', null, array('required' => false))
