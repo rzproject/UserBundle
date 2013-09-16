@@ -8,7 +8,6 @@
 {% block main_content %}
     <div class="login-box">
         <form action="{{ path("sonata_user_admin_security_check") }}" method="post" id="login_form">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
             <div class="login-top"><i class="micon-key-2"></i> Sign in to {{ admin_pool.title }}</div>
             {% if error %}
             <div class="alert alert-danger alert-login">
