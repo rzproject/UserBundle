@@ -39,13 +39,13 @@ class SecurityRolesType extends AbstractTypeExtension
 
         if ($options['expanded']) {
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled']= false;
-            $view->vars['chosen_enabled'] = $options['chosen_enabled'] =  false;
+            $view->vars['select2'] = $options['select2'] =  false;
             $view->vars['multiselect_enabled'] = $options['multiselect_enabled'] = false;
             $view->vars['multiselect_search_enabled'] = $options['multiselect_search_enabled'] = false;
-        } elseif ($options['chosen_enabled']) {
+        } elseif ($options['select2']) {
 
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled']= false;
-            $view->vars['chosen_enabled'] = $options['chosen_enabled'] =  true;
+            $view->vars['select2'] = $options['select2'] =  true;
             $view->vars['multiselect_enabled'] = $options['multiselect_enabled'] = false;
             $view->vars['multiselect_search_enabled'] = $options['multiselect_search_enabled'] = false;
 
@@ -56,7 +56,7 @@ class SecurityRolesType extends AbstractTypeExtension
         } elseif ($options['selectpicker_enabled']) {
 
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled'] = true;
-            $view->vars['chosen_enabled'] = $options['chosen_enabled'] = false;
+            $view->vars['select2'] = $options['select2'] = false;
             $view->vars['multiselect_enabled'] = $options['multiselect_enabled'] = false;
             $view->vars['multiselect_search_enabled'] = $options['multiselect_search_enabled'] = false;
 
@@ -92,7 +92,7 @@ class SecurityRolesType extends AbstractTypeExtension
         } elseif ($options['multiselect_enabled']) {
             $view->vars['multiple'] = true;
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled'] = false;
-            $view->vars['chosen_enabled'] = $options['chosen_enabled'] = false;
+            $view->vars['select2'] = $options['select2'] = false;
             $view->vars['multiselect_enabled'] = true;
             $view->vars['multiselect_search_enabled'] = false;
 
@@ -102,13 +102,13 @@ class SecurityRolesType extends AbstractTypeExtension
         } elseif ($options['multiselect_search_enabled']) {
             $view->vars['multiple'] = true;
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled'] = false;
-            $view->vars['chosen_enabled'] = $options['chosen_enabled'] = false;
+            $view->vars['select2'] = $options['select2'] = false;
             $view->vars['multiselect_enabled'] = false;
             $view->vars['multiselect_search_enabled'] = true;
 
         } else {
             $view->vars['selectpicker_enabled'] = $options['selectpicker_enabled'] = false;
-            $view->vars['chosen_enabled'] = $options['chosen_enabled'] = false;
+            $view->vars['select2'] = $options['select2'] = false;
             $view->vars['multiselect_enabled'] = $options['multiselect_enabled'] = false;
             $view->vars['multiselect_search_enabled'] = $options['multiselect_search_enabled'] = false;
         }
@@ -170,7 +170,7 @@ class SecurityRolesType extends AbstractTypeExtension
                                        return empty($options['choices']) ? $rolesReadOnly : array();
                                    },
                                    'data_class' => null,
-                                   'chosen_enabled' => false,
+                                   'select2' => false,
                                    'selectpicker_enabled' => false,
                                    'multiselect_enabled' => false,
                                    'multiselect_search_enabled' => true,
@@ -188,7 +188,7 @@ class SecurityRolesType extends AbstractTypeExtension
                                    'selectpicker_data_size',
                                    'selectpicker_disabled',
                                    'selectpicker_dropup',
-                                   'chosen_enabled',
+                                   'select2',
                                    'chosen_data_placeholder',
                                    'chosen_no_results_text',
                                    'multiselect_enabled',

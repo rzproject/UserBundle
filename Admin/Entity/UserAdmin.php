@@ -98,7 +98,7 @@ class UserAdmin extends BaseUserAdmin
             ->with('Groups')
                 ->add('groups', 'sonata_type_model', array('required' => false,
                                                            'multiple' => true,
-                                                           'chosen_enabled'=>true,
+                                                           'select2'=>true,
                                                            'by_reference' => false,
                                                            'error_bubbling'=>true,
                                                            /*'attr'=>array('class'=>'span10'),*/))
@@ -120,8 +120,8 @@ class UserAdmin extends BaseUserAdmin
                                    'required' => true,
                                    'translation_domain' => $this->getTranslationDomain()
                                ))
-                ->add('locale', 'locale', array('required' => false, 'chosen_enabled'=>true))
-                ->add('timezone', 'timezone', array('required' => false, 'chosen_enabled'=>true))
+                ->add('locale', 'locale', array('required' => false, 'select2'=>true))
+                ->add('timezone', 'timezone', array('required' => false, 'select2'=>true))
                 ->add('phone', null, array('required' => false))
             ->end()
             ->with('Social')
