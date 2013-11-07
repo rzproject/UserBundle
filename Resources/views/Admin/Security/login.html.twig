@@ -5,45 +5,43 @@
 {# remove navbar #}
 {% block navbar %}{% endblock %}
 
-{% block main_content %}
-    <div class="login-box">
-        <form action="{{ path("sonata_user_admin_security_check") }}" method="post" id="login_form">
-            <div class="login-top"><i class="micon-key-2"></i> Sign in to {{ admin_pool.title }}</div>
-            {% if error %}
-            <div class="alert alert-danger alert-login">
-                <a class="close" data-dismiss="alert">×</a>
-                {{ error|trans({}, 'SonataUserBundle') }}
-            </div>
-            {% endif %}
-            <div class="login-form-container row-fluid">
-                <div class="control-group formSepH_pa formSepV_pc">
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="icon-user"></i></span><input  type="text" id="username" name="_username" placeholder="{{ 'security.login.username'|trans({}, 'RzUserBundle') }}" value="{{ last_username }}" />
+{% block admin_body_class %} rz-login{% endblock %}
+{% block main_container %}
+    {% block main_content %}
+        <div class="wrapper">
+            <h1><a href="#">{{ admin_pool.title }}</a></h1>
+            <div class="login-body">
+                <h2>SIGN IN</h2>
+                <form action="{{ path("sonata_user_admin_security_check") }}" method="post" id="login_form">
+                    {% if error %}
+                        <div class="alert alert-danger alert-login">
+                            <a class="close" data-dismiss="alert">×</a>
+                            {{ error|trans({}, 'SonataUserBundle') }}
+                        </div>
+                    {% endif %}
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <div class="email controls">
+                                <input class="span12" type="text" id="username" name="_username" placeholder="{{ 'security.login.username'|trans({}, 'RzUserBundle') }}" value="{{ last_username }}" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="pw controls">
+                                <input class="span12" type="password" id="password" name="_password" value="password" />
+                            </div>
+                        </div>
+                        <div class="submit">
+                            <div class="remember">
+                                <input class='icheck-me' data-skin="square" data-color="aero" id="remember" type="checkbox" id="remember_me" name="_remember_me" value="on"/> <label> {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+                            </div>
+                            <button type="submit" id="_submit" name="_submit" class="btn btn-primary pull-right">{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</button>
                         </div>
                     </div>
-                </div>
-                <div class="control-group formSepH_pa formSepV_pc">
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="icon-lock"></i></span><input type="password" id="password" name="_password" value="password" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="control-group  formSepV_pc">
-                    <div class="controls clearfix">
-                        <label class="checkbox"><input class="uni_style" type="checkbox" id="remember_me" name="_remember_me" value="on"/> {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
-                    </div>
+                </form>
+                <div class="forget">
+                    <span class="linkform"><a href="{{ path('fos_user_resetting_request') }}">Forgot password?</a></span>
                 </div>
             </div>
-            <div class="login-bottom clearfix">
-                <button type="submit" id="_submit" name="_submit" class="btn btn-primary pull-right">{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}</button>
-            </div>
-        </form>
-
-        <div class="login-links login-linkstm clearfix">
-            <span class="linkform"><a href="{{ path('fos_user_resetting_request') }}">Forgot password?</a></span>
         </div>
-    </div>
-{% endblock main_content %}
+    {% endblock main_content %}
+{% endblock main_container %}
