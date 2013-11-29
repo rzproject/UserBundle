@@ -1,13 +1,13 @@
 {% block user_block %}
     {% if app.user %}
-    <li class="dropdown">
-        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="micon-user-3"></i> Hi {{ app.user }}! <i class="icon-chevron-down"></i></a>
-        <ul class="dropdown-menu">
-        {% if is_granted('ROLE_PREVIOUS_ADMIN') and sonata_user.impersonating %}
-            <li><a href="{{ url(sonata_user.impersonating.route, sonata_user.impersonating.parameters| merge({'_switch_user': '_exit'})) }}">(exit)</a></li>
-        {% endif %}
-        <li><a href="{{ url('sonata_user_admin_security_logout') }}">{{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}</a></li>
+    <div class="dropdown">
+        <a href="#" class='dropdown-toggle' data-toggle="dropdown"><i class="icon-user"></i> {{ app.user }}</a>
+        <ul class="dropdown-menu pull-right">
+            {% if is_granted('ROLE_PREVIOUS_ADMIN') and sonata_user.impersonating %}
+                <li><a href="{{ url(sonata_user.impersonating.route, sonata_user.impersonating.parameters| merge({'_switch_user': '_exit'})) }}">(exit)</a></li>
+            {% endif %}
+            <li><a href="{{ url('sonata_user_admin_security_logout') }}">{{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}</a></li>
         </ul>
-    </li>
+    </div>
     {% endif %}
 {% endblock %}

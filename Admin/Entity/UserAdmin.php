@@ -70,18 +70,18 @@ class UserAdmin extends BaseUserAdmin
         $listMapper
             ->addIdentifier('username', null, array('footable'=>array('attr'=>array('data_toggle'=>true))))
             ->add('email', null, array('footable'=>array('attr'=>array('data_hide'=>'phone'))))
-            ->add('groups', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
+            //->add('groups', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('enabled', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('locked', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('createdAt', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
         ;
 
-        if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
-            $listMapper
-                ->add('impersonating', 'string', array('template' => 'SonataUserBundle:Admin:Field/impersonating.html.twig',
-                                                       'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
-            ;
-        }
+//        if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
+//            $listMapper
+//                ->add('impersonating', 'string', array('template' => 'SonataUserBundle:Admin:Field/impersonating.html.twig',
+//                                                       'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
+//            ;
+//        }
     }
 
     /**
@@ -98,15 +98,15 @@ class UserAdmin extends BaseUserAdmin
             ->with('Groups')
                 ->add('groups', 'sonata_type_model', array('required' => false,
                                                            'multiple' => true,
-                                                           'chosen_enabled'=>true,
+                                                           'select2'=>true,
                                                            'by_reference' => false,
                                                            'error_bubbling'=>true,
-                                                           'attr'=>array('class'=>'span10'),))
+                                                           /*'attr'=>array('class'=>'span10'),*/))
             ->end()
             ->with('Profile')
                 ->add('dateOfBirth', 'birthday', array('required' => false, 'format' => 'dd-MM-yyyy',
-                                                   'pattern' => '{{ day }}-{{ month }}-{{ year }}',
-                                                   'years' => range(Date('Y'), 2010)))
+                                                       'pattern' => '{{ day }}-{{ month }}-{{ year }}',
+                                                       'years' => range(Date('Y'), 2010)))
                 ->add('firstname', null, array('required' => false))
                 ->add('lastname', null, array('required' => false))
                 ->add('website', 'url', array('required' => false))
@@ -120,8 +120,8 @@ class UserAdmin extends BaseUserAdmin
                                    'required' => true,
                                    'translation_domain' => $this->getTranslationDomain()
                                ))
-                ->add('locale', 'locale', array('required' => false, 'chosen_enabled'=>true))
-                ->add('timezone', 'timezone', array('required' => false, 'chosen_enabled'=>true))
+                ->add('locale', 'locale', array('required' => false, 'select2'=>true))
+                ->add('timezone', 'timezone', array('required' => false, 'select2'=>true))
                 ->add('phone', null, array('required' => false))
             ->end()
             ->with('Social')
@@ -140,7 +140,7 @@ class UserAdmin extends BaseUserAdmin
                 ->add('roles', 'sonata_security_roles', array(
                                  'multiple' => true,
                                  'multiselect_enabled' => true,
-                                 'required' => false
+                                 'required' => false,
                              ))
                 ->add('locked', 'checkbox', array('required' => false))
                 ->add('expired', null, array('required' => false))
