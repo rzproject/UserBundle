@@ -9,7 +9,7 @@
 {% block main_container %}
     {% block main_content %}
         <div class="wrapper">
-            <h1>{{ admin_pool.title }}</h1>
+            <h1><img src="{{  asset('bundles/rzuser/img/logo.png') }}" alt="{{ admin_pool.title }}" /></h1>
             <div class="login-body">
                 <h2>SIGN IN</h2>
                 <form action="{{ path("sonata_user_admin_security_check") }}" method="post" id="login_form">
