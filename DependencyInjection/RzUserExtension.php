@@ -36,6 +36,8 @@ class RzUserExtension extends Extension
         $loader->load('fields.xml');
         $loader->load('listeners.xml');
         $loader->load('admin_orm.xml');
+        $loader->load('profile.xml');
+        $loader->load('resetting.xml');
         # addition of service on compiler pass
         //$loader->load('form.xml');
 
@@ -46,6 +48,7 @@ class RzUserExtension extends Extension
         $this->configureTranslationDomain($config, $container);
         $this->configureController($config, $container);
         $this->configureRzTemplates($config, $container);
+        $this->configureProfileBlockService($config, $container);
 
         // add custom form widgets
         $container->setParameter('twig.form.resources', array_merge(
@@ -154,4 +157,15 @@ class RzUserExtension extends Extension
         $container->setParameter('sonata.user.update_password.form.name', $config['profile']['update_password']['name']);
         $container->setParameter('sonata.user.update_password.form.validation_groups', $config['profile']['update_password']['validation_groups']);
     }
+
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     */
+    public function configureProfileBlockService(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('rz.user.user.block.menu.class', $config['profile']['blocks_service']['class']);
+    }
+
+
 }

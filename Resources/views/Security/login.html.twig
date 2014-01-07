@@ -10,18 +10,19 @@
     <div class="span4 offset4">
         {% if error %}
             <div class="alert alert-danger alert-login">
-                <a class="close" data-dismiss="alert">×</a>
                 {{ error|trans({}, 'RzUserBundle') }}
             </div>
         {% endif %}
-        <form action="{{ path("fos_user_security_check") }}" method="post">
+        <form class="contact-form" action="{{ path("fos_user_security_check") }}" method="post">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-            <label for="username">{{ 'security.login.username'|trans }}</label>
+            <p class="form_info">{{ 'security.login.username'|trans }} <span class="required">*</span></p>
             <input class="span12" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-
-            <label for="password">{{ 'security.login.password'|trans }}</label>
+            <p class="form_info">{{ 'security.login.password'|trans }} <span class="required">*</span></p>
             <input class="span12" type="password" id="password" name="_password" required="required" />
-            <label for="remember_me"><input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'security.login.remember_me'|trans }} </label>
+            <div class="remember span12">
+                <input class='icheck-me' data-skin="square" data-color="aero" id="remember" type="checkbox" id="remember_me" name="_remember_me" value="on"/> <label> {{ 'security.login.remember_me'|trans }}</label>
+                <a class="forgot-password" href="{{ path('fos_user_resetting_request') }}">{{ 'forgotten_password'|trans({}, 'SonataUserBundle') }}</a>
+            </div>
             {{ block('action_buttons') }}
         </form>
     </div>
@@ -29,5 +30,5 @@
 {% endblock fos_user_content %}
 
 {% block action_buttons %}
-    <input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+    <input class="btn btn-rzcms-theme span12" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
 {% endblock action_buttons %}

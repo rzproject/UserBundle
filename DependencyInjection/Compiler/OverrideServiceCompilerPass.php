@@ -28,5 +28,9 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         $definedTemplates = array_merge($container->getParameter('sonata.admin.configuration.templates'),
                                         $container->getParameter('rz_user.configuration.group.templates'));
         $definition->addMethodCall('setTemplates', array($definedTemplates));
+
+
+        $definition = $container->getDefinition('sonata.user.block.menu');
+        $definition->setClass($container->getParameter('rz.user.user.block.menu.class'));
     }
 }

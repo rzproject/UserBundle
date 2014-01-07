@@ -145,7 +145,12 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
-
+                        ->arrayNode('blocks_service')
+                        ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('class')->defaultValue('Rz\\UserBundle\\Block\\ProfileMenuBlockService')->end()
+                            ->end()
+                        ->end()
                         ->arrayNode('update_password')
                             ->addDefaultsIfNotSet()
                             ->children()
