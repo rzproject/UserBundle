@@ -3,11 +3,9 @@
 {% block list %}
 {% import 'knp_menu.html.twig' as macros %}
     {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
-    <div class="rz-profile-menu">
-        <div{{ macros.attributes(listAttributes) }}>
+        <ul class="sub-menu">
             {{ block('children') }}
-        </div>
-    </div>
+        </ul>
     {% endif %}
 {% endblock %}
 
@@ -45,6 +43,6 @@
     {% endif %}
 {% endblock %}
 
-{% block linkElement %}<a href="{{ item.uri }}"{{ macros.attributes(item.attributes|merge(item.linkAttributes)|merge(attributes)) }}>{{ block('label') }}</a>{% endblock %}
+{% block linkElement %}<li><a href="{{ item.uri }}"{{ macros.attributes(item.attributes|merge(item.linkAttributes)|merge(attributes)) }}>{{ block('label') }}</a></li>{% endblock %}
 
 {% block spanElement %}<div{{ macros.attributes(item.attributes|merge(item.labelAttributes)|merge(attributes)) }}><h4 class="list-group-item-heading">{{ block('label') }}</h4></div>{% endblock %}
