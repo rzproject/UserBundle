@@ -5,7 +5,14 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="sonata.user.profile.form.factory" alias="fos_user.profile.form.factory"/>
+
+        <service id="sonata.user.profile.form.factory" class="FOS\UserBundle\Form\Factory\FormFactory">
+            <argument type="service" id="form.factory" />
+            <argument>%sonata.user.profile.form.name%</argument>
+            <argument>%sonata.user.profile.form.type%</argument>
+            <argument>%sonata.user.profile.form.validation_groups%</argument>
+        </service>
+
     </services>
 
 </container>

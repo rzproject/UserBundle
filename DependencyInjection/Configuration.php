@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('rz_user');
         $this->addBundleSettings($node);
+        $this->addChangePasswordSection($node);
         //$this->addAdminSettings($node);
         $this->addTemplates($node);
         return $treeBuilder;
@@ -183,6 +184,30 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('layout')->defaultValue('RzUserBundle::layout.html.twig')->end()
                             ->scalarNode('login')->defaultValue('RzUserBundle:Security:login.html.twig')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addChangePasswordSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('change_password')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->arrayNode('form')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('type')->defaultValue('rz_user_change_password')->end()
+                                ->scalarNode('name')->defaultValue('fos_user_change_password_form')->end()
+                                ->arrayNode('validation_groups')
+                                    ->prototype('scalar')->end()
+                                    ->defaultValue(array('ChangePassword', 'Default'))
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

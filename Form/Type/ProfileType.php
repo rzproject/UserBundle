@@ -15,6 +15,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Sonata\UserBundle\Model\UserInterface;
+use Symfony\Component\Security\Core\Validator\Constraint\UserPassword as OldUserPassword;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ProfileType extends AbstractType
 {
@@ -33,26 +35,22 @@ class ProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('firstname', null, array('label' => 'form.firstname', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('lastname', null, array('label' => 'form.lastname','translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('website', null, array('label' => 'form.website', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('phone', null, array('required' => false, 'label' => 'form.phone', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('dateOfBirth', 'birthday', array('label' => 'form.dateOfBirth','translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('gender', 'choice', array(
-                              'label' => 'form.gender',
-                              'choices' => array(
-                                  UserInterface::GENDER_UNKNOWN => 'gender_unknown',
-                                  UserInterface::GENDER_FEMALE  => 'gender_female',
-                                  UserInterface::GENDER_MAN     => 'gender_male',
-                              ),
-                              'required' => true,
-                              'translation_domain' => 'RzUserBundle',
-                              'attr'=>array('class'=>'span6')
-                          ))
-            ->add('biography', 'textarea', array('label' => 'form.biography', 'required' => false, 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12', 'rows'=>'10')))
-            ->add('locale', 'locale', array('required' => false, 'attr'=>array('class'=>'span6')))
-            ->add('timezone', 'timezone', array('required' => false, 'attr'=>array('class'=>'span6')));
+        if (class_exists('Symfony\Component\Security\Core\Validator\Constraints\UserPassword')) {
+            $constraint = new UserPassword();
+        } else {
+            // Symfony 2.1 support with the old constraint class
+            $constraint = new OldUserPassword();
+        }
+
+        $this->buildUserForm($builder, $options);
+
+        $builder->add('current_password', 'password', array(
+                                            'label' => 'form.current_password',
+                                            'translation_domain' => 'FOSUserBundle',
+                                            'mapped' => false,
+                                            'constraints' => $constraint,
+                                        ));
+
     }
 
     /**
@@ -71,5 +69,39 @@ class ProfileType extends AbstractType
     public function getName()
     {
         return 'rz_user_profile';
+    }
+
+
+    /**
+     * Builds the embedded form representing the user.
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
+    protected function buildUserForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'RzUserBundle'))
+            ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'RzUserBundle', 'read_only'=>true, 'attr'=>array('class'=>'span12')))
+            ->add('firstname', null, array('label' => 'form.firstname', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('lastname', null, array('label' => 'form.lastname','translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('website', null, array('label' => 'form.website', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('phone', null, array('required' => false, 'label' => 'form.phone', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('dateOfBirth', 'birthday', array('label' => 'form.dateOfBirth','translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('gender', 'choice', array(
+                              'label' => 'form.gender',
+                              'choices' => array(
+                                  UserInterface::GENDER_UNKNOWN => 'gender_unknown',
+                                  UserInterface::GENDER_FEMALE  => 'gender_female',
+                                  UserInterface::GENDER_MAN     => 'gender_male',
+                              ),
+                              'required' => true,
+                              'translation_domain' => 'RzUserBundle',
+                              'attr'=>array('class'=>'span12')
+                          ))
+//            ->add('biography', 'textarea', array('label' => 'form.biography', 'required' => false, 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12', 'rows'=>'10')))
+//            ->add('locale', 'locale', array('required' => false, 'attr'=>array('class'=>'span6')))
+//            ->add('timezone', 'timezone', array('required' => false, 'attr'=>array('class'=>'span6')));
+        ;
     }
 }

@@ -123,3 +123,9 @@ security:
     submit: "Login"
 
 list_select: Action(s)
+
+
+title_user_account: User Profile
+title_user_edit_profile: Edit
+title_user_edit_authentication: Update Password
+title_user_register: Registration

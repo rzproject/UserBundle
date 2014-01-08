@@ -37,7 +37,7 @@ class RzUserExtension extends Extension
         $loader->load('listeners.xml');
         $loader->load('admin_orm.xml');
         $loader->load('profile.xml');
-        $loader->load('resetting.xml');
+        $loader->load('change_password.xml');
         # addition of service on compiler pass
         //$loader->load('form.xml');
 
@@ -49,6 +49,7 @@ class RzUserExtension extends Extension
         $this->configureController($config, $container);
         $this->configureRzTemplates($config, $container);
         $this->configureProfileBlockService($config, $container);
+        $this->loadChangePassword($config, $container);
 
         // add custom form widgets
         $container->setParameter('twig.form.resources', array_merge(
@@ -168,4 +169,10 @@ class RzUserExtension extends Extension
     }
 
 
+    public function loadChangePassword(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('rz_user.change_password.form.type', $config['change_password']['form']['type']);
+        $container->setParameter('rz_user.change_password.form.name', $config['change_password']['form']['name']);
+        $container->setParameter('rz_user.change_password.form.validation_groups', $config['change_password']['form']['validation_groups']);
+    }
 }
