@@ -1,68 +1,44 @@
-{% extends "RzUserBundle::layout.html.twig" %}
+{% extends "RzUserBundle:Profile:action.html.twig" %}
 
-{% block rz_user_header %}
-    <div class="row-fluid">
-        <div class="span6 offset3">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                <a href="{{ path('fos_user_security_logout') }}">
-                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                </a>
+{% block sonata_profile_content %}
+    <div class="row row-fluid">
+        {% set has_center = false %}
+        {% for block in blocks %}
+            {% if block.position == 'center' %}
+                {% set has_center = true %}
             {% endif %}
+        {% endfor %}
+
+        <div class="{% if has_center %}span4 col-lg-4{% else %}span6 col-lg-6{% endif %}">
+            {% for block in blocks %}
+                {% if block.position == 'left' %}
+                    <div class="user-profile">
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
-    </div>
-{% endblock rz_user_header %}
 
-{% block fos_user_content %}
-    <div class="row-fluid">
-        <div class="span6 offset3">
-            <div class="sonata-user-show">
-                <address>
-                    <strong>{{ app.user.fullname }}</strong><br>
-                    <a href="mailto:#"><small>{{ user.email }}</small></a>
-                </address>
-
-                <table class="table table-bordered">
-                    <tr>
-                        <td><small>Firstname</small></td>
-                        <td><strong>{{ user.firstname }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td><small>Lastname</small></td>
-                        <td><strong>{{ user.lastname }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td><small>Birthdate</small></td>
-                        <td><strong>{{ user.dateOfBirth|date('F j, Y') }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td><small>Email</small></td>
-                        <td><strong>{{ user.email }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td><small>Birthdate</small></td>
-                        <td><strong>{{ user.website }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td><small>Gender</small></td>
-                        <td><strong>{% if user.gender == 'm'  %}Male{% else %}Female{% endif %}</strong></td>
-                    </tr>
-                    <tr>
-                        <td><small>Biography</small></td>
-                        <td><blockquote>{{ user.biography }}</blockquote></td>
-                    </tr>
-
-                    <tr>
-                        <td><small>Actions</small></td>
-                        <td>
-                            <ul class="unstyled">
-                                <li><a href="{{ path('sonata_user_profile_edit') }}">{{ "link_edit_profile" | trans({}, 'RzUserBundle')}}</a></li>
-                                <li><a href="{{ path('sonata_user_profile_edit_authentication') }}">{{ "link_edit_authentication" | trans({}, 'RzUserBundle')}}</a></li>
-                            </ul>
-                        </td>
-                    </tr>
-                </table>
+        {% if has_center %}
+            <div class="span4 col-lg-4">
+                {% for block in blocks %}
+                    {% if block.position == 'center' %}
+                        <div class="user-profile">
+                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
+        {% endif %}
+
+        <div class="{% if has_center %}span4 col-lg-4{% else %}span6 col-lg-6{% endif %}">
+            {% for block in blocks %}
+                {% if block.position == 'right' %}
+                    <div class="user-profile">
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
-{% endblock fos_user_content %}
+{% endblock %}
