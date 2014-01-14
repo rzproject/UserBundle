@@ -67,9 +67,9 @@ class ProfileMenuBlockService extends MenuBlockService
      */
     protected function getMenu(BlockContextInterface $blockContext)
     {
+        $menu = parent::getMenu($blockContext);
 
         $settings = $blockContext->getSettings();
-        $menu = parent::getMenu($settings);
 
         if (null === $menu || "" === $menu) {
             $menu = $this->menuBuilder->createProfileMenu(
