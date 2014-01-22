@@ -129,3 +129,6 @@ title_user_account: User Profile
 title_user_edit_profile: Edit
 title_user_edit_authentication: Update Password
 title_user_register: Registration
+
+rz_users_menu_users: <i>System</i> - <b>Users</b>
+rz_users_menu_groups: <i>System</i> - <b>Groups</b>
