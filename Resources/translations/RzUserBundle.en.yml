@@ -130,5 +130,5 @@ title_user_edit_profile: Edit
 title_user_edit_authentication: Update Password
 title_user_register: Registration
 
-rz_users_menu_users: <i>System</i> - <b>Users</b>
-rz_users_menu_groups: <i>System</i> - <b>Groups</b>
+rz_users_menu_users: System Users
+rz_users_menu_groups: System Groups
