@@ -74,6 +74,7 @@ class UserAdmin extends BaseUserAdmin
             ->add('enabled', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('locked', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('createdAt', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
+            ->add('updatedAt', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
         ;
 
 //        if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
