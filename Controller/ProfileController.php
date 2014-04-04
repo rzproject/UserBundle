@@ -73,12 +73,10 @@ class ProfileController extends ProfileFOSUser1Controller
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
      * @return Response
      *
-     * @throws AccessDeniedException
      */
     public function editAuthenticationAction()
     {
