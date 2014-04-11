@@ -26,7 +26,7 @@ class GroupAdmin extends BaseGroupAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', null, array('footable'=>array('attr'=>array('data_toggle'=>true))))
+            ->add('name', null, array('identifier'=>true, 'footable'=>array('attr'=>array('data_toggle'=>true))))
         ;
     }
 

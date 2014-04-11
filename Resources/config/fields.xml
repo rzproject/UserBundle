@@ -8,7 +8,7 @@
     <parameters>
         <parameter key="rz_user.sonata_security_roles.class">Rz\UserBundle\Form\Type\SecurityRolesType</parameter>
         <parameter key="rz_user.profile.form.type.class">Rz\UserBundle\Form\Type\ProfileType</parameter>
-        <parameter key="rz_user.update_password.form.type.class">Rz\UserBundle\Form\Type\ProfileUpdatePasswordType</parameter>
+        <!--<parameter key="rz_user.update_password.form.type.class">Rz\UserBundle\Form\Type\ChangePasswordType</parameter>-->
     </parameters>
 
     <services>
@@ -22,10 +22,10 @@
             <argument>%fos_user.model.user.class%</argument>
         </service>
 
-        <service id="sonata.user.update_password.form.type" class="%rz_user.update_password.form.type.class%">
-            <tag name="form.type" alias="rz_user_update_password" />
-            <argument>%fos_user.model.user.class%</argument>
-        </service>
+        <!--<service id="sonata.user.update_password.form.type" class="%rz_user.update_password.form.type.class%">-->
+            <!--<tag name="form.type" alias="rz_user_update_password" />-->
+            <!--<argument>%fos_user.model.user.class%</argument>-->
+        <!--</service>-->
 
     </services>
 </container>

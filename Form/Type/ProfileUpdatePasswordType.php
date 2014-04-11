@@ -16,6 +16,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Symfony\Component\Security\Core\Validator\Constraint\UserPassword as OldUserPassword;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+
 class ProfileUpdatePasswordType extends AbstractType
 {
     private $class;
@@ -33,6 +36,7 @@ class ProfileUpdatePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        die('here');
         $builder->add('plainPassword', 'repeated', array(
                       'attr'=>array('class'=>'span12'),
                       'type' => 'password',

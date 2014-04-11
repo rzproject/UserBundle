@@ -12,17 +12,17 @@
                     {{ form_errors(form.current_password) }}
                 </div>
 
-                <p class="form_info">{{ 'form.new_password'|trans({}, 'RzUserBundle') }}</p>
-                {{ form_widget(form.plainPassword.first) }}
-                <div class="form-errors">
-                    {{ form_errors(form.plainPassword.first) }}
-                </div>
+                {#<p class="form_info">{{ 'form.new_password'|trans({}, 'RzUserBundle') }}</p>#}
+                {#{{ form_widget(form['plainPassword'].first) }}#}
+                {#<div class="form-errors">#}
+                    {#{{ form_errors(form['plainPassword'].first) }}#}
+                {#</div>#}
 
-                <p class="form_info">{{ 'form.new_password_confirmation'|trans({}, 'RzUserBundle') }}</p>
-                {{ form_widget(form.plainPassword.second) }}
-                <div class="form-errors">
-                    {{ form_errors(form.plainPassword.second) }}
-                </div>
+                {#<p class="form_info">{{ 'form.new_password_confirmation'|trans({}, 'RzUserBundle') }}</p>#}
+                {#{{ form_widget(form['plainPassword'].second) }}#}
+                {#<div class="form-errors">#}
+                    {#{{ form_errors(form['plainPassword'].second) }}#}
+                {#</div>#}
 
                 {{ form_rest(form) }}
                 <div class="profile-submit">

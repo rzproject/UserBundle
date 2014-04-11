@@ -154,9 +154,16 @@ class RzUserExtension extends Extension
         $container->setParameter('sonata.user.profile.form.name', $config['profile']['form']['name']);
         $container->setParameter('sonata.user.profile.form.validation_groups', $config['profile']['form']['validation_groups']);
 
-        $container->setParameter('sonata.user.update_password.form.type', $config['profile']['update_password']['type']);
-        $container->setParameter('sonata.user.update_password.form.name', $config['profile']['update_password']['name']);
-        $container->setParameter('sonata.user.update_password.form.validation_groups', $config['profile']['update_password']['validation_groups']);
+        $container->setParameter('sonata.user.register.confirm.redirect_route', $config['profile']['register']['confirm']['redirect']['route']);
+        $container->setParameter('sonata.user.register.confirm.redirect_route_params', $config['profile']['register']['confirm']['redirect']['route_parameters']);
+
+        $container->setParameter('sonata.user.configuration.profile_blocks', $config['profile']['dashboard']['blocks']);
+
+        $container->setAlias('sonata.user.profile.form.handler', $config['profile']['form']['handler']);
+
+//        $container->setParameter('sonata.user.update_password.form.type', $config['profile']['update_password']['type']);
+//        $container->setParameter('sonata.user.update_password.form.name', $config['profile']['update_password']['name']);
+//        $container->setParameter('sonata.user.update_password.form.validation_groups', $config['profile']['update_password']['validation_groups']);
     }
 
     /**
@@ -171,8 +178,9 @@ class RzUserExtension extends Extension
 
     public function loadChangePassword(array $config, ContainerBuilder $container)
     {
-        $container->setParameter('rz_user.change_password.form.type', $config['change_password']['form']['type']);
-        $container->setParameter('rz_user.change_password.form.name', $config['change_password']['form']['name']);
-        $container->setParameter('rz_user.change_password.form.validation_groups', $config['change_password']['form']['validation_groups']);
+        $container->setParameter('rz_user.change_password.form.type', $config['profile']['change_password']['type']);
+        $container->setParameter('rz_user.change_password.form.name', $config['profile']['change_password']['name']);
+        $container->setParameter('rz_user.change_password.form.validation_groups', $config['profile']['change_password']['validation_groups']);
+        $container->setAlias('rz_user.change_password.form.handler', $config['profile']['change_password']['handler']);
     }
 }

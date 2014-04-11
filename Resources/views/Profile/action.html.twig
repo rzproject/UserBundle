@@ -1,6 +1,5 @@
 <h1>{% block sonata_profile_title %}{% trans from 'SonataUserBundle' %}sonata_profile_title{% endtrans %}{% endblock %}</h1>
-
-<div class="row-fluid sonata-user-show">
+<div class="row row-fluid">
     <div class="span12">
         {% for message in app.session.flashbag.get('fos_user_success') %}
             <div class="alert alert-success">
@@ -12,8 +11,6 @@
                 {{ message|trans({}, "SonataUserBundle") }}
             </div>
         {% endfor %}
-
-        {% block sonata_profile_content %}
-        {% endblock %}
     </div>
 </div>
+{% block sonata_profile_content %}{% endblock %}
