@@ -86,6 +86,8 @@ layout:
 
 # Form field labels
 form:
+    label_name: Name
+    label_roles: Roles
     label_id: ID
     label_groups: "Group name:"
     label_username: "Username"
@@ -158,6 +160,8 @@ list:
     label_token: "Token"
     label_created_at: "Created Date"
     label_updated_at: "Last Updated"
+    label_name: Name
+    label_roles: Roles
 
 show:
     label_id: ID
@@ -195,6 +199,8 @@ show:
     label_token: "Token"
     label_created_at: "Created Date"
     label_updated_at: "Last Updated"
+    label_name: Name
+    label_roles: Roles
 
 filter:
     label_id: ID
@@ -232,6 +238,8 @@ filter:
     label_token: "Token"
     label_created_at: "Created Date"
     label_updated_at: "Last Updated"
+    label_name: Name
+    label_roles: Roles
 
 
 link_edit_profile: 'Edit Profile'
@@ -261,4 +269,6 @@ title_user_register: Registration
 rz_users_menu_users: System Users
 rz_users_menu_groups: System Groups
 
-breadcrumb.link_user_list : "User"
+breadcrumb:
+  link_user_list : "User"
+  link_group_list: Group
