@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class GroupAdmin extends BaseGroupAdmin
 {
@@ -26,7 +27,14 @@ class GroupAdmin extends BaseGroupAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('name', null, array('identifier'=>true, 'footable'=>array('attr'=>array('data_toggle'=>true))))
+            ->add('name', null, array('footable'=>array('attr'=>array('data_toggle'=>true))))
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'Show' => array('template' => 'SonataAdminBundle:CRUD:list__action_show.html.twig'),
+                    'Edit' => array('template' => 'SonataAdminBundle:CRUD:list__action_edit.html.twig'),
+                    'Delete' => array('template' => 'SonataAdminBundle:CRUD:list__action_delete.html.twig')),
+                'footable'=>array('attr'=>array('data_hide'=>'phone,tablet')),
+            ))
         ;
     }
 
@@ -51,7 +59,18 @@ class GroupAdmin extends BaseGroupAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null ,array('operator_options'=>array('expanded' => true)))
+            ->add('name', null ,array('operator_options'=>array('expanded' => false)))
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+            ->add('name')
+            ->add('roles')
         ;
     }
 }

@@ -162,10 +162,11 @@ list:
     label_updated_at: "Last Updated"
     label_name: Name
     label_roles: Roles
+    label__action: Actions
 
 show:
     label_id: ID
-    label_groups: "Group name:"
+    label_groups: "Group name"
     label_username: "Username"
     label_email: "Email"
     label_current_password: "Current password"
@@ -204,7 +205,7 @@ show:
 
 filter:
     label_id: ID
-    label_groups: "Group name:"
+    label_groups: "Group"
     label_username: "Username"
     label_email: "Email"
     label_current_password: "Current password"
@@ -270,5 +271,6 @@ rz_users_menu_users: System Users
 rz_users_menu_groups: System Groups
 
 breadcrumb:
-  link_user_list : "User"
+  link_user_list : User
   link_group_list: Group
+  link_user_history: History
