@@ -21,7 +21,7 @@
             <input class="span12" type="password" id="password" name="_password" required="required" />
             <div class="remember span12">
                 <input class='icheck-me' data-skin="square" data-color="aero" id="remember" type="checkbox" id="remember_me" name="_remember_me" value="on"/> <label> {{ 'security.login.remember_me'|trans }}</label>
-                <a class="forgot-password" href="{{ path('fos_user_resetting_request') }}">{{ 'forgotten_password'|trans({}, 'SonataUserBundle') }}</a>
+                <a class="forgot-password" href="{{ path('fos_user_resetting_request') }}">{{ 'forgotten_password'|trans({}, 'RzUserBundle') }}</a>
             </div>
             {{ block('action_buttons') }}
         </form>

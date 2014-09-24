@@ -55,6 +55,6 @@ class ChangePasswordFormType extends AbstractType
 
     public function getName()
     {
-        return 'rz_user_update_password';
+        return 'rz_user_change_password';
     }
 }
