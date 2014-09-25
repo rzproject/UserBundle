@@ -70,7 +70,7 @@ class PasswordRequirementsValidator extends ConstraintValidator
         }
 
         $requireSpecialCharacter =  $this->configManager->getRequirementRequireSpecialCharacter() ?: $constraint->requireSpecialCharacter;
-        if ($requireSpecialCharacter && !preg_match('/[^p{Ll}\p{Lu}\pL]/', $value)) {
+        if ($requireSpecialCharacter && !preg_match('/[^\da-zA-Z]/', $value)) {
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->missingSpecialCharacterMessage)->addViolation();
             } else {

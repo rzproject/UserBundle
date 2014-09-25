@@ -63,8 +63,14 @@ class PasswordStrengthValidator extends ConstraintValidator
         $minLength = $this->configManager->getStrengthMinLength() ?: $constraint->minLength;
 
         if ($passLength < $minLength) {
-            $this->context->buildViolation($constraint->message, array('{{ length }}' => $constraint->minLength));
 
+            if ($this->context instanceof ExecutionContextInterface) {
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{length}}', $minLength)
+                    ->addViolation();
+            } else {
+                $this->context->addViolation($constraint->message, array('{{length}}' => $minLength));
+            }
             return;
         }
 
@@ -122,7 +128,14 @@ class PasswordStrengthValidator extends ConstraintValidator
 
         $minStrength = $this->configManager->getStrengthMinStrength() ?: $constraint->minStrength;
         if ($passwordStrength < $minStrength) {
-            $this->context->buildViolation($constraint->message, array('{{ length }}' => $constraint->minLength));
+
+            if ($this->context instanceof ExecutionContextInterface) {
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{length}}', $minLength)
+                    ->addViolation();
+            } else {
+                $this->context->addViolation($constraint->message, array('{{length}}' => $minStrength));
+            }
         }
     }
 }

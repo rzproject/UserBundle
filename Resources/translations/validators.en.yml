@@ -1,0 +1,30 @@
+registration:
+    validation:
+      firstname_blank: Firstname is required.
+      firstname_length_short: Password is too short, minimum length of firstname is {{ limit }}.
+      firstname_length_long: Password is too long, maximum length of firstname is {{ limit }}.
+      lastname_blank: Lastname is required.
+      lastname_length_short: Password is too short, minimum length of lastname is {{ limit }}.
+      lastname_length_long: Password is too long, maximum length of lastname is {{ limit }}.
+      username_blank: Username is required.
+      username_length_short: Username is too short, minimum length of lastname is {{ limit }}.
+      username_length_long: Username is too long, maximum length of lastname is {{ limit }}.
+      email_blank: Email is required.
+      email_length_short: Email is too short, minimum length of lastname is {{ limit }}.
+      email_length_long: Email is too long, maximum length of lastname is {{ limit }}.
+      email_invalid: Email is invalid
+      email_unique: Email address already exist.
+      password_blank: Password is required.
+
+rz_user:
+  password_strength:
+    requirement:
+      message:
+        too_short: Your password must be at least {{length}} characters long.
+        missing_letters: Your password must include at least one letter.
+        require_case_diff: Your password must include both upper and lower case letters.
+        missing_numbers: Your password must include at least one number
+        missing_special_character: Your password must contain at least one special character.
+    strength:
+      message:
+        password_too_weak: Password is too week.

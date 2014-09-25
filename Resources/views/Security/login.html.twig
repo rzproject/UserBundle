@@ -5,7 +5,7 @@
 {% block rz_user_header %}{% endblock rz_user_header %}
 
 {% block fos_user_content %}
-<script src="{{ asset('bundles/rzuser/js/rz/login-form.js') }}" type="text/javascript"></script>
+{#<script src="{{ asset('bundles/rzuser/js/rz/login-form.js') }}" type="text/javascript"></script>#}
 <div class="row-fluid">
     <div class="span4 offset4">
         {% if error %}
@@ -21,7 +21,7 @@
             <input class="span12" type="password" id="password" name="_password" required="required" />
             <div class="remember span12">
                 <input class='icheck-me' data-skin="square" data-color="aero" id="remember" type="checkbox" id="remember_me" name="_remember_me" value="on"/> <label> {{ 'security.login.remember_me'|trans }}</label>
-                <a class="forgot-password" href="{{ path('fos_user_resetting_request') }}">{{ 'forgotten_password'|trans({}, 'RzUserBundle') }}</a>
+                <a class="forgot-password" href="{{ path('fos_user_resetting_request') }}">{{ 'security.login.forgotten_password'|trans({}, 'RzUserBundle') }}</a>
             </div>
             {{ block('action_buttons') }}
         </form>

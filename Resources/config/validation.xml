@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Rz\UserBundle\Model\User">
+
+        <property name="firstname">
+            <constraint name="NotBlank">
+                <option name="message">registration.validation.firstname_blank</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">3</option>
+                <option name="minMessage">registration.validation.firstname_length_short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">registration.validation.firstname_length_long</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="lastname">
+            <constraint name="NotBlank">
+                <option name="message">registration.validation.lastname_blank</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">3</option>
+                <option name="minMessage">registration.validation.lastname_length_short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">registration.validation.lastname_length_long</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="username">
+            <constraint name="NotBlank">
+                <option name="message">registration.validation.username_blank</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">8</option>
+                <option name="minMessage">registration.validation.username_length_short</option>
+                <option name="max">20</option>
+                <option name="maxMessage">registration.validation.username_length_long</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="email">
+            <constraint name="NotBlank">
+                <option name="message">registration.validation.email_blank</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">8</option>
+                <option name="minMessage">registration.validation.email_length_short</option>
+                <option name="max">50</option>
+                <option name="maxMessage">registration.validation.email_length_long</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">registration.validation.email_invalid</option>
+                <option name="groups">
+                    <value>Registration</value>
+                    <value>Profile</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="plainPassword">
+            <constraint name="Rz\UserBundle\Validator\Constraints\PasswordRequirements">
+                <option name="groups">
+                    <value>Default</value>
+                    <value>ChangePassword</value>
+                </option>
+            </constraint>
+
+            <constraint name="Rz\UserBundle\Validator\Constraints\PasswordStrength">
+                <option name="minStrength">1</option>
+                <option name="groups">
+                    <value>Default</value>
+                    <value>ChangePassword</value>
+                    <value>Registration</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+</constraint-mapping>

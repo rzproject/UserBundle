@@ -20,6 +20,7 @@ security:
         password: "Password"
         remember_me: Remember me
         submit: Login
+        forgotten_password: Forgot Password?
 
 # Profile
 profile:
@@ -54,6 +55,10 @@ registration:
 
             Regards,
             the Team.
+    validation:
+      firstname_blank: Firstname is required.
+      length_short: Password is too short
+
 
 # Password resetting
 resetting:

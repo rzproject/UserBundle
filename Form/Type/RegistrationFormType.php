@@ -28,22 +28,30 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('firstname', 'email', array_merge(array(
+                'label' => 'form.label_firstname',
+                'translation_domain' => 'RzUserBundle',
+            ), $this->mergeOptions))
+            ->add('lastname', 'email', array_merge(array(
+                'label' => 'form.label_lastname',
+                'translation_domain' => 'RzUserBundle',
+            ), $this->mergeOptions))
             ->add('username', null, array_merge(array(
-                'label' => 'form.username',
-                'translation_domain' => 'SonataUserBundle',
+                'label' => 'form.label_username',
+                'translation_domain' => 'RzUserBundle',
             ), $this->mergeOptions))
             ->add('email', 'email', array_merge(array(
-                'label' => 'form.email',
-                'translation_domain' => 'SonataUserBundle',
+                'label' => 'form.label_email',
+                'translation_domain' => 'RzUserBundle',
             ), $this->mergeOptions))
             ->add('plainPassword', 'repeated', array_merge(array(
                 'type' => 'password',
-                'options' => array('translation_domain' => 'SonataUserBundle'),
+                'options' => array('translation_domain' => 'RzUserBundle'),
                 'first_options' => array_merge(array(
-                    'label' => 'form.password',
+                    'label' => 'form.label_password',
                 ), $this->mergeOptions),
                 'second_options' => array_merge(array(
-                    'label' => 'form.password_confirmation',
+                    'label' => 'form.label_password_confirmation',
                 ), $this->mergeOptions),
                 'invalid_message' => 'fos_user.password.mismatch',
             ), $this->mergeOptions))
