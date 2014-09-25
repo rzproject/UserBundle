@@ -98,6 +98,7 @@
                 <option name="groups">
                     <value>Default</value>
                     <value>ChangePassword</value>
+                    <value>Registration</value>
                 </option>
             </constraint>
 

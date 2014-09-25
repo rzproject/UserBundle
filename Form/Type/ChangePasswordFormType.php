@@ -39,8 +39,8 @@ class ChangePasswordFormType extends AbstractType
         $builder->add('plainPassword', 'repeated', array(
             'type' => 'password',
             'options' => array('translation_domain' => 'RzUserBundle'),
-            'first_options' => array('label' => 'form.new_password', 'attr'=>array('class'=>'span12')),
-            'second_options' => array('label' => 'form.new_password_confirmation', 'attr'=>array('class'=>'span12')),
+            'first_options' => array('label' => 'form.label_new_password', 'attr'=>array('class'=>'span12')),
+            'second_options' => array('label' => 'form.label_new_password_confirmation', 'attr'=>array('class'=>'span12')),
             'invalid_message' => 'fos_user.password.mismatch',
         ));
     }

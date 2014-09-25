@@ -29,6 +29,7 @@ profile:
         email: Email
     edit:
         submit: Update
+        cancel: Update
     flash:
         updated: The profile has been updated
 
