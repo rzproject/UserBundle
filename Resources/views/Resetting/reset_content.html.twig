@@ -1,0 +1,32 @@
+{% trans_default_domain 'RzUserBundle' %}
+<div class="row-fluid">
+    <div class="span6 offset3">
+        <div class="sonata-user-reset-password">
+            <h1>{{ "title_user_resetting" | trans({}, 'RzUserBundle')}}</h1>
+            {% if invalid_username is defined %}
+                <div class="form-errors">
+                    <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
+                </div>
+            {% endif %}
+            <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="contact-form contact-form-register" novalidate>
+                {{ form_errors(form) }}
+                <p class="form_info">{{ 'form.label_new_password'|trans({}, 'RzUserBundle') }}</p>
+                {{ form_widget(form['new'].first) }}
+                <div class="form-errors">
+                    {{ form_errors(form['new'].first) }}
+                </div>
+
+                <p class="form_info">{{ 'form.label_new_password_confirmation'|trans({}, 'RzUserBundle') }}</p>
+                {{ form_widget(form['new'].second) }}
+                <div class="form-errors">
+                    {{ form_errors(form['new'].second) }}
+                </div>
+
+                {{ form_rest(form) }}
+                <div class="registration-submit">
+                    <input class="btn btn-rzcms-theme btn-register" type="submit" value="{{ 'resetting.reset.submit'|trans({}, 'RzUserBundle') }}" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

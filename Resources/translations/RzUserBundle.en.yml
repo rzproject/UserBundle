@@ -70,7 +70,7 @@ resetting:
         username: "Username or email address:"
         submit: Reset password
     reset:
-        submit: Change password
+        submit: Request Change Password
     flash:
         success: The password has been reset successfully
     email:
@@ -272,6 +272,7 @@ title_user_account: User Profile
 title_user_edit_profile: Edit
 title_user_edit_authentication: Update Password
 title_user_register: Registration
+title_user_resetting: Reset Password
 
 rz_users_menu_users: System Users
 rz_users_menu_groups: System Groups

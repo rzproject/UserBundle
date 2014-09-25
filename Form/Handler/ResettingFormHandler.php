@@ -1,15 +1,14 @@
 <?php
 
-
-
 namespace Rz\UserBundle\Form\Handler;
 
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Rz\UserBundle\Form\Model\ChangePassword;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ChangePasswordFormHandler
+class ResettingFormHandler
 {
     protected $request;
     protected $userManager;
@@ -27,12 +26,12 @@ class ChangePasswordFormHandler
      */
     public function getNewPassword()
     {
-        return $this->form->getData()->getPlainPassword();
+        return $this->form->getData()->getNew();
     }
 
     public function process(UserInterface $user)
     {
-        $this->form->setData($user);
+        $this->form->setData(new ChangePassword());
 
         if ('POST' === $this->request->getMethod()) {
             $this->form->bind($this->request);
@@ -50,6 +49,9 @@ class ChangePasswordFormHandler
     protected function onSuccess(UserInterface $user)
     {
         $user->setPlainPassword($this->getNewPassword());
+        $user->setConfirmationToken(null);
+        $user->setPasswordRequestedAt(null);
+        $user->setEnabled(true);
         $this->userManager->updateUser($user);
     }
 }

@@ -46,20 +46,27 @@ class RzUserExtension extends Extension
         $this->configureTranslationDomain($config, $container);
         $this->configureController($config, $container);
         $this->configureRzTemplates($config, $container);
-
         $this->configureShortcut($container);
 
-        $loader->load('form.xml');
+        $loader->load('profile.xml');
         $this->configureProfile($config, $container);
         $this->configureProfileBlockService($config, $container);
+
+        $loader->load('registration.xml');
         $this->configureRegistration($config, $container);
+
+        $loader->load('change_password.xml');
         $this->configureChangePassword($config, $container);
 
+        $loader->load('resetting.xml');
+        $this->configureResetting($config, $container);
+
         $loader->load('password_strength.xml');
-        $loader->load('validators.xml');
         $this->configurePasswordStrength($config, $container);
 
+        $loader->load('validators.xml');
         $loader->load('roles.xml');
+
         // add custom form widgets
         $container->setParameter('twig.form.resources', array_merge(
                                                           $container->getParameter('twig.form.resources'),
@@ -220,6 +227,17 @@ class RzUserExtension extends Extension
         $container->setAlias('rz.user.change_password.form.handler', $config['change_password']['form']['handler']);
 
     }
+
+    public function configureResetting(array $config, ContainerBuilder $container){
+
+        $container->setParameter('rz.user.resetting.form.type', $config['resetting']['form']['type']);
+        $container->setParameter('rz.user.resetting.form.name', $config['resetting']['form']['name']);
+        $container->setParameter('rz.user.resetting.form.validation_groups', $config['resetting']['form']['validation_groups']);
+
+        $container->setAlias('rz.user.resetting.form.handler', $config['resetting']['form']['handler']);
+
+    }
+
     public function configurePasswordStrength(array $config, ContainerBuilder $container) {
 
         if (!empty($config['password_security'])) {

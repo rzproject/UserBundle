@@ -36,7 +36,6 @@ class ProfileUpdatePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        die('here');
         $builder->add('plainPassword', 'repeated', array(
                       'attr'=>array('class'=>'span12'),
                       'type' => 'password',

@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
         $this->addRegistrationSection($node);
         $this->addTemplates($node);
         $this->addPasswordStrength($node);
+        $this->addResettingSection($node);
         return $treeBuilder;
     }
 
@@ -228,6 +229,31 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('validation_groups')
                                     ->prototype('scalar')->end()
                                     ->defaultValue(array('ChangePassword', 'Default'))
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+        private function addResettingSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('resetting')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->arrayNode('form')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('type')->defaultValue('rz_user_resetting')->end()
+                                ->scalarNode('handler')->defaultValue('rz.user.resetting.form.handler.default')->end()
+                                ->scalarNode('name')->defaultValue('rz_user_resetting_form')->end()
+                                ->arrayNode('validation_groups')
+                                    ->prototype('scalar')->end()
+                                    ->defaultValue(array('Resetting'))
                                 ->end()
                             ->end()
                         ->end()
