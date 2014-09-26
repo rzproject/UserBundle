@@ -31,7 +31,23 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
         $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('invalid_username' => $username));
+            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'invalid_username', 'username' => $username));
+        }
+
+        if(!$user->isEnabled()) {
+            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_disabled', 'username' => $username));
+        }
+
+        if($user->isLocked()) {
+            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_locked', 'username' => $username));
+        }
+
+        if($user->isExpired() || ($user->getExpiresAt() && $user->getExpiresAt()->diff(new \DateTime()) >= 0)) {
+            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_expired', 'username' => $username));
+        }
+
+        if($user->isCredentialsExpired() || ($user->getCredentialsExpireAt() && $user->getCredentialsExpireAt()->diff(new \DateTime()) >= 0)) {
+            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_credentials_expired', 'username' => $username));
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
@@ -91,10 +107,18 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
         $process = $formHandler->process($user);
 
         if ($process) {
-            $this->setFlash('rz_user_success', 'resetting.flash.success');
-            $response = new RedirectResponse($this->getRedirectionUrl($user));
-            $this->authenticateUser($user, $response);
+            if($user->isEnabled() &&
+               !$user->isLocked() &&
+               !($user->isCredentialsExpired() || ($user->getCredentialsExpireAt() && $user->getCredentialsExpireAt()->diff(new \DateTime()) >= 0))  &&
+               !($user->isExpired() || ($user->getExpiresAt() && $user->getExpiresAt()->diff(new \DateTime()) >= 0)) ) {
 
+                $this->setFlash('rz_user_success', 'resetting.flash.success');
+                $response = new RedirectResponse($this->getRedirectionUrl($user));
+                $this->authenticateUser($user, $response);
+            } else {
+                $response = new RedirectResponse($this->container->get('router')->generate('fos_user_security_login'));
+                $this->setFlash('rz_user_error', 'account.flash.error');
+            }
             return $response;
         }
 

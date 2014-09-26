@@ -27,12 +27,30 @@ class InteractiveLoginListener
     {
         $user = $event->getAuthenticationToken()->getUser();
         if ($user instanceof UserInterface) {
-            if($expiryDays = $this->configManager->getDaysToExpire() && $route = $this->configManager->getRedirectRoute() && $user->getPasswordChangedAt()) {
-                    $daysLastChange = $user->getPasswordChangedAt()->diff(new \DateTime());
-                    if ($daysLastChange->format('%a') >  (int) $expiryDays ) {
-                        $this->session->set('_rz_user.password_expire.'.$user->getId(), 'password_expire');
-                    }
+
+            if($user->getExpiresAt()) {
+                $daysToExpire = $user->getExpiresAt()->diff(new \DateTime());
+                if ($daysToExpire->format('%a') >=  0 ) {
+                    var_dump($daysToExpire);
+                    die();
+                    $this->session->set('_rz_user.account_expired.'.$user->getId(), 'account_expired');
                 }
+            }
+
+            if($user->getCredentialsExpireAt()) {
+                $daysToExpire = $user->getCredentialsExpireAt()->diff(new \DateTime());
+                if ($daysToExpire->format('%a') >=  0 ) {
+                    $this->session->set('_rz_user.credentials_expired.'.$user->getId(), 'credentials_expired');
+                }
+            }
+
+            //password expire
+            if($expiryDays = $this->configManager->getDaysToExpire() && $route = $this->configManager->getRedirectRoute() && $user->getPasswordChangedAt()) {
+                $daysLastChange = $user->getPasswordChangedAt()->diff(new \DateTime());
+                if ($daysLastChange->format('%a') >  (int) $expiryDays ) {
+                    $this->session->set('_rz_user.password_expire.'.$user->getId(), 'password_expire');
+                }
+            }
         }
     }
 }

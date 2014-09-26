@@ -33,15 +33,15 @@ class ForcePasswordUpdateListener
 
     public function onCheckPasswordExpired(GetResponseEvent $event)
     {
-        if ( ($this->securityContext->getToken() ) && ( $this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) ) {
+        if (($this->securityContext->getToken() ) && ( $this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) ) {
             $user = $this->securityContext->getToken()->getUser();
+
             if($event->getRequest()->attributes->get('page') !== null && $event->getRequest()->attributes->get('page') instanceof \Sonata\PageBundle\Model\SnapshotPageProxy) {
                 $page =$event->getRequest()->attributes->get('page')->getPage();
                 if($page instanceof \Sonata\PageBundle\Model\PageInterface && $page->getName() != 'fos_user_change_password' && $this->session->get('_rz_user.password_expire.'.$user->getId()) === 'password_expire') {
                     $event->setResponse($this->getRedirectResponse());
                 }
             } elseif ($this->session->get('_rz_user.password_expire.'.$user->getId()) === 'password_expire'  && $user instanceof UserInterface && $event->getRequest()->get('_route') != null && $event->getRequest()->get('_route') !== 'fos_user_change_password') {
-                //var_dump($event->getRequest()->get('_route'), 'route');
                 $event->setResponse($this->getRedirectResponse());
             }
         }

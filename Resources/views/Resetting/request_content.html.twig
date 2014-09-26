@@ -3,9 +3,10 @@
     <div class="span6 offset3">
         <div class="sonata-user-reset-password">
         <h1>{{ "title_user_resetting" | trans({}, 'RzUserBundle')}}</h1>
-        {% if invalid_username is defined %}
+        {% if account_error is defined %}
             <div class="form-errors">
-                <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
+                {% set msg = 'resetting.request.'~account_error %}
+                <p>{{ msg |trans({'%username%': username}) }}</p>
             </div>
         {% endif %}
         <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="contact-form contact-form-register" >

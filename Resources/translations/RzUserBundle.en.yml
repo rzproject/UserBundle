@@ -72,6 +72,10 @@ resetting:
     check_email: An email has been sent to %email%. It contains a link you must click to reset your password.
     request:
         invalid_username: The username or email address "%username%" does not exist.
+        account_disabled: Account for "%username%" does is disabled.
+        account_locked: Account for "%username%" is locked.
+        account_expired: Account for "%username%" is expired.
+        account_credentials_expired: Credential of account for "%username%" is expired.
         username: "Username or email address:"
         submit: Reset password
     reset:
