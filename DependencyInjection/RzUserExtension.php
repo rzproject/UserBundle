@@ -64,6 +64,14 @@ class RzUserExtension extends Extension
         $loader->load('password_strength.xml');
         $this->configurePasswordStrength($config, $container);
 
+        if ($config['password_expire']['enabled']) {
+            $loader->load('password_expire.xml');
+            $this->configurePasswordExpire($config, $container);
+
+            //load listeners
+            $loader->load('listener.xml');
+        }
+
         $loader->load('validators.xml');
         $loader->load('roles.xml');
 
@@ -178,8 +186,13 @@ class RzUserExtension extends Extension
         $container->setParameter('rz.user.profile.form.type', $config['profile']['form']['type']);
         $container->setParameter('rz.user.profile.form.name', $config['profile']['form']['name']);
         $container->setParameter('rz.user.profile.form.validation_groups', $config['profile']['form']['validation_groups']);
-
         $container->setAlias('rz.user.profile.form.handler', $config['profile']['form']['handler']);
+
+        // update password
+        $container->setParameter('rz.user.profile.update_password.form.type', $config['profile']['update_password']['form']['type']);
+        $container->setParameter('rz.user.profile.update_password.form.name', $config['profile']['update_password']['form']['name']);
+        $container->setParameter('rz.user.profile.update_password.form.validation_groups', $config['profile']['update_password']['form']['validation_groups']);
+        $container->setAlias('rz.user.profile.update_password.form.handler', $config['profile']['update_password']['form']['handler']);
     }
 
     /**
@@ -253,5 +266,20 @@ class RzUserExtension extends Extension
 
         }
 
+    }
+
+    public function configurePasswordExpire(array $config, ContainerBuilder $container) {
+
+        $container->setParameter('rz.user.password_expire.force_update_password_listener.class', $config['password_expire']['settings']['force_password_change_listener_class']);
+        $container->setParameter('rz.user.password_expire.login_listener.class', $config['password_expire']['settings']['login_listener_class']);
+
+        if (!empty($config['password_expire'])) {
+            $definition = $container->getDefinition('rz_user.password_expire.config.manager');
+
+            if(array_key_exists('settings', $config['password_expire'])) {
+                $definition->addMethodCall('setConfig', array('password_expire', $config['password_expire']['settings']));
+            }
+
+        }
     }
 }

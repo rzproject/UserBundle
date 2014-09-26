@@ -23,7 +23,7 @@ class ChangePasswordSonataUserController extends ContainerAware
         $process = $formHandler->process($user);
         if ($process) {
             $this->setFlash('rz_user_success', 'change_password.flash.success');
-
+            $this->container->get('session')->remove('_rz_user.password_expire.'.$user->getId());
             return new RedirectResponse($this->getRedirectionUrl($user));
         }
 
@@ -35,7 +35,7 @@ class ChangePasswordSonataUserController extends ContainerAware
      */
     protected function getRedirectionUrl(UserInterface $user)
     {
-        return $this->container->get('router')->generate('rz_user_profile_show');
+        return $this->container->get('router')->generate('fos_user_profile_show');
     }
 
     /**

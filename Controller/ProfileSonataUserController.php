@@ -47,14 +47,14 @@ class ProfileSonataUserController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        $form = $this->container->get('rz.user.change_password.form');
+        $form = $this->container->get('rz.user.profile.update_password.form');
 
-        $formHandler = $this->container->get('rz.user.change_password.form.handler');
+        $formHandler = $this->container->get('rz.user.profile.update_password.form.handler');
 
         $process = $formHandler->process($user);
         if ($process) {
             $this->setFlash('rz_user_success', 'profile.flash.updated');
-
+            $this->container->get('session')->remove('_rz_user.password_expire.'.$user->getId());
             return new RedirectResponse($this->generateUrl('fos_user_profile_show'));
         }
 

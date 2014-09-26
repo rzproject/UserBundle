@@ -21,7 +21,7 @@ class RegistrationSonataUserController extends ContainerAware
 
         if ($user instanceof UserInterface) {
             $this->container->get('session')->getFlashBag()->set('rz_user_error', 'sonata_user_already_authenticated');
-            $url = $this->container->get('router')->generate('rz_user_profile_show');
+            $url = $this->container->get('router')->generate('fos_user_profile_show');
 
             return new RedirectResponse($url);
         }
@@ -37,7 +37,7 @@ class RegistrationSonataUserController extends ContainerAware
             $authUser = false;
             if ($confirmationEnabled) {
                 $this->container->get('session')->set('fos_user_send_confirmation_email/email', $user->getEmail());
-                $route = 'rz_user_registration_check_email';
+                $route = 'fos_user_registration_check_email';
             } else {
                 $authUser = true;
                 $route = 'rz_user_registration_confirmed';
@@ -89,7 +89,7 @@ class RegistrationSonataUserController extends ContainerAware
         $user->setLastLogin(new \DateTime());
 
         $this->container->get('fos_user.user_manager')->updateUser($user);
-        if ($redirectRoute = $this->container->getParameter('rz.user.register.confirm.redirect_route')) {
+        if ($redirectRoute = $this->container->getParameter('fos_user.register.confirm.redirect_route')) {
             $response = new RedirectResponse($this->container->get('router')->generate($redirectRoute, $this->container->getParameter('rz.user.register.confirm.redirect_route_params')));
         } else {
             $response = new RedirectResponse($this->container->get('router')->generate('rz_user_registration_confirmed'));

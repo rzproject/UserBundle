@@ -39,6 +39,11 @@ change_password:
     flash:
         success: The password has been changed
 
+
+password_expire:
+    flash:
+      error: "Your password hash expired. Please change it"
+
 # Registration
 registration:
     check_email: An email has been sent to %email%. It contains an activation link you must click to activate your account.
@@ -273,6 +278,7 @@ title_user_edit_profile: Edit
 title_user_edit_authentication: Update Password
 title_user_register: Registration
 title_user_resetting: Reset Password
+title_user_change_password: Change Password
 
 rz_users_menu_users: System Users
 rz_users_menu_groups: System Groups

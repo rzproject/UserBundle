@@ -1,6 +1,6 @@
 <?php
 
-namespace Rz\UserBundle\Model;
+namespace Rz\UserBundle\Entity;
 
 use Sonata\UserBundle\Entity\BaseGroup;
 

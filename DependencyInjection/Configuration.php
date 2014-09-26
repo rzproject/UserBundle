@@ -35,6 +35,7 @@ class Configuration implements ConfigurationInterface
         $this->addTemplates($node);
         $this->addPasswordStrength($node);
         $this->addResettingSection($node);
+        $this->addPasswordExpireSection($node);
         return $treeBuilder;
     }
 
@@ -113,6 +114,23 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('validation_groups')
                                     ->prototype('scalar')->end()
                                     ->defaultValue(array('Profile', 'Default'))
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('update_password')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('form')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('type')->defaultValue('rz_user_profile_update_password')->end()
+                                        ->scalarNode('handler')->defaultValue('rz.user.profile.update_password.form.handler.default')->end()
+                                        ->scalarNode('name')->defaultValue('rz_user_profile_update_password_form')->end()
+                                        ->arrayNode('validation_groups')
+                                            ->prototype('scalar')->end()
+                                            ->defaultValue(array('UpdatePassword'))
+                                        ->end()
+                                    ->end()
                                 ->end()
                             ->end()
                         ->end()
@@ -237,7 +255,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-        private function addResettingSection(ArrayNodeDefinition $node)
+    private function addResettingSection(ArrayNodeDefinition $node)
     {
         $node
             ->children()
@@ -261,28 +279,27 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
     }
-
-
-    /**
-     * Returns default values for profile menu (to avoid BC Break)
-     *
-     * @return array
-     */
-    protected function getProfileMenuDefaultValues()
+    private function addPasswordExpireSection(ArrayNodeDefinition $node)
     {
-        return array(
-            array(
-                'route'  => 'sonata_user_profile_edit',
-                'label'  => 'link_edit_profile',
-                'domain' => 'SonataUserBundle',
-                'route_parameters' => array()
-            ),
-            array(
-                'route'  => 'sonata_user_profile_edit_authentication',
-                'label'  => 'link_edit_authentication',
-                'domain' => 'SonataUserBundle',
-                'route_parameters' => array()
-            ),
-        );
+        $node
+            ->children()
+                ->arrayNode('password_expire')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('enabled')->defaultValue(true)->end()
+                        ->arrayNode('settings')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('login_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\InteractiveLoginListener')->end()
+                                ->scalarNode('force_password_change_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\ForcePasswordUpdateListener')->end()
+                                ->scalarNode('days_to_expire')->defaultValue(90)->end()
+                                ->scalarNode('redirect_route')->defaultValue('fos_user_change_password')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
+
 }
