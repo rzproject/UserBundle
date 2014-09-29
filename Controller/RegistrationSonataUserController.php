@@ -40,7 +40,7 @@ class RegistrationSonataUserController extends ContainerAware
                 $route = 'fos_user_registration_check_email';
             } else {
                 $authUser = true;
-                $route = 'rz_user_registration_confirmed';
+                $route = 'fos_user_registration_confirmed';
             }
 
             $this->setFlash('rz_user_success', 'registration.flash.user_created');
@@ -92,7 +92,7 @@ class RegistrationSonataUserController extends ContainerAware
         if ($redirectRoute = $this->container->getParameter('fos_user.register.confirm.redirect_route')) {
             $response = new RedirectResponse($this->container->get('router')->generate($redirectRoute, $this->container->getParameter('rz.user.register.confirm.redirect_route_params')));
         } else {
-            $response = new RedirectResponse($this->container->get('router')->generate('rz_user_registration_confirmed'));
+            $response = new RedirectResponse($this->container->get('router')->generate('fos_user_registration_confirmed'));
         }
 
         $this->authenticateUser($user, $response);
