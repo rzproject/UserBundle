@@ -9,7 +9,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ChangePasswordFormHandler
+class ProfileUpdatePasswordFormHandler
 {
     protected $request;
     protected $userManager;

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- profile form -->
+        <service id="rz.user.profile.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%rz.user.profile.form.name%</argument>
+            <argument>%rz.user.profile.form.type%</argument>
+            <argument>null</argument>
+            <argument type="collection">
+                <argument key="validation_groups">%rz.user.profile.form.validation_groups%</argument>
+                <argument key="translation_domain">RzUserBundle</argument>
+            </argument>
+        </service>
+
+        <service id="rz.user.profile.form.type" class="Rz\UserBundle\Form\Type\ProfileType">
+            <argument>%fos_user.model.user.class%</argument>
+            <tag name="form.type" alias="rz_user_profile" />
+        </service>
+
+        <service id="rz.user.profile.form.handler.default" class="Rz\UserBundle\Form\Handler\ProfileFormHandler" scope="request" public="false">
+            <argument type="service" id="rz.user.profile.form" />
+            <argument type="service" id="request" />
+            <argument type="service" id="fos_user.user_manager" />
+        </service>
+
+        <!-- registration form -->
+        <service id="rz.user.registration.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%rz.user.registration.form.name%</argument>
+            <argument>%rz.user.registration.form.type%</argument>
+            <argument>null</argument>
+            <argument type="collection">
+                <argument key="validation_groups">%rz.user.registration.form.validation_groups%</argument>
+            </argument>
+        </service>
+
+        <service id="rz.user.registration.form.type" class="Rz\UserBundle\Form\Type\RegistrationFormType">
+            <tag name="form.type" alias="rz_user_registration" />
+            <argument>%fos_user.model.user.class%</argument>
+            <argument>%rz.user.registration.form.options%</argument>
+        </service>
+
+        <service id="rz.user.registration.form.handler.default" class="Rz\UserBundle\Form\Handler\RegistrationFormHandler" scope="request" public="false">
+            <argument type="service" id="rz.user.registration.form" />
+            <argument type="service" id="request" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="fos_user.mailer" />
+            <argument type="service" id="fos_user.util.token_generator" />
+        </service>
+
+        <service id="rz.user.change_password.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%rz.user.change_password.form.name%</argument>
+            <argument>%rz.user.change_password.form.type%</argument>
+            <argument>null</argument>
+            <argument type="collection">
+                <argument key="validation_groups">%rz.user.change_password.form.validation_groups%</argument>
+                <argument key="translation_domain">RzUserBundle</argument>
+            </argument>
+        </service>
+
+        <service id="rz.user.change_password.form.type" class="Rz\UserBundle\Form\Type\ChangePasswordFormType">
+            <tag name="form.type" alias="rz_user_change_password" />
+            <argument>%fos_user.model.user.class%</argument>
+        </service>
+
+        <service id="rz.user.change_password.form.handler.default" class="Rz\UserBundle\Form\Handler\ChangePasswordFormHandler" scope="request" public="false">
+            <argument type="service" id="rz.user.change_password.form" />
+            <argument type="service" id="request" />
+            <argument type="service" id="fos_user.user_manager" />
+        </service>
+    </services>
+
+</container>
