@@ -31,8 +31,6 @@ class InteractiveLoginListener
             if($user->getExpiresAt()) {
                 $daysToExpire = $user->getExpiresAt()->diff(new \DateTime());
                 if ($daysToExpire->format('%a') >=  0 ) {
-                    var_dump($daysToExpire);
-                    die();
                     $this->session->set('_rz_user.account_expired.'.$user->getId(), 'account_expired');
                 }
             }
