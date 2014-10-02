@@ -54,7 +54,7 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
             return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:passwordAlreadyRequested.html.twig');
         }
 
-        if (null === $user->getConfirmationToken()) {
+        if (null === $user->getConfirmationToken() || '' == $user->getConfirmationToken()) {
             /** @var $tokenGenerator \FOS\UserBundle\Util\TokenGeneratorInterface */
             $tokenGenerator = $this->container->get('fos_user.util.token_generator');
             $user->setConfirmationToken($tokenGenerator->generateToken());
