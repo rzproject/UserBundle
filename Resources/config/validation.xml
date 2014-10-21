@@ -122,7 +122,6 @@
             <constraint name="NotBlank">
                 <option name="message">rz_user.validation.password_blank</option>
                 <option name="groups">
-                    <value>Default</value>
                     <value>ChangePassword</value>
                     <value>Registration</value>
                     <value>Resetting</value>
@@ -131,7 +130,6 @@
             </constraint>
             <constraint name="Rz\UserBundle\Validator\Constraints\PasswordRequirements">
                 <option name="groups">
-                    <value>Default</value>
                     <value>ChangePassword</value>
                     <value>Registration</value>
                     <value>Resetting</value>
@@ -142,7 +140,6 @@
             <constraint name="Rz\UserBundle\Validator\Constraints\PasswordStrength">
                 <option name="minStrength">1</option>
                 <option name="groups">
-                    <value>Default</value>
                     <value>ChangePassword</value>
                     <value>UpdatePassword</value>
                     <value>Registration</value>
