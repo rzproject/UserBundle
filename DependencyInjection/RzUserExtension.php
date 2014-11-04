@@ -275,11 +275,12 @@ class RzUserExtension extends Extension
 
         if (!empty($config['password_expire'])) {
             $definition = $container->getDefinition('rz_user.password_expire.config.manager');
-
-            if(array_key_exists('settings', $config['password_expire'])) {
+            if($config['password_expire']['enabled'] && array_key_exists('settings', $config['password_expire'])) {
+                $definition->addMethodCall('setEnabled', array(true));
                 $definition->addMethodCall('setConfig', array('password_expire', $config['password_expire']['settings']));
+            } else {
+                $definition->addMethodCall('setEnabled', array(false));
             }
-
         }
     }
 }

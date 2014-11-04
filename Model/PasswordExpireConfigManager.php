@@ -11,6 +11,7 @@ class PasswordExpireConfigManager implements PasswordExpireConfigManagerInterfac
 {
     /** @var array */
     protected $configs;
+    protected $enabled;
 
     /**
      * Creates a CKEditor config manager.
@@ -20,6 +21,7 @@ class PasswordExpireConfigManager implements PasswordExpireConfigManagerInterfac
     public function __construct(array $configs = array())
     {
         $this->setConfigs($configs);
+        $this->enabled = false;
     }
 
     /**
@@ -111,5 +113,29 @@ class PasswordExpireConfigManager implements PasswordExpireConfigManagerInterfac
     public function getRedirectRoute()
     {
         return isset($this->configs['password_expire']['redirect_route']) ? $this->configs['password_expire']['redirect_route'] : null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isEnabled()
+    {
+        return $this->getEnabled();
+    }
+
+    /**
+     * @param mixed $enabled
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
     }
 }
