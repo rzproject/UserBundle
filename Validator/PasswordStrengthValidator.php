@@ -47,6 +47,7 @@ class PasswordStrengthValidator extends ConstraintValidator
      */
     public function validate($password, Constraint $constraint)
     {
+
         if (null === $password || '' === $password) {
             return;
         }

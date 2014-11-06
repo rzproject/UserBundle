@@ -12,6 +12,10 @@ class PasswordStrength extends Constraint
     public $message = 'rz_user.password_strength.strength.message.password_too_weak';//'password_too_weak';
     public $minLength = 6;
     public $minStrength = 1;
+    public $requireLetters = true;
+    public $requireCaseDiff = false;
+    public $requireNumbers = false;
+    public $requireSpecialCharacter = false;
 
     /**
      * {@inheritDoc}
