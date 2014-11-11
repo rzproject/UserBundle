@@ -20,6 +20,7 @@ security:
         password: "Password"
         remember_me: Remember me
         submit: Login
+        forgotten_password: Forgot Password?
 
 # Profile
 profile:
@@ -28,6 +29,7 @@ profile:
         email: Email
     edit:
         submit: Update
+        cancel: Cancel
     flash:
         updated: The profile has been updated
 
@@ -36,6 +38,11 @@ change_password:
     submit: Change password
     flash:
         success: The password has been changed
+
+
+password_expire:
+    flash:
+      error: "Your password hash expired. Please change it"
 
 # Registration
 registration:
@@ -54,6 +61,10 @@ registration:
 
             Regards,
             the Team.
+    validation:
+      firstname_blank: Firstname is required.
+      length_short: Password is too short
+
 
 # Password resetting
 resetting:
@@ -61,10 +72,14 @@ resetting:
     check_email: An email has been sent to %email%. It contains a link you must click to reset your password.
     request:
         invalid_username: The username or email address "%username%" does not exist.
+        account_disabled: Account for "%username%" does is disabled.
+        account_locked: Account for "%username%" is locked.
+        account_expired: Account for "%username%" is expired.
+        account_credentials_expired: Credential of account for "%username%" is expired.
         username: "Username or email address:"
         submit: Reset password
     reset:
-        submit: Change password
+        submit: Request Change Password
     flash:
         success: The password has been reset successfully
     email:
@@ -86,6 +101,8 @@ layout:
 
 # Form field labels
 form:
+    label_name: Name
+    label_roles: Roles
     label_id: ID
     label_groups: "Group name:"
     label_username: "Username"
@@ -158,10 +175,13 @@ list:
     label_token: "Token"
     label_created_at: "Created Date"
     label_updated_at: "Last Updated"
+    label_name: Name
+    label_roles: Roles
+    label__action: Actions
 
 show:
     label_id: ID
-    label_groups: "Group name:"
+    label_groups: "Group name"
     label_username: "Username"
     label_email: "Email"
     label_current_password: "Current password"
@@ -195,10 +215,12 @@ show:
     label_token: "Token"
     label_created_at: "Created Date"
     label_updated_at: "Last Updated"
+    label_name: Name
+    label_roles: Roles
 
 filter:
     label_id: ID
-    label_groups: "Group name:"
+    label_groups: "Group"
     label_username: "Username"
     label_email: "Email"
     label_current_password: "Current password"
@@ -232,6 +254,8 @@ filter:
     label_token: "Token"
     label_created_at: "Created Date"
     label_updated_at: "Last Updated"
+    label_name: Name
+    label_roles: Roles
 
 
 link_edit_profile: 'Edit Profile'
@@ -257,8 +281,14 @@ title_user_account: User Profile
 title_user_edit_profile: Edit
 title_user_edit_authentication: Update Password
 title_user_register: Registration
+title_user_resetting: Reset Password
+title_user_change_password: Change Password
 
 rz_users_menu_users: System Users
 rz_users_menu_groups: System Groups
+rz_profile_title: My Dashboard
 
-breadcrumb.link_user_list : "User"
+breadcrumb:
+  link_user_list : User
+  link_group_list: Group
+  link_user_history: History

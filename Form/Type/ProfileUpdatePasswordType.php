@@ -16,6 +16,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Symfony\Component\Security\Core\Validator\Constraint\UserPassword as OldUserPassword;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+
 class ProfileUpdatePasswordType extends AbstractType
 {
     private $class;
@@ -33,17 +36,27 @@ class ProfileUpdatePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if (class_exists('Symfony\Component\Security\Core\Validator\Constraints\UserPassword')) {
+            $constraint = new UserPassword();
+        } else {
+            // Symfony 2.1 support with the old constraint class
+            $constraint = new OldUserPassword();
+        }
+
+        $builder->add('current_password', 'password', array(
+            'label' => 'form.current_password',
+            'translation_domain' => 'RzUserBundle',
+            'mapped' => false,
+            'constraints' => $constraint,
+            'attr'=>array('class'=>'span12')
+        ));
         $builder->add('plainPassword', 'repeated', array(
-                      'attr'=>array('class'=>'span12'),
-                      'type' => 'password',
-                      'options' => array('translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')),
-                      'first_options' => array('label' => 'form.password_new'),
-                      'second_options' => array('label' => 'form.password_confirmation'),
-                      'invalid_message' => 'fos_user.password.mismatch',
-                      ))
-                ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'RzUserBundle', 'attr'=>array("readonly"=>"readonly", 'class'=>'span12')))
-                ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'RzUserBundle', 'attr'=>array("readonly"=>"readonly", 'class'=>'span12')))
-        ;
+            'type' => 'password',
+            'options' => array('translation_domain' => 'RzUserBundle'),
+            'first_options' => array('label' => 'form.label_new_password', 'attr'=>array('class'=>'span12')),
+            'second_options' => array('label' => 'form.label_new_password_confirmation', 'attr'=>array('class'=>'span12')),
+            'invalid_message' => 'fos_user.password.mismatch',
+        ));
     }
 
     /**
@@ -52,7 +65,8 @@ class ProfileUpdatePasswordType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->class
+            'data_class' => $this->class,
+            'intention'  => 'update_password',
         ));
     }
 
@@ -61,6 +75,6 @@ class ProfileUpdatePasswordType extends AbstractType
      */
     public function getName()
     {
-        return 'rz_user_update_password';
+        return 'rz_user_profile_update_password';
     }
 }

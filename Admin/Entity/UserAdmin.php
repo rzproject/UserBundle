@@ -68,13 +68,20 @@ class UserAdmin extends BaseUserAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('username', null, array('footable'=>array('attr'=>array('data_toggle'=>true))))
+            ->add('username', null, array('footable'=>array('attr'=>array('data_toggle'=>true))))
             ->add('email', null, array('footable'=>array('attr'=>array('data_hide'=>'phone'))))
             //->add('groups', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('enabled', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('locked', null, array('editable' => true, 'footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('createdAt', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
             ->add('updatedAt', null, array('footable'=>array('attr'=>array('data_hide'=>'phone,tablet'))))
+            ->add('_action', 'actions', array(
+                    'actions' => array(
+                        'Show' => array('template' => 'SonataAdminBundle:CRUD:list__action_show.html.twig'),
+                        'Edit' => array('template' => 'SonataAdminBundle:CRUD:list__action_edit.html.twig'),
+                        'Delete' => array('template' => 'SonataAdminBundle:CRUD:list__action_delete.html.twig')),
+                    'footable'=>array('attr'=>array('data_hide'=>'phone,tablet')),
+            ))
         ;
 
 //        if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
@@ -135,7 +142,7 @@ class UserAdmin extends BaseUserAdmin
             ->end()
         ;
 
-        if (!$this->getSubject()->hasRole('ROLE_SUPER_ADMIN')) {
+        if ($this->getSubject() && !$this->getSubject()->hasRole('ROLE_SUPER_ADMIN')) {
             $formMapper
                 ->with('Management')
                 ->add('roles', 'sonata_security_roles', array(

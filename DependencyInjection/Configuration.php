@@ -31,8 +31,11 @@ class Configuration implements ConfigurationInterface
         $node = $treeBuilder->root('rz_user');
         $this->addBundleSettings($node);
         $this->addChangePasswordSection($node);
-        //$this->addAdminSettings($node);
+        $this->addRegistrationSection($node);
         $this->addTemplates($node);
+        $this->addPasswordStrength($node);
+        $this->addResettingSection($node);
+        $this->addPasswordExpireSection($node);
         return $treeBuilder;
     }
 
@@ -49,30 +52,6 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
-                ->booleanNode('security_acl')->defaultValue(false)->end()
-                ->arrayNode('table')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('user_group')->defaultValue('fos_user_user_group')->end()
-                    ->end()
-                ->end()
-                ->scalarNode('impersonating_route')->end()
-                ->arrayNode('impersonating')
-                    ->children()
-                        ->scalarNode('route')->defaultValue(false)->end()
-                        ->arrayNode('parameters')
-                            ->useAttributeAsKey('id')
-                            ->prototype('scalar')->end()
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('google_authenticator')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('server')->cannotBeEmpty()->end()
-                        ->scalarNode('enabled')->defaultValue(false)->end()
-                    ->end()
-                ->end()
                 ->scalarNode('manager_type')
                     ->defaultValue('orm')
                     ->validate()
@@ -98,11 +77,7 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('templates')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('edit')->defaultValue('RzUserBundle:Admin:CRUD/edit.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('history_revision')->defaultValue('RzAdminBundle:CRUD:history_revision.html.twig')->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
@@ -118,11 +93,6 @@ class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('edit')->defaultValue('SonataAdminBundle:CRUD:edit.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('history_revision')->defaultValue('SonataAdminBundle:CRUD:history_revision.html.twig')->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -138,11 +108,29 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('form')
                             ->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('type')->defaultValue('sonata_user_profile')->end()
-                                ->scalarNode('name')->defaultValue('sonata_user_profile_form')->cannotBeEmpty()->end()
+                                ->scalarNode('type')->defaultValue('rz_user_profile')->end()
+                                ->scalarNode('handler')->defaultValue('rz.user.profile.form.handler.default')->end()
+                                ->scalarNode('name')->defaultValue('rz_user_profile_form')->cannotBeEmpty()->end()
                                 ->arrayNode('validation_groups')
                                     ->prototype('scalar')->end()
                                     ->defaultValue(array('Profile', 'Default'))
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('update_password')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('form')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('type')->defaultValue('rz_user_profile_update_password')->end()
+                                        ->scalarNode('handler')->defaultValue('rz.user.profile.update_password.form.handler.default')->end()
+                                        ->scalarNode('name')->defaultValue('rz_user_profile_update_password_form')->end()
+                                        ->arrayNode('validation_groups')
+                                            ->prototype('scalar')->end()
+                                            ->defaultValue(array('UpdatePassword'))
+                                        ->end()
+                                    ->end()
                                 ->end()
                             ->end()
                         ->end()
@@ -152,23 +140,38 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('class')->defaultValue('Rz\\UserBundle\\Block\\ProfileMenuBlockService')->end()
                             ->end()
                         ->end()
-                        ->arrayNode('update_password')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('type')->defaultValue('sonata_user_update_password')->end()
-                                ->scalarNode('name')->defaultValue('sonata_user_update_password_form')->cannotBeEmpty()->end()
-                                ->arrayNode('validation_groups')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(array('Profile', 'Default'))
-                                ->end()
-                            ->end()
-                        ->end()
-
                     ->end()
                 ->end()
             ->end();
     }
-        /**
+
+
+    private function addRegistrationSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('registration')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->arrayNode('form')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('type')->defaultValue('rz_user_registration')->end()
+                                ->scalarNode('handler')->defaultValue('rz.user.registration.form.handler.default')->end()
+                                ->scalarNode('name')->defaultValue('rz_user_registration_form')->end()
+                                ->arrayNode('validation_groups')
+                                    ->prototype('scalar')->end()
+                                    ->defaultValue(array('Registration', 'Default'))
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    /**
      * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node
      *
      * @return void
@@ -184,6 +187,62 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('layout')->defaultValue('RzUserBundle::layout.html.twig')->end()
                             ->scalarNode('login')->defaultValue('RzUserBundle:Security:login.html.twig')->end()
+                            ->scalarNode('admin_login')->defaultValue('RzUserBundle:Admin:Security/login.html.twig')->end()
+                            ->scalarNode('resetting')->defaultValue('RzUserBundle:Resetting:reset.html.twig')->end()
+                            ->scalarNode('resetting_content')->defaultValue('RzUserBundle:Resetting:reset_content.html.twig')->end()
+                            ->scalarNode('resetting_request')->defaultValue('RzUserBundle:Resetting:request.html.twig')->end()
+                            ->scalarNode('resetting_request_content')->defaultValue('RzUserBundle:Resetting:request_content.html.twig')->end()
+                            ->scalarNode('resetting_password_already_requested')->defaultValue('RzUserBundle:Resetting:password_already_requested.html.twig')->end()
+                            ->scalarNode('resetting_check_email')->defaultValue('RzUserBundle:Resetting:check_email.html.twig')->end()
+                            ->scalarNode('resetting_email')->defaultValue('RzUserBundle:Resetting:email.html.twig')->end()
+                            ->scalarNode('profile')->defaultValue('RzUserBundle:Profile:show.html.twig')->end()
+                            ->scalarNode('profile_action')->defaultValue('RzUserBundle:Profile:action.html.twig')->end()
+                            ->scalarNode('profile_edit')->defaultValue('RzUserBundle:Profile:edit_profile.html.twig')->end()
+                            ->scalarNode('profile_edit_authentication')->defaultValue('RzUserBundle:Profile:edit_authentication.html.twig')->end()
+                            ->scalarNode('registration')->defaultValue('RzUserBundle:Registration:register.html.twig')->end()
+                            ->scalarNode('registration_content')->defaultValue('RzUserBundle:Registration:register_content.html.twig')->end()
+                            ->scalarNode('registration_check_email')->defaultValue('RzUserBundle:Registration:check_email.html.twig')->end()
+                            ->scalarNode('registration_confirmed')->defaultValue('RzUserBundle:Registration:confirmed.html.twig')->end()
+                            ->scalarNode('registration_email')->defaultValue('RzUserBundle:Registration:email.html.twig')->end()
+                            ->scalarNode('change_password')->defaultValue('RzUserBundle:ChangePassword:change_password.html.twig')->end()
+                            ->scalarNode('change_password_content')->defaultValue('RzUserBundle:ChangePassword:change_password_content.html.twig')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+            /**
+     * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node
+     *
+     * @return void
+     */
+    private function addPasswordStrength(ArrayNodeDefinition $node)
+    {
+        //TODO: add other templates for configuration
+        $node
+            ->children()
+                ->arrayNode('password_security')
+                        ->addDefaultsIfNotSet()
+                        ->canBeUnset()
+                        ->children()
+                            ->arrayNode('requirement')
+                            ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('min_length')->defaultValue(8)->end()
+                                    ->scalarNode('require_letters')->defaultValue(true)->end()
+                                    ->scalarNode('require_case_diff')->defaultValue(false)->end()
+                                    ->scalarNode('require_numbers')->defaultValue(false)->end()
+                                    ->scalarNode('require_special_character')->defaultValue(false)->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('strength')
+                            ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('min_length')->defaultValue(8)->end()
+                                    ->scalarNode('min_strength')->defaultValue(1)->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
@@ -202,7 +261,8 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('type')->defaultValue('rz_user_change_password')->end()
-                                ->scalarNode('name')->defaultValue('fos_user_change_password_form')->end()
+                                ->scalarNode('handler')->defaultValue('rz.user.change_password.form.handler.default')->end()
+                                ->scalarNode('name')->defaultValue('rz_user_change_password_form')->end()
                                 ->arrayNode('validation_groups')
                                     ->prototype('scalar')->end()
                                     ->defaultValue(array('ChangePassword', 'Default'))
@@ -213,4 +273,52 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
     }
+
+    private function addResettingSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('resetting')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->arrayNode('form')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('type')->defaultValue('rz_user_resetting')->end()
+                                ->scalarNode('handler')->defaultValue('rz.user.resetting.form.handler.default')->end()
+                                ->scalarNode('name')->defaultValue('rz_user_resetting_form')->end()
+                                ->arrayNode('validation_groups')
+                                    ->prototype('scalar')->end()
+                                    ->defaultValue(array('Resetting'))
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+    private function addPasswordExpireSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('password_expire')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('enabled')->defaultValue(true)->end()
+                        ->arrayNode('settings')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('login_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\InteractiveLoginListener')->end()
+                                ->scalarNode('force_password_change_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\ForcePasswordUpdateListener')->end()
+                                ->scalarNode('days_to_expire')->defaultValue(90)->end()
+                                ->scalarNode('redirect_route')->defaultValue('fos_user_change_password')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
 }
