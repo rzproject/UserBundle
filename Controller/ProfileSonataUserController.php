@@ -28,7 +28,9 @@ class ProfileSonataUserController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->render('SonataUserBundle:Profile:show.html.twig', array(
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+
+        return $this->render($template['rz_user.template.profile'], array(
             'user'   => $user,
             'blocks' => $this->container->getParameter('sonata.user.configuration.profile_blocks')
         ));
@@ -58,7 +60,8 @@ class ProfileSonataUserController extends Controller
             return new RedirectResponse($this->generateUrl('fos_user_profile_show'));
         }
 
-        return $this->render('RzUserBundle:Profile:edit_authentication.html.twig', array(
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+        return $this->render($template['rz_user.template.profile_edit_authentication'], array(
             'form' => $form->createView(),
         ));
     }
@@ -85,7 +88,10 @@ class ProfileSonataUserController extends Controller
             return new RedirectResponse($this->generateUrl('fos_user_profile_show'));
         }
 
-        return $this->render('RzUserBundle:Profile:edit_profile.html.twig', array(
+
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+
+        return $this->render($template['rz_user.template.profile_edit'], array(
             'form'               => $form->createView(),
             'breadcrumb_context' => 'user_profile',
         ));

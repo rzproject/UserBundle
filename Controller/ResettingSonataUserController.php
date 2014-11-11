@@ -17,7 +17,8 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
      */
     public function requestAction()
     {
-        return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig');
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request']);
     }
 
     /**
@@ -26,32 +27,32 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
     public function sendEmailAction()
     {
         $username = $this->container->get('request')->request->get('username');
-
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
         /** @var $user UserInterface */
         $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'invalid_username', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'invalid_username', 'username' => $username));
         }
 
         if(!$user->isEnabled()) {
-            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_disabled', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_disabled', 'username' => $username));
         }
 
         if($user->isLocked()) {
-            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_locked', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_locked', 'username' => $username));
         }
 
         if($user->isExpired() || ($user->getExpiresAt() && $user->getExpiresAt()->diff(new \DateTime()) >= 0)) {
-            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_expired', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_expired', 'username' => $username));
         }
 
         if($user->isCredentialsExpired() || ($user->getCredentialsExpireAt() && $user->getCredentialsExpireAt()->diff(new \DateTime()) >= 0)) {
-            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:request.html.twig', array('account_error'=>'account_credentials_expired', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_credentials_expired', 'username' => $username));
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
-            return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:passwordAlreadyRequested.html.twig');
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_password_already_requested']);
         }
 
         if (null === $user->getConfirmationToken() || '' == $user->getConfirmationToken()) {
@@ -82,7 +83,8 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
             return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_request'));
         }
 
-        return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:checkEmail.html.twig', array(
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_check_email'], array(
             'email' => $email,
         ));
     }
@@ -122,7 +124,9 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
             return $response;
         }
 
-        return $this->container->get('templating')->renderResponse('RzUserBundle:Resetting:reset.html.twig', array(
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting'], array(
             'token' => $token,
             'form' => $form->createView(),
         ));

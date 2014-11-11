@@ -54,7 +54,9 @@ class RegistrationSonataUserController extends ContainerAware
             return $response;
         }
 
-        return $this->container->get('templating')->renderResponse('RzUserBundle:Registration:register.html.twig', array('form' => $form->createView()));
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.registration'], array('form' => $form->createView()));
     }
 
     /**
@@ -70,7 +72,9 @@ class RegistrationSonataUserController extends ContainerAware
             throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
         }
 
-        return $this->container->get('templating')->renderResponse('RzUserBundle:Registration:checkEmail.html.'.$this->getEngine(), array('user' => $user));
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.registration_check_email'], array('user' => $user));
     }
 
     /**
@@ -109,6 +113,8 @@ class RegistrationSonataUserController extends ContainerAware
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
+
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
 
         return $this->container->get('templating')->renderResponse('RzUserBundle:Registration:confirmed.html.html', array('user' => $user));
     }

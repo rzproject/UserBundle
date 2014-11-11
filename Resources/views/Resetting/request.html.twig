@@ -2,6 +2,6 @@
 {% block rz_user_header %}{% endblock rz_user_header %}
 
 {% block fos_user_content %}
-    {% include "RzUserBundle:Resetting:request_content.html.twig" %}
+    {% include rz_admin_get_template('rz_user.template.resetting_request_content') %}
 {% endblock fos_user_content %}
 

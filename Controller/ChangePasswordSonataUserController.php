@@ -27,7 +27,9 @@ class ChangePasswordSonataUserController extends ContainerAware
             return new RedirectResponse($this->getRedirectionUrl($user));
         }
 
-        return $this->container->get('templating')->renderResponse('RzUserBundle:ChangePassword:changePassword.html.twig', array('form' => $form->createView()));
+        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.change_password'], array('form' => $form->createView()));
     }
 
     /**
