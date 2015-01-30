@@ -73,7 +73,6 @@ class RegistrationSonataUserController extends ContainerAware
         }
 
         $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-
         return $this->container->get('templating')->renderResponse($template['rz_user.template.registration_check_email'], array('user' => $user));
     }
 
@@ -115,8 +114,7 @@ class RegistrationSonataUserController extends ContainerAware
         }
 
         $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-
-        return $this->container->get('templating')->renderResponse('RzUserBundle:Registration:confirmed.html.html', array('user' => $user));
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.registration_confirmed'], array('user' => $user));
     }
 
     /**
