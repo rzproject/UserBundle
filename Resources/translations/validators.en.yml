@@ -32,4 +32,4 @@ rz_user:
         missing_special_character: Your password must contain at least one special character.
     strength:
       message:
-        password_too_weak: Password is too week.
+        password_too_weak: Password is too weak.
