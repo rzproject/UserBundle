@@ -18,7 +18,6 @@ class AdminSecuritySonataUserController extends AdminSecurityController
      */
     public function loginAction()
     {
-        #$user = $this->container->get('security.context')->getToken()->getUser();
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         if ($user instanceof UserInterface) {
@@ -32,25 +31,8 @@ class AdminSecuritySonataUserController extends AdminSecurityController
         $session = $request->getSession();
         /* @var $session \Symfony\Component\HttpFoundation\Session */
 
-
-        // get the error if any (works with forward and redirect -- see below)
-//        if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
-//            $error = $request->attributes->get(Security::AUTHENTICATION_ERROR);
-//        } elseif (null !== $session && $session->has(Security::AUTHENTICATION_ERROR)) {
-//            $error = $session->get(Security::AUTHENTICATION_ERROR);
-//            $session->remove(Security::AUTHENTICATION_ERROR);
-//        } else {
-//            $error = '';
-//        }
-
         $helper = $this->container->get('security.authentication_utils');
         $error = $helper->getLastAuthenticationError();
-//
-//        if ($error) {
-//            // TODO: this is a potential security risk (see http://trac.symfony-project.org/ticket/9523)
-//            $error = $error->getMessage();
-//        }
-
 
         // last username entered by the user
         $lastUsername = (null === $session) ? '' : $helper->getLastUsername();
@@ -59,7 +41,8 @@ class AdminSecuritySonataUserController extends AdminSecurityController
             ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate')
             : null;
 
-        if ($this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
+
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $refererUri = $request->server->get('HTTP_REFERER');
 
             return new RedirectResponse($refererUri && $refererUri != $request->getUri() ? $refererUri : $this->container->get('router')->generate('sonata_admin_dashboard'));
