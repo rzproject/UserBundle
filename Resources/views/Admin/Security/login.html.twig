@@ -18,8 +18,7 @@
                 <form action="{{ path("sonata_user_admin_security_check") }}" method="post" id="login_form">
                     {% if error %}
                         <div class="alert alert-danger alert-login">
-                            <a class="close" data-dismiss="alert">×</a>
-                            {{ error|trans({}, 'SonataUserBundle') }}
+                            {{ error.messageKey|trans(error.messageData) }}
                         </div>
                     {% endif %}
                     <div class="row-fluid">

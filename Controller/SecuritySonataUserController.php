@@ -23,7 +23,25 @@ class SecuritySonataUserController extends SecurityFOSUser1Controller
             return new RedirectResponse($url);
         }
 
-        return parent::loginAction();
+
+        $request = $this->container->get('request');
+        /* @var $request \Symfony\Component\HttpFoundation\Request */
+        $session = $request->getSession();
+        /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
+
+        $helper = $this->container->get('security.authentication_utils');
+        $error = $helper->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $helper->getLastUsername();
+
+        $csrfToken = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
+
+        return $this->renderLogin(array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+            'csrf_token' => $csrfToken,
+        ));
     }
 
     protected function renderLogin(array $data)
