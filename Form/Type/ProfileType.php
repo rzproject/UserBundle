@@ -13,6 +13,7 @@ namespace Rz\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Sonata\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\Validator\Constraint\UserPassword as OldUserPassword;
@@ -55,12 +56,22 @@ class ProfileType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
-                                   'data_class' => $this->class
-                               ));
+            'data_class' => $this->class
+        ));
     }
 
     /**
@@ -98,10 +109,6 @@ class ProfileType extends AbstractType
                               'required' => true,
                               'translation_domain' => 'RzUserBundle',
                               'attr'=>array('class'=>'span12')
-                          ))
-//            ->add('biography', 'textarea', array('label' => 'form.biography', 'required' => false, 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12', 'rows'=>'10')))
-//            ->add('locale', 'locale', array('required' => false, 'attr'=>array('class'=>'span6')))
-//            ->add('timezone', 'timezone', array('required' => false, 'attr'=>array('class'=>'span6')));
-        ;
+                          ));
     }
 }
