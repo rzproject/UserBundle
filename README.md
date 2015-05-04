@@ -13,5 +13,5 @@ DOCS
 * [index](https://github.com/rzproject/UserBundle/blob/1.1/Resources/doc/index.md)
 * [templates](https://github.com/rzproject/UserBundle/blob/1.1/Resources/doc/templates.md)
 
-Back to: [rzpeoject](http://rzproject.github.io)
+Back to: [rzproject](http://rzproject.github.io)
 
