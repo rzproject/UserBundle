@@ -74,6 +74,7 @@ class RzUserExtension extends Extension
 
         $loader->load('validators.xml');
         $loader->load('roles.xml');
+        $loader->load('seo_block.xml');
 
         // add custom form widgets
         $container->setParameter('twig.form.resources', array_merge(

@@ -2,8 +2,14 @@
 
 {% trans_default_domain 'RzUserBundle' %}
 
-{% block rz_user_header %}{% endblock rz_user_header %}
 
+{% block rz_user_breadcrumb %}
+    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.profile_login_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
+{% endblock %}
+
+
+{% block rz_user_title %}<h1>Login</h1>{% endblock %}
+{% block rz_user_header_content %}{% endblock %}
 {% block rz_user_message %}{% endblock rz_user_message %}
 
 {% block fos_user_content %}

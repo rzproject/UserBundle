@@ -2,7 +2,6 @@
 <div class="row-fluid">
     <div class="span6 offset3">
         <div class="sonata-user-reset-password">
-        <h1>{{ "title_user_resetting" | trans({}, 'RzUserBundle')}}</h1>
         {% if account_error is defined %}
             <div class="form-errors">
                 {% set msg = 'resetting.request.'~account_error %}
