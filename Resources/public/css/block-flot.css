@@ -1,0 +1,10 @@
+.flot {
+    width: 100%;
+    height: 300px;
+}
+.flot.small {
+    height: 150px;
+}
+.flot.medium {
+    height: 200px;
+}

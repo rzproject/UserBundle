@@ -64,6 +64,8 @@ class RzUserExtension extends Extension
         $loader->load('password_strength.xml');
         $this->configurePasswordStrength($config, $container);
 
+        $this->configureClassManager($config, $container);
+
         if ($config['password_expire']['enabled']) {
             $loader->load('password_expire.xml');
             $this->configurePasswordExpire($config, $container);
@@ -75,6 +77,7 @@ class RzUserExtension extends Extension
         $loader->load('validators.xml');
         $loader->load('roles.xml');
         $loader->load('seo_block.xml');
+        $loader->load('block.xml');
 
         // add custom form widgets
         $container->setParameter('twig.form.resources', array_merge(
@@ -283,5 +286,18 @@ class RzUserExtension extends Extension
                 $definition->addMethodCall('setEnabled', array(false));
             }
         }
+    }
+
+    /**
+     * @param array                                                   $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     *
+     * @return void
+     */
+    public function configureClassManager($config, ContainerBuilder $container)
+    {
+        // manager configuration
+        $container->setParameter('rz.user.manager.user.class',     $config['class_manager']['user']);
+        $container->setParameter('rz.user.manager.group.class',  $config['class_manager']['group']);
     }
 }

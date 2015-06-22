@@ -65,6 +65,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('user')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
+                ->arrayNode('class_manager')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('user')->defaultValue('Rz\\UserBundle\\Entity\\UserManager')->end()
+                        ->scalarNode('group')->defaultValue('Sonata\\UserBundle\\Entity\\GroupManager')->end()
+                    ->end()
+                ->end()
                 ->arrayNode('admin')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -160,7 +167,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-
                 // Original code from the FOS User Bundle
                 ->arrayNode('profile')
                     ->addDefaultsIfNotSet()
