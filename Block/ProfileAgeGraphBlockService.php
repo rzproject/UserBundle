@@ -15,7 +15,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class ProfileGenderGraphBlockService extends BaseBlockService
+class ProfileAgeGraphBlockService extends BaseBlockService
 {
     protected $manager;
 
@@ -35,7 +35,7 @@ class ProfileGenderGraphBlockService extends BaseBlockService
      */
     public function getName()
     {
-        return 'User Gender Demographics';
+        return 'User Age Demographics';
     }
 
     /**
@@ -44,10 +44,10 @@ class ProfileGenderGraphBlockService extends BaseBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'title'    => 'User Gender Demographics',
-            'template' => 'RzUserBundle:Block:block_profile_gender_graph.html.twig',
-            'gender' => null,
-            'genderTotal' => null,
+            'title'    => 'User Age Demographics',
+            'template' => 'RzUserBundle:Block:block_profile_age_graph.html.twig',
+            'ageBracket' => null,
+            'ageBracketTotal' => null,
             'mode'       => 'admin',
             'disabled' => false
         ));
@@ -91,10 +91,10 @@ class ProfileGenderGraphBlockService extends BaseBlockService
      */
     public function load(BlockInterface $block)
     {
-        $userManager = $this->container->get('fos_user.user_manager');
-        $gender = $userManager->fetchGenderCount();
-        $totalGender = $userManager->fetchGenderCountTotal();
-        $block->setSetting('gender', $gender);
-        $block->setSetting('genderTotal', $totalGender);
+        $userDemographicsManager = $this->container->get('rz.user.manager.user_age_demographics');
+        $ageBracket = $userDemographicsManager->fetchAgeBracketCount();
+        $ageBracketTotal = $userDemographicsManager->fetchAgeBracketCountTotal();
+        $block->setSetting('ageBracket', $ageBracket);
+        $block->setSetting('ageBracketTotal', $ageBracketTotal);
     }
 }

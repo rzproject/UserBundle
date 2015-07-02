@@ -112,9 +112,8 @@ class UserAdmin extends BaseUserAdmin
                                                            /*'attr'=>array('class'=>'span10'),*/))
             ->end()
             ->with('Profile')
-                ->add('dateOfBirth', 'birthday', array('required' => false, 'format' => 'dd-MM-yyyy',
-                                                       'pattern' => '{{ day }}-{{ month }}-{{ year }}',
-                                                       'years' => range(Date('Y'), 2010)))
+
+                ->add('dateOfBirth', 'birthday', array('required' => false))
                 ->add('firstname', null, array('required' => false))
                 ->add('lastname', null, array('required' => false))
                 ->add('website', 'url', array('required' => false))

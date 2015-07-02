@@ -15,7 +15,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class ProfileGenderGraphBlockService extends BaseBlockService
+class UserAuthenticationLogsGraphBlockService extends BaseBlockService
 {
     protected $manager;
 
@@ -35,7 +35,7 @@ class ProfileGenderGraphBlockService extends BaseBlockService
      */
     public function getName()
     {
-        return 'User Gender Demographics';
+        return 'User Authentication Logs';
     }
 
     /**
@@ -44,10 +44,9 @@ class ProfileGenderGraphBlockService extends BaseBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'title'    => 'User Gender Demographics',
-            'template' => 'RzUserBundle:Block:block_profile_gender_graph.html.twig',
-            'gender' => null,
-            'genderTotal' => null,
+            'title'    => 'User Authentication Logs',
+            'template' => 'RzUserBundle:Block:block_profile_user_authentication_logs_graph.html.twig',
+            'logsPerDay' => null,
             'mode'       => 'admin',
             'disabled' => false
         ));
@@ -91,10 +90,28 @@ class ProfileGenderGraphBlockService extends BaseBlockService
      */
     public function load(BlockInterface $block)
     {
-        $userManager = $this->container->get('fos_user.user_manager');
-        $gender = $userManager->fetchGenderCount();
-        $totalGender = $userManager->fetchGenderCountTotal();
-        $block->setSetting('gender', $gender);
-        $block->setSetting('genderTotal', $totalGender);
+        $userAuthenticationLogsManager = $this->container->get('rz.user.manager.user_authentication_logs');
+        $weekBefore = new \DateInterval('P6D');
+        $beginDate = new \DateTime();
+        $beginDate->sub($weekBefore);
+        $endDate   = new \DateTime();
+        $endDate = $endDate->modify( '+1 day' );
+        $userLogsByDay = $userAuthenticationLogsManager->fetchUserLogsByDayCount($beginDate->format('Y-m-d'), 'login');
+
+        $interval = new \DateInterval('P1D');
+        $daterange = new \DatePeriod($beginDate, $interval ,$endDate);
+        $dateIndex = array();
+        foreach($daterange as $date) {
+            $dateIndex[] = $date->format("Y-m-d");
+        }
+        $userLogsWeek = array();
+        foreach($userLogsByDay as $key=>$log) {
+            if($log['logDate'] === $dateIndex[$key]) {
+                $userLogsWeek[$key] = $log;
+            } else {
+                $userLogsWeek[$key] = array('logDateCount'=>0, 'logDate'=>$dateIndex[$key]);
+            }
+        }
+        $block->setSetting('logsPerDay', $userLogsWeek);
     }
 }

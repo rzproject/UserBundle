@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
+use Sonata\EasyExtendsBundle\Mapper\DoctrineCollector;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -84,6 +85,18 @@ class RzUserExtension extends Extension
                                                           $container->getParameter('twig.form.resources'),
                                                           array('RzUserBundle:Form:form_admin_fields.html.twig')
                                                       ));
+
+        if (interface_exists('Sonata\ClassificationBundle\Model\CollectionInterface')) {
+            $loader->load('provider.xml');
+            $loader->load('user_age_demographics_orm.xml');
+            $loader->load('user_age_demographics_listener.xml');
+            $this->registerDoctrineMapping($config, $container);
+        }
+
+        $loader->load('user_logs_orm.xml');
+        $loader->load('user_logout_handler.xml');
+
+        $this->configureUserAuthenticationLogs($config, $container);
     }
 
     /**
@@ -101,6 +114,11 @@ class RzUserExtension extends Extension
 
         $defaultConfig['class']['user']  = sprintf('Application\\Sonata\\UserBundle\\%s\\User', $modelType);
         $defaultConfig['class']['group'] = sprintf('Application\\Sonata\\UserBundle\\%s\\Group', $modelType);
+        $defaultConfig['class']['user_authentication_logs'] = sprintf('Application\\Sonata\\UserBundle\\%s\\UserAuthenticationLogs', $modelType);
+        if (interface_exists('Sonata\ClassificationBundle\Model\CollectionInterface')) {
+            $defaultConfig['class']['user_age_demographics'] = sprintf('Application\\Sonata\\UserBundle\\%s\\UserAgeDemographics', $modelType);
+            $defaultConfig['class']['collection'] = sprintf('Application\\Sonata\\ClassificationBundle\\%s\\Collection', $modelType);
+        }
 
         return array_replace_recursive($defaultConfig, $config);
     }
@@ -288,6 +306,12 @@ class RzUserExtension extends Extension
         }
     }
 
+    public function configureUserAuthenticationLogs(array $config, ContainerBuilder $container) {
+        $container->setParameter('rz.user.event_listener.authentication.class', $config['user_authentication_logs']['settings']['authentication_listener_class']);
+        $container->setParameter('rz.user.component.authentication.handler.user_logout.class', $config['user_authentication_logs']['settings']['logout_handler_class']);
+        $container->setParameter('rz.user.user_authentication_logs.enabled', $config['user_authentication_logs']['enabled']);
+    }
+
     /**
      * @param array                                                   $config
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
@@ -299,5 +323,76 @@ class RzUserExtension extends Extension
         // manager configuration
         $container->setParameter('rz.user.manager.user.class',     $config['class_manager']['user']);
         $container->setParameter('rz.user.manager.group.class',  $config['class_manager']['group']);
+        $container->setParameter('rz.user.manager.user_authentication_logs.class',  $config['class_manager']['user_authentication_logs']);
+        $container->setParameter('rz.user.manager.user_authentication_logs.entity',  $config['class']['user_authentication_logs']);
+
+        if (interface_exists('Sonata\ClassificationBundle\Model\CollectionInterface')) {
+            $container->setParameter('rz.user.manager.user_age_demographics.class',  $config['class_manager']['user_age_demographics']);
+            $container->setParameter('rz.user.manager.user_age_demographics.entity',  $config['class']['user_age_demographics']);
+        }
+    }
+
+    /**
+     * @param array $config
+     */
+    public function registerDoctrineMapping(array $config)
+    {
+        $collector = DoctrineCollector::getInstance();
+
+        if(class_exists($config['class']['user_age_demographics'])) {
+            $collector->addAssociation($config['class']['user_age_demographics'], 'mapOneToOne', array(
+                'fieldName'    => 'user',
+                'targetEntity' => $config['class']['user'],
+                'cascade' =>
+                    array(
+                        1 => 'detach'
+                    ),
+                'mappedBy'      => NULL,
+                'inversedBy'    => NULL,
+                'orphanRemoval' => true
+            ));
+        }
+
+        if(class_exists($config['class']['collection'])) {
+            $collector->addAssociation($config['class']['user_age_demographics'], 'mapManyToOne', array(
+                'fieldName' => 'collection',
+                'targetEntity' => $config['class']['collection'],
+                'cascade' =>
+                    array(
+                        1 => 'detach',
+                    ),
+                'mappedBy' => NULL,
+                'inversedBy' => NULL,
+                'joinColumns' =>
+                    array(
+                        array(
+                            'name' => 'collection_id',
+                            'referencedColumnName' => 'id',
+                        ),
+                    ),
+                'orphanRemoval' => false,
+            ));
+        }
+
+        if(class_exists($config['class']['user_authentication_logs'])) {
+            $collector->addAssociation($config['class']['user_authentication_logs'], 'mapManyToOne', array(
+                'fieldName' => 'user',
+                'targetEntity' => $config['class']['user'],
+                'cascade' =>
+                    array(
+                        1 => 'detach',
+                    ),
+                'mappedBy' => NULL,
+                'inversedBy' => NULL,
+                'joinColumns' =>
+                    array(
+                        array(
+                            'name' => 'user_id',
+                            'referencedColumnName' => 'id',
+                        ),
+                    ),
+                'orphanRemoval' => false,
+            ));
+        }
     }
 }

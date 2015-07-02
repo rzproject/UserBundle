@@ -33,4 +33,19 @@ class UserManager extends BaseUserManager
         }
     }
 
+    public function fetchRegistrationCount($resultCount = 5) {
+
+        $qb = $this->repository->createQueryBuilder('u');
+        $em = $qb->getEntityManager();
+        $query = $em->createQuery("SELECT COUNT(u.createdAt) as registrationCount, DATE_FORMAT(u.createdAt, '%Y-%m-%d') as registerDate  FROM ".$this->class." u GROUP BY registerDate ORDER BY u.createdAt DESC")
+                    ->setMaxResults($resultCount);
+
+        try {
+            return $query->getResult();
+        } catch(\Exception $e) {
+            throw $e;
+            return false;
+        }
+    }
+
 }

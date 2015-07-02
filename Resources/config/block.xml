@@ -10,5 +10,27 @@
             <argument type="service" id="templating" />
             <argument type="service" id="service_container" />
         </service>
+
+        <service id="rz.user.block.profile_age_graph" class="Rz\UserBundle\Block\ProfileAgeGraphBlockService">
+            <tag name="sonata.block" />
+            <argument>rz.user.block.profile_gender_graph</argument>
+            <argument type="service" id="templating" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="rz.user.block.user_authentication_logs_graph" class="Rz\UserBundle\Block\UserAuthenticationLogsGraphBlockService">
+            <tag name="sonata.block" />
+            <argument>rz.user.block.user_authentication_logs_graph</argument>
+            <argument type="service" id="templating" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="rz.user.block.user_registration_graph" class="Rz\UserBundle\Block\UserRegistrationGraphBlockService">
+            <tag name="sonata.block" />
+            <argument>rz.user.block.user_registration_graph</argument>
+            <argument type="service" id="templating" />
+            <argument type="service" id="service_container" />
+        </service>
+
     </services>
 </container>

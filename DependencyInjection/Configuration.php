@@ -36,6 +36,13 @@ class Configuration implements ConfigurationInterface
         $this->addPasswordStrength($node);
         $this->addResettingSection($node);
         $this->addPasswordExpireSection($node);
+        $this->addLoginLogs($node);
+
+        if (interface_exists('Sonata\ClassificationBundle\Model\CollectionInterface')) {
+            $this->addClassificationClasses($node);
+        } else {
+            $this->addClasses($node);
+        }
         return $treeBuilder;
     }
 
@@ -57,19 +64,6 @@ class Configuration implements ConfigurationInterface
                     ->validate()
                         ->ifNotInArray($supportedManagerTypes)
                         ->thenInvalid('The manager type %s is not supported. Please choose one of '.json_encode($supportedManagerTypes))
-                    ->end()
-                ->end()
-                ->arrayNode('class')
-                    ->children()
-                        ->scalarNode('group')->cannotBeEmpty()->end()
-                        ->scalarNode('user')->cannotBeEmpty()->end()
-                    ->end()
-                ->end()
-                ->arrayNode('class_manager')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('user')->defaultValue('Rz\\UserBundle\\Entity\\UserManager')->end()
-                        ->scalarNode('group')->defaultValue('Sonata\\UserBundle\\Entity\\GroupManager')->end()
                     ->end()
                 ->end()
                 ->arrayNode('admin')
@@ -381,6 +375,74 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('force_password_change_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\ForcePasswordUpdateListener')->end()
                                 ->scalarNode('days_to_expire')->defaultValue(90)->end()
                                 ->scalarNode('redirect_route')->defaultValue('fos_user_change_password')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+
+    private function addClasses(ArrayNodeDefinition $node) {
+        $node
+            ->children()
+            ->arrayNode('class')
+                    ->children()
+                        ->scalarNode('group')->cannotBeEmpty()->end()
+                        ->scalarNode('user')->cannotBeEmpty()->end()
+                        ->scalarNode('user_authentication_logs')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('class_manager')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('user')->defaultValue('Rz\\UserBundle\\Entity\\UserManager')->end()
+                        ->scalarNode('group')->defaultValue('Sonata\\UserBundle\\Entity\\GroupManager')->end()
+                        ->scalarNode('user_authentication_logs')->defaultValue('Rz\\UserBundle\\Entity\\UserAuthenticationLogsManager')->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addClassificationClasses(ArrayNodeDefinition $node) {
+
+        $node
+            ->children()
+            ->arrayNode('class')
+                ->children()
+                    ->scalarNode('group')->cannotBeEmpty()->end()
+                    ->scalarNode('user')->cannotBeEmpty()->end()
+                    ->scalarNode('user_authentication_logs')->cannotBeEmpty()->end()
+                    ->scalarNode('user_age_demographics')->defaultValue('Application\\Sonata\\UserBundle\\Entity\\UserAgeDemographics')->end()
+                    ->scalarNode('collection')->defaultValue('Application\\Sonata\\ClassificationBundle\\Entity\\Collection')->end()
+                ->end()
+            ->end()
+            ->arrayNode('class_manager')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('user')->defaultValue('Rz\\UserBundle\\Entity\\UserManager')->end()
+                    ->scalarNode('group')->defaultValue('Sonata\\UserBundle\\Entity\\GroupManager')->end()
+                    ->scalarNode('user_authentication_logs')->defaultValue('Rz\\UserBundle\\Entity\\UserAuthenticationLogsManager')->end()
+                    ->scalarNode('user_age_demographics')->defaultValue('Rz\\UserBundle\\Entity\\UserAgeDemographicsManager')->end()
+                ->end()
+            ->end()
+            ->end();
+    }
+
+    private function addLoginLogs(ArrayNodeDefinition $node) {
+         $node
+            ->children()
+                ->arrayNode('user_authentication_logs')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('enabled')->defaultValue(true)->end()
+                        ->arrayNode('settings')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('authentication_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\AuthenticationListener')->end()
+                                ->scalarNode('logout_handler_class')->defaultValue('Rz\\UserBundle\\Component\\Authentication\\UserLogoutHandler')->end()
+
                             ->end()
                         ->end()
                     ->end()

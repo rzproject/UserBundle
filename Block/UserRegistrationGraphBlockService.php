@@ -15,7 +15,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class ProfileGenderGraphBlockService extends BaseBlockService
+class UserRegistrationGraphBlockService extends BaseBlockService
 {
     protected $manager;
 
@@ -35,7 +35,7 @@ class ProfileGenderGraphBlockService extends BaseBlockService
      */
     public function getName()
     {
-        return 'User Gender Demographics';
+        return 'User Registration';
     }
 
     /**
@@ -44,10 +44,10 @@ class ProfileGenderGraphBlockService extends BaseBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'title'    => 'User Gender Demographics',
-            'template' => 'RzUserBundle:Block:block_profile_gender_graph.html.twig',
-            'gender' => null,
-            'genderTotal' => null,
+            'title'    => 'User Registration',
+            'template' => 'RzUserBundle:Block:block_profile_user_registration_graph.html.twig',
+            'registrationCount' => null,
+            'fetchCountRecord' => 5,
             'mode'       => 'admin',
             'disabled' => false
         ));
@@ -92,9 +92,8 @@ class ProfileGenderGraphBlockService extends BaseBlockService
     public function load(BlockInterface $block)
     {
         $userManager = $this->container->get('fos_user.user_manager');
-        $gender = $userManager->fetchGenderCount();
-        $totalGender = $userManager->fetchGenderCountTotal();
-        $block->setSetting('gender', $gender);
-        $block->setSetting('genderTotal', $totalGender);
+        $settings = $block->getSettings();
+        $userRegistrations = $userManager->fetchRegistrationCount(isset($settings['fetchCountRecord']) ? $settings['fetchCountRecord'] : 5);
+        $block->setSetting('userRegistrations', $userRegistrations);
     }
 }
