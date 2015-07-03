@@ -22,15 +22,15 @@ class UserAgeDemographicsListener
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
-
-        // perhaps you only want to act on some "Product" entity
-        if ($entity instanceof UserInterface) {
-            dump($entity);
-            die();
-            // ... do something with the Product
-        }
+//        $entity = $args->getEntity();
+//        $entityManager = $args->getEntityManager();
+//
+//        // perhaps you only want to act on some "Product" entity
+//        if ($entity instanceof UserInterface) {
+//            dump($entity);
+//            die();
+//            // ... do something with the Product
+//        }
     }
 
 
