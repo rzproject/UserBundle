@@ -72,7 +72,7 @@ class RzUserExtension extends Extension
             $this->configurePasswordExpire($config, $container);
 
             //load listeners
-            $loader->load('listener.xml');
+            $loader->load('password_expire_listener.xml');
         }
 
         $loader->load('validators.xml');
@@ -95,6 +95,12 @@ class RzUserExtension extends Extension
 
         $loader->load('user_logs_orm.xml');
         $loader->load('user_logout_handler.xml');
+
+
+        if ($config['user_authentication_logs']['enabled']) {
+            //load listeners
+            $loader->load('user_authentication_logs_listener.xml');
+        }
 
         $this->configureUserAuthenticationLogs($config, $container);
     }

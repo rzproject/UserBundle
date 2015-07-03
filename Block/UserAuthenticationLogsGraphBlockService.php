@@ -105,13 +105,16 @@ class UserAuthenticationLogsGraphBlockService extends BaseBlockService
             $dateIndex[] = $date->format("Y-m-d");
         }
         $userLogsWeek = array();
-        foreach($userLogsByDay as $key=>$log) {
-            if($log['logDate'] === $dateIndex[$key]) {
-                $userLogsWeek[$key] = $log;
-            } else {
-                $userLogsWeek[$key] = array('logDateCount'=>0, 'logDate'=>$dateIndex[$key]);
+
+        $dateIndex =  array_reverse ($dateIndex );
+        foreach($dateIndex as $date) {
+            foreach($userLogsByDay as $key=>$log) {
+                if($log['logDate'] === $date) {
+                    $userLogsWeek[$key] = $log;
+                }
             }
         }
+
         $block->setSetting('logsPerDay', $userLogsWeek);
     }
 }

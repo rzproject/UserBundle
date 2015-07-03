@@ -80,7 +80,7 @@
                 </option>
             </constraint>
             <constraint name="Length">
-                <option name="min">8</option>
+                <option name="min">5</option>
                 <option name="minMessage">rz_user.validation.username_length_short</option>
                 <option name="max">150</option>
                 <option name="maxMessage">rz_user.validation.username_length_long</option>
