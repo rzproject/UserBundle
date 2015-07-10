@@ -10,6 +10,7 @@
 
     <services>
         <service id="rz.user.user_age_demographics.doctrine_listener" class="%rz.user.user_age_demographics.doctrine_listener.class%">
+            <argument>%rz.user.user_age_demographics.enabled%</argument>
             <argument type="service" id="rz.user.manager.user_age_demographics" />
             <argument type="service" id="sonata.classification.manager.collection" />
             <tag name="doctrine.event_listener" event="postUpdate" />

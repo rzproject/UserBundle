@@ -13,9 +13,11 @@ class UserAgeDemographicsListener
 {
     protected $collectionManager;
     protected $userAgeDemographicsManager;
+    protected $enabled;
 
-    public function __construct(ManagerInterface $userAgeDemographicsManager, ManagerInterface $collectionManager)
+    public function __construct($enabled = true, ManagerInterface $userAgeDemographicsManager, ManagerInterface $collectionManager)
     {
+        $this->enabled = $enabled;
         $this->userAgeDemographicsManager = $userAgeDemographicsManager;
         $this->collectionManager = $collectionManager;
     }
@@ -37,10 +39,8 @@ class UserAgeDemographicsListener
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
-
         // perhaps you only want to act on some "Product" entity
-        if ($entity instanceof UserInterface) {
+        if ($this->enabled && $entity instanceof UserInterface) {
             //get
             if($entity->getDateOfBirth()) {
                 $age = $this->getAge($entity->getDateOfBirth());

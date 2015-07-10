@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
         $this->addResettingSection($node);
         $this->addPasswordExpireSection($node);
         $this->addLoginLogs($node);
+        $this->addDemographicsLogs($node);
 
         if (interface_exists('Sonata\ClassificationBundle\Model\CollectionInterface')) {
             $this->addClassificationClasses($node);
@@ -443,6 +444,25 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('authentication_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\AuthenticationListener')->end()
                                 ->scalarNode('logout_handler_class')->defaultValue('Rz\\UserBundle\\Component\\Authentication\\UserLogoutHandler')->end()
 
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addDemographicsLogs(ArrayNodeDefinition $node) {
+         $node
+            ->children()
+                ->arrayNode('user_age_demographics')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('enabled')->defaultValue(true)->end()
+                        ->arrayNode('settings')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('doctrine_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\UserAgeDemographicsListener')->end()
                             ->end()
                         ->end()
                     ->end()

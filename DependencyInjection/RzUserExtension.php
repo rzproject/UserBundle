@@ -103,6 +103,7 @@ class RzUserExtension extends Extension
         }
 
         $this->configureUserAuthenticationLogs($config, $container);
+        $this->configureUserAgeDemographics($config, $container);
     }
 
     /**
@@ -316,6 +317,11 @@ class RzUserExtension extends Extension
         $container->setParameter('rz.user.event_listener.authentication.class', $config['user_authentication_logs']['settings']['authentication_listener_class']);
         $container->setParameter('rz.user.component.authentication.handler.user_logout.class', $config['user_authentication_logs']['settings']['logout_handler_class']);
         $container->setParameter('rz.user.user_authentication_logs.enabled', $config['user_authentication_logs']['enabled']);
+    }
+
+    public function configureUserAgeDemographics(array $config, ContainerBuilder $container) {
+        $container->setParameter('rz.user.user_age_demographics.doctrine_listener.class', $config['user_age_demographics']['settings']['doctrine_listener_class']);
+        $container->setParameter('rz.user.user_age_demographics.enabled', $config['user_age_demographics']['enabled']);
     }
 
     /**
