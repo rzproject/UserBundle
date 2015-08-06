@@ -104,12 +104,11 @@ class UserAdmin extends BaseUserAdmin
                 ->add('plainPassword', 'text', array('required' => false))
             ->end()
             ->with('Groups')
-                ->add('groups', 'sonata_type_model', array('required' => false,
-                                                           'multiple' => true,
-                                                           'select2'=>true,
-                                                           'by_reference' => false,
-                                                           'error_bubbling'=>true,
-                                                           /*'attr'=>array('class'=>'span10'),*/))
+                ->add('groups', 'sonata_type_model_autocomplete', array(
+                    'required' => false,
+                    'property' => 'name',
+                    'multiple' => true
+                ))
             ->end()
             ->with('Profile')
 
