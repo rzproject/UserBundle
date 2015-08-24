@@ -401,6 +401,7 @@ class RzUserExtension extends Extension
                         array(
                             'name' => 'user_id',
                             'referencedColumnName' => 'id',
+                            'onDelete' => 'CASCADE',
                         ),
                     ),
                 'orphanRemoval' => false,
