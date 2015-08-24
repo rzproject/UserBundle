@@ -359,6 +359,14 @@ class RzUserExtension extends Extension
                     array(
                         1 => 'detach'
                     ),
+                'joinColumns' =>
+                    array(
+                        array(
+                            'name' => 'user_id',
+                            'referencedColumnName' => 'id',
+                            'onDelete' => 'CASCADE',
+                        ),
+                    ),
                 'mappedBy'      => NULL,
                 'inversedBy'    => NULL,
                 'orphanRemoval' => true
