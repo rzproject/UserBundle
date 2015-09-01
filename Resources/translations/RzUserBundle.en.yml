@@ -292,3 +292,12 @@ breadcrumb:
   link_user_list : User
   link_group_list: Group
   link_user_history: History
+  link_dashboard: Dashbord
+  link_authentication: Authentication
+  link_edit_profile: Edit Profile
+  link_request_password: Request Password
+  link_reset_email_sent: Request Email
+  link_reset: Reset Password
+  link_register: Register
+  link_login: Login
+

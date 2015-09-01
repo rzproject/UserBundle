@@ -1,5 +1,11 @@
 {% extends rz_admin_get_template('rz_user.template.layout') %}
-{% block rz_user_header %}{% endblock rz_user_header %}
+{% block rz_user_breadcrumb %}
+    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.register_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
+{% endblock %}
+
+{% block rz_user_title %}<h1>{{ "title_user_register" | trans({}, 'RzUserBundle')}}</h1>{% endblock %}
+
+{% block rz_user_header_content %}{% endblock %}
 
 {% block fos_user_content %}
     {% include rz_admin_get_template('rz_user.template.registration_content') %}

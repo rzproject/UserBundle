@@ -1,0 +1,61 @@
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+    {% if context.getSetting('mode') == 'admin' %}
+        <div class="box box-color box-bordered green">
+            <div class="box-title">
+                <h3>
+                    <i class="icon-bar-chart"></i>
+                    {% if settings.title %}<h3 class="sonata-news-block-recent-post">{{ settings.title }}</h3>{% endif %}
+                </h3>
+            </div>
+            <div class="box-content">
+                <div id="flot-gender" class='flot'></div>
+	            <div><h4 style="text-align: right; color:#337e42;">TOTAL SAMPLES : {{ settings.genderTotal.total }}</h4></div>
+            </div>
+        </div>
+    {% else %}
+        {% if settings.title is defined %}
+            <h2 class="sonata-feed-title">{{ settings.title }}</h2>
+        {% endif %}
+        <div id="flot-gender" class='flot'></div>
+    {% endif %}
+    <script>
+        jQuery(document).ready(function() {
+            var data = [];
+            {% set count = 0 %}
+            {% for data in settings.gender %}
+            data[{{ count }}] = { label: '{% if data.gender == 'f' %}Female{% elseif data.gender == 'm' %}Male{% else %}Undefined{% endif %}', data: Math.floor(({{ data.num }}/{{ settings.genderTotal.total }})*100) };
+            {% set count = count+1 %}
+            {% endfor %}
+	        $.plot($("#flot-gender"), data,
+	                {
+	                    series: {
+	                        pie: {
+		                        innerRadius: 0.5,
+	                            show: true,
+	                            radius: 1,
+	                            label: {
+	                                show: true,
+	                                radius: 3/4,
+	                                formatter: labelFormatterGender,
+	                                background: {
+	                                    opacity: 0.5
+	                                }
+	                            }
+	                        }
+	                    },
+		                legend: {
+			                show: true
+		                },
+		                grid: {
+			                hoverable: true
+		                }
+	                });
+	        });
+
+        function labelFormatterGender(label, series) {
+            return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+        }
+    </script>
+{% endblock %}

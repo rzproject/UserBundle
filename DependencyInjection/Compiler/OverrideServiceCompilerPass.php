@@ -32,5 +32,12 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('sonata.user.block.menu');
         $definition->setClass($container->getParameter('rz.user.user.block.menu.class'));
+
+
+        $definition = $container->getDefinition('sonata.user.orm.user_manager');
+        $definition->setClass($container->getParameter('rz.user.manager.user.class'));
+
+        $definition = $container->getDefinition('sonata.user.orm.group_manager');
+        $definition->setClass($container->getParameter('rz.user.manager.group.class'));
     }
 }

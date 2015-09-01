@@ -1,16 +1,26 @@
-<h1>{% block rz_profile_title %}{% trans from 'RzUserBundle' %}rz_profile_title{% endtrans %}{% endblock %}</h1>
-<div class="row row-fluid">
-    <div class="span12">
-        {% for message in app.session.flashbag.get('fos_user_success') %}
-            <div class="alert alert-success">
-                {{ message|trans({}, "FOSUserBundle") }}
-            </div>
-        {% endfor %}
-        {% for message in app.session.flashbag.get('sonata_user_success') %}
-            <div class="alert alert-success">
-                {{ message|trans({}, "RzUserBundle") }}
-            </div>
-        {% endfor %}
+{% block sonata_profile_header %}
+    {% block sonata_page_breadcrumb %}{% endblock %}
+
+    {% block sonata_page_tite  %}
+    <h1>{% block rz_profile_title %}{% trans from 'RzUserBundle' %}rz_profile_title{% endtrans %}{% endblock %}</h1>
+    {% endblock %}
+
+    {% block sonata_page_error_display  %}
+    <div class="row row-fluid">
+        <div class="span12">
+            {% for message in app.session.flashbag.get('fos_user_success') %}
+                <div class="alert alert-success">
+                    {{ message|trans({}, "FOSUserBundle") }}
+                </div>
+            {% endfor %}
+            {% for message in app.session.flashbag.get('sonata_user_success') %}
+                <div class="alert alert-success">
+                    {{ message|trans({}, "RzUserBundle") }}
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
+    {% endblock %}
+
+{% endblock %}
 {% block sonata_profile_content %}{% endblock %}

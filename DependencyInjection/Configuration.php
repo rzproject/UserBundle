@@ -36,6 +36,14 @@ class Configuration implements ConfigurationInterface
         $this->addPasswordStrength($node);
         $this->addResettingSection($node);
         $this->addPasswordExpireSection($node);
+        $this->addLoginLogs($node);
+        $this->addDemographicsLogs($node);
+
+        if (interface_exists('Sonata\ClassificationBundle\Model\CollectionInterface')) {
+            $this->addClassificationClasses($node);
+        } else {
+            $this->addClasses($node);
+        }
         return $treeBuilder;
     }
 
@@ -59,12 +67,6 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The manager type %s is not supported. Please choose one of '.json_encode($supportedManagerTypes))
                     ->end()
                 ->end()
-                ->arrayNode('class')
-                    ->children()
-                        ->scalarNode('group')->cannotBeEmpty()->end()
-                        ->scalarNode('user')->cannotBeEmpty()->end()
-                    ->end()
-                ->end()
                 ->arrayNode('admin')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -77,8 +79,56 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('templates')
                                     ->addDefaultsIfNotSet()
                                     ->children()
+                                        ->scalarNode('user_block')->defaultValue('SonataAdminBundle:Core:user_block.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('add_block')->defaultValue('SonataAdminBundle:Core:add_block.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('layout')->defaultValue('SonataAdminBundle::standard_layout.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('ajax')->defaultValue('SonataAdminBundle::ajax_layout.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('dashboard')->defaultValue('SonataAdminBundle:Core:dashboard.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('search')->defaultValue('SonataAdminBundle:Core:search.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('filter')->defaultValue('SonataAdminBundle:Form:filter_admin_fields.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('show_compare')->defaultValue('SonataAdminBundle:CRUD:show_compare.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('edit')->defaultValue('RzUserBundle:Admin:CRUD/edit.html.twig')->cannotBeEmpty()->end()
-                                        ->scalarNode('history_revision')->defaultValue('RzAdminBundle:CRUD:history_revision.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('acl')->defaultValue('SonataAdminBundle:CRUD:acl.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('history_revision_timestamp')->defaultValue('SonataAdminBundle:CRUD:history_revision_timestamp.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('action')->defaultValue('SonataAdminBundle:CRUD:action.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('select')->defaultValue('SonataAdminBundle:CRUD:list__select.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('list_block')->defaultValue('SonataAdminBundle:Block:block_admin_list.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('search_result_block')->defaultValue('SonataAdminBundle:Block:block_search_result.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('short_object_description')->defaultValue('SonataAdminBundle:Helper:short-object-description.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('delete')->defaultValue('SonataAdminBundle:CRUD:delete.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('batch')->defaultValue('SonataAdminBundle:CRUD:list__batch.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('batch_confirmation')->defaultValue('SonataAdminBundle:CRUD:batch_confirmation.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('inner_list_row')->defaultValue('SonataAdminBundle:CRUD:list_inner_row.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('outer_list_rows_mosaic')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('outer_list_rows_list')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_list.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('outer_list_rows_tree')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('base_list_field')->defaultValue('SonataAdminBundle:CRUD:base_list_field.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('pager_links')->defaultValue('SonataAdminBundle:Pager:links.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('tab_menu_template')->defaultValue('SonataAdminBundle:Core:tab_menu_template.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('knp_menu_template')->defaultValue('SonataAdminBundle:Menu:sonata_menu.html.twig')->cannotBeEmpty()->end()
+                                        /*********************************
+                                         * rzAdmin Added Templates
+                                         *********************************/
+                                        //** table items */
+                                        ->scalarNode('rz_base_list_inner_row_header')->defaultValue('RzAdminBundle:CRUD:base_list_inner_row_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_inner_row_header')->defaultValue('RzAdminBundle:CRUD:list_inner_row_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_base_list_field_header')->defaultValue('RzAdminBundle:CRUD:base_list_field_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_field_header')->defaultValue('RzAdminBundle:CRUD:list_field_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_base_list_batch_header')->defaultValue('RzAdminBundle:CRUD:base_list_batch_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_batch_header')->defaultValue('RzAdminBundle:CRUD:list_batch_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_base_list_select_header')->defaultValue('RzAdminBundle:CRUD:base_list_select_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_select_header')->defaultValue('RzAdminBundle:CRUD:list_select_header.html.twig')->cannotBeEmpty()->end()
+                                        // table actions and other components
+                                        ->scalarNode('rz_list_table_footer')->defaultValue('RzAdminBundle:CRUD:list_table_footer.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_batch')->defaultValue('RzAdminBundle:CRUD:list_table_batch.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_download')->defaultValue('RzAdminBundle:CRUD:list_table_download.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_pager')->defaultValue('RzAdminBundle:CRUD:list_table_pager.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_per_page')->defaultValue('RzAdminBundle:CRUD:list_table_per_page.html.twig')->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -92,14 +142,62 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('templates')
                                     ->addDefaultsIfNotSet()
                                     ->children()
+                                        ->scalarNode('user_block')->defaultValue('SonataAdminBundle:Core:user_block.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('add_block')->defaultValue('SonataAdminBundle:Core:add_block.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('layout')->defaultValue('SonataAdminBundle::standard_layout.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('ajax')->defaultValue('SonataAdminBundle::ajax_layout.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('dashboard')->defaultValue('SonataAdminBundle:Core:dashboard.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('search')->defaultValue('SonataAdminBundle:Core:search.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('filter')->defaultValue('SonataAdminBundle:Form:filter_admin_fields.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('show_compare')->defaultValue('SonataAdminBundle:CRUD:show_compare.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('edit')->defaultValue('RzUserBundle:Admin:CRUD/edit.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('acl')->defaultValue('SonataAdminBundle:CRUD:acl.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('history_revision_timestamp')->defaultValue('SonataAdminBundle:CRUD:history_revision_timestamp.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('action')->defaultValue('SonataAdminBundle:CRUD:action.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('select')->defaultValue('SonataAdminBundle:CRUD:list__select.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('list_block')->defaultValue('SonataAdminBundle:Block:block_admin_list.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('search_result_block')->defaultValue('SonataAdminBundle:Block:block_search_result.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('short_object_description')->defaultValue('SonataAdminBundle:Helper:short-object-description.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('delete')->defaultValue('SonataAdminBundle:CRUD:delete.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('batch')->defaultValue('SonataAdminBundle:CRUD:list__batch.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('batch_confirmation')->defaultValue('SonataAdminBundle:CRUD:batch_confirmation.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('inner_list_row')->defaultValue('SonataAdminBundle:CRUD:list_inner_row.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('outer_list_rows_mosaic')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('outer_list_rows_list')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_list.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('outer_list_rows_tree')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('base_list_field')->defaultValue('SonataAdminBundle:CRUD:base_list_field.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('pager_links')->defaultValue('SonataAdminBundle:Pager:links.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('tab_menu_template')->defaultValue('SonataAdminBundle:Core:tab_menu_template.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('knp_menu_template')->defaultValue('SonataAdminBundle:Menu:sonata_menu.html.twig')->cannotBeEmpty()->end()
+                                        /*********************************
+                                         * rzAdmin Added Templates
+                                         *********************************/
+                                        //** table items */
+                                        ->scalarNode('rz_base_list_inner_row_header')->defaultValue('RzAdminBundle:CRUD:base_list_inner_row_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_inner_row_header')->defaultValue('RzAdminBundle:CRUD:list_inner_row_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_base_list_field_header')->defaultValue('RzAdminBundle:CRUD:base_list_field_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_field_header')->defaultValue('RzAdminBundle:CRUD:list_field_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_base_list_batch_header')->defaultValue('RzAdminBundle:CRUD:base_list_batch_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_batch_header')->defaultValue('RzAdminBundle:CRUD:list_batch_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_base_list_select_header')->defaultValue('RzAdminBundle:CRUD:base_list_select_header.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_select_header')->defaultValue('RzAdminBundle:CRUD:list_select_header.html.twig')->cannotBeEmpty()->end()
+                                        // table actions and other components
+                                        ->scalarNode('rz_list_table_footer')->defaultValue('RzAdminBundle:CRUD:list_table_footer.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_batch')->defaultValue('RzAdminBundle:CRUD:list_table_batch.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_download')->defaultValue('RzAdminBundle:CRUD:list_table_download.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_pager')->defaultValue('RzAdminBundle:CRUD:list_table_pager.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('rz_list_table_per_page')->defaultValue('RzAdminBundle:CRUD:list_table_per_page.html.twig')->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
                         ->end()
                     ->end()
                 ->end()
-
                 // Original code from the FOS User Bundle
                 ->arrayNode('profile')
                     ->addDefaultsIfNotSet()
@@ -314,6 +412,93 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('force_password_change_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\ForcePasswordUpdateListener')->end()
                                 ->scalarNode('days_to_expire')->defaultValue(90)->end()
                                 ->scalarNode('redirect_route')->defaultValue('fos_user_change_password')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+
+    private function addClasses(ArrayNodeDefinition $node) {
+        $node
+            ->children()
+            ->arrayNode('class')
+                    ->children()
+                        ->scalarNode('group')->cannotBeEmpty()->end()
+                        ->scalarNode('user')->cannotBeEmpty()->end()
+                        ->scalarNode('user_authentication_logs')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('class_manager')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('user')->defaultValue('Rz\\UserBundle\\Entity\\UserManager')->end()
+                        ->scalarNode('group')->defaultValue('Sonata\\UserBundle\\Entity\\GroupManager')->end()
+                        ->scalarNode('user_authentication_logs')->defaultValue('Rz\\UserBundle\\Entity\\UserAuthenticationLogsManager')->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addClassificationClasses(ArrayNodeDefinition $node) {
+
+        $node
+            ->children()
+            ->arrayNode('class')
+                ->children()
+                    ->scalarNode('group')->cannotBeEmpty()->end()
+                    ->scalarNode('user')->cannotBeEmpty()->end()
+                    ->scalarNode('user_authentication_logs')->cannotBeEmpty()->end()
+                    ->scalarNode('user_age_demographics')->defaultValue('Application\\Sonata\\UserBundle\\Entity\\UserAgeDemographics')->end()
+                    ->scalarNode('collection')->defaultValue('Application\\Sonata\\ClassificationBundle\\Entity\\Collection')->end()
+                ->end()
+            ->end()
+            ->arrayNode('class_manager')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('user')->defaultValue('Rz\\UserBundle\\Entity\\UserManager')->end()
+                    ->scalarNode('group')->defaultValue('Sonata\\UserBundle\\Entity\\GroupManager')->end()
+                    ->scalarNode('user_authentication_logs')->defaultValue('Rz\\UserBundle\\Entity\\UserAuthenticationLogsManager')->end()
+                    ->scalarNode('user_age_demographics')->defaultValue('Rz\\UserBundle\\Entity\\UserAgeDemographicsManager')->end()
+                ->end()
+            ->end()
+            ->end();
+    }
+
+    private function addLoginLogs(ArrayNodeDefinition $node) {
+         $node
+            ->children()
+                ->arrayNode('user_authentication_logs')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('enabled')->defaultValue(true)->end()
+                        ->arrayNode('settings')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('authentication_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\AuthenticationListener')->end()
+                                ->scalarNode('logout_handler_class')->defaultValue('Rz\\UserBundle\\Component\\Authentication\\UserLogoutHandler')->end()
+
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addDemographicsLogs(ArrayNodeDefinition $node) {
+         $node
+            ->children()
+                ->arrayNode('user_age_demographics')
+                    ->addDefaultsIfNotSet()
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('enabled')->defaultValue(true)->end()
+                        ->arrayNode('settings')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('doctrine_listener_class')->defaultValue('Rz\\UserBundle\\Event\\Listener\\UserAgeDemographicsListener')->end()
                             ->end()
                         ->end()
                     ->end()

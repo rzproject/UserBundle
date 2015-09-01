@@ -14,6 +14,7 @@ namespace Rz\UserBundle\Form\Type;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Sonata\AdminBundle\Admin\Pool;
@@ -119,6 +120,15 @@ class SecurityRolesType extends AbstractTypeExtension
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $roles = array();
         $rolesReadOnly = array();
 
@@ -164,38 +174,42 @@ class SecurityRolesType extends AbstractTypeExtension
             }
         }
 
+        $optionalOptions = array('selectpicker_enabled',
+            'selectpicker_data_style',
+            'selectpicker_title',
+            'selectpicker_selected_text_format',
+            'selectpicker_show_tick',
+            'selectpicker_data_width',
+            'selectpicker_data_size',
+            'selectpicker_disabled',
+            'selectpicker_dropup',
+            'select2',
+            'chosen_data_placeholder',
+            'chosen_no_results_text',
+            'multiselect_enabled',
+            'multiselect_search_enabled');
+
+        if (method_exists($resolver, 'setDefined')) {
+            $resolver->setDefined($optionalOptions);
+        } else {
+            // To keep Symfony <2.6 support
+            $resolver->setOptional($optionalOptions);
+        }
+
         $resolver->setDefaults(array(
-                                   'choices' =>  $roles,
-                                   'read_only_choices' => function (Options $options) use ($rolesReadOnly) {
-                                       return empty($options['choices']) ? $rolesReadOnly : array();
-                                   },
-                                   'data_class' => null,
-                                   'select2' => false,
-                                   'selectpicker_enabled' => false,
-                                   'multiselect_enabled' => false,
-                                   'multiselect_search_enabled' => true,
-                                   'expanded' => false,
-                                   'compound' => false,
-                                   'error_bubbling'=> true
-                               ));
-
-        $resolver->setOptional(array('selectpicker_enabled',
-                                   'selectpicker_data_style',
-                                   'selectpicker_title',
-                                   'selectpicker_selected_text_format',
-                                   'selectpicker_show_tick',
-                                   'selectpicker_data_width',
-                                   'selectpicker_data_size',
-                                   'selectpicker_disabled',
-                                   'selectpicker_dropup',
-                                   'select2',
-                                   'chosen_data_placeholder',
-                                   'chosen_no_results_text',
-                                   'multiselect_enabled',
-                                   'multiselect_search_enabled',
-                               )
-        );
-
+            'choices' =>  $roles,
+            'read_only_choices' => function (Options $options) use ($rolesReadOnly) {
+                return empty($options['choices']) ? $rolesReadOnly : array();
+            },
+            'data_class' => null,
+            'select2' => false,
+            'selectpicker_enabled' => false,
+            'multiselect_enabled' => false,
+            'multiselect_search_enabled' => true,
+            'expanded' => false,
+            'compound' => false,
+            'error_bubbling'=> true
+        ));
     }
 
     private function humanize($text)

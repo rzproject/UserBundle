@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <parameters>
+        <parameter key="rz.user.manager.user_authentication_logs.class">Rz\UserBundle\Entity\UserAuthenticationLogsManager</parameter>
+
+    </parameters>
+
+    <services>
+        <service id="rz.user.manager.user_authentication_logs" class="%rz.user.manager.user_authentication_logs.class%">
+            <argument>%rz.user.manager.user_authentication_logs.entity%</argument>
+            <argument type="service" id="doctrine" />
+        </service>
+
+    </services>
+
+</container>

@@ -5,13 +5,14 @@
 namespace Rz\UserBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use FOS\UserBundle\Model\UserInterface;
+use Rz\UserBundle\RzUserEvents;
+use Rz\UserBundle\Event\RzUserEvent;
 
 class RegistrationSonataUserController extends ContainerAware
 {
@@ -29,9 +30,9 @@ class RegistrationSonataUserController extends ContainerAware
         $form = $this->container->get('rz.user.registration.form');
         $formHandler = $this->container->get('rz.user.registration.form.handler');
         $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
-
         $process = $formHandler->process($confirmationEnabled);
         if ($process) {
+
             $user = $form->getData();
 
             $authUser = false;
@@ -48,7 +49,12 @@ class RegistrationSonataUserController extends ContainerAware
             $response = new RedirectResponse($this->container->get('router')->generate($route));
 
             if ($authUser) {
+                $dispatcher = $this->container->get('event_dispatcher');
+                $event = new RzUserEvent();
+                $event->setUser($user);
+                $dispatcher->dispatch(RzUserEvents::BEFORE_REGISTRATION_AUTH, $event);
                 $this->authenticateUser($user, $response);
+                $dispatcher->dispatch(RzUserEvents::AFTER_REGISTRATION_AUTH, $event);
             }
 
             return $response;
@@ -73,7 +79,6 @@ class RegistrationSonataUserController extends ContainerAware
         }
 
         $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-
         return $this->container->get('templating')->renderResponse($template['rz_user.template.registration_check_email'], array('user' => $user));
     }
 
@@ -115,8 +120,7 @@ class RegistrationSonataUserController extends ContainerAware
         }
 
         $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-
-        return $this->container->get('templating')->renderResponse('RzUserBundle:Registration:confirmed.html.html', array('user' => $user));
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.registration_confirmed'], array('user' => $user));
     }
 
     /**

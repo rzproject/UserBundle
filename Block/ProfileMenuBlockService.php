@@ -4,12 +4,13 @@ namespace Rz\UserBundle\Block;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-use Sonata\AdminBundle\Validator\ErrorElement;
+use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\MenuBlockService;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\UserBundle\Menu\ProfileMenuBuilder;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -50,12 +51,9 @@ class ProfileMenuBlockService extends MenuBlockService
         return 'User Profile Menu';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
-        parent::setDefaultSettings($resolver);
+        parent::configureSettings($resolver);
         $resolver->setDefaults(array(
                                    'cache_policy' => 'private',
                                    'menu_template' => "RzUserBundle:Profile:block_side_menu_template.html.twig",
