@@ -3,7 +3,13 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <mapped-superclass name="Rz\UserBundle\Entity\User">
-        <field name="passwordChangedAt"    type="datetime"   column="password_changed_at" nullable="true"/>
-    </mapped-superclass>
+
+    <entity name="Application\Sonata\UserBundle\Entity\Group" table="fos_user_group">
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+    </entity>
+
 </doctrine-mapping>
