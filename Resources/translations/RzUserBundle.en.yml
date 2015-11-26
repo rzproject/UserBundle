@@ -60,7 +60,7 @@ registration:
             To finish activating your account - please visit %confirmationUrl%
 
             Regards,
-            the Team.
+            The Team.
     validation:
       firstname_blank: Firstname is required.
       length_short: Password is too short
@@ -90,7 +90,7 @@ resetting:
             To reset your password - please visit %confirmationUrl%
 
             Regards,
-            the Team.
+            The Team.
 
 # Global strings
 layout:
