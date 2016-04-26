@@ -66,7 +66,8 @@ class UserAuthenticationLogsGraphBlockService extends BaseBlockService
                         'admin'  => 'admin'
                     )
                 )),
-            )
+            ),
+            'attr'=>array('class'=>'rz-immutable-container')
         ));
     }
 

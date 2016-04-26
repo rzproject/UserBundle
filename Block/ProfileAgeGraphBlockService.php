@@ -67,7 +67,8 @@ class ProfileAgeGraphBlockService extends BaseBlockService
                         'admin'  => 'admin'
                     )
                 )),
-            )
+            ),
+            'attr'=>array('class'=>'rz-immutable-container')
         ));
     }
 

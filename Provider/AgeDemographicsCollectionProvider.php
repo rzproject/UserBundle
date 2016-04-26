@@ -36,7 +36,7 @@ class AgeDemographicsCollectionProvider extends BaseCollectionProvider
     {
         $formMapper
             ->with('Settings', array('class' => 'col-md-6'))
-                ->add('settings', 'sonata_type_immutable_array', array('keys' => $this->getFormSettingsKeys($formMapper)))
+                ->add('settings', 'sonata_type_immutable_array', array('keys' => $this->getFormSettingsKeys($formMapper), 'attr'=>array('class'=>'rz-immutable-container')))
             ->end();
     }
 

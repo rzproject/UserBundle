@@ -22,7 +22,7 @@ class AdminSecuritySonataUserController extends AdminSecurityController
 
         if ($user instanceof UserInterface) {
             $this->container->get('session')->getFlashBag()->set('sonata_user_error', 'sonata_user_already_authenticated');
-            $url = $this->container->get('router')->generate('sonata_user_profile_show');
+            $url = $this->generateUrl('sonata_admin_dashboard');
             return new RedirectResponse($url);
         }
 
