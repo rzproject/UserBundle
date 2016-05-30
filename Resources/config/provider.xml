@@ -8,7 +8,7 @@
     </parameters>
 
     <services>
-        <service id="rz.user.provider.collection.age_demographics" class="%rz.user.provider.collection.age_demographics.class%" scope="prototype">
+        <service id="rz.user.provider.collection.age_demographics" class="%rz.user.provider.collection.age_demographics.class%">
             <tag name="rz_classification.provider.collection" />
             <argument>rz_classification.provider.collection.default</argument>
         </service>
