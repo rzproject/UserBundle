@@ -52,7 +52,8 @@ class UserManager extends BaseUserManager
 
         $qb = $this->repository->createQueryBuilder('u');
         $em = $qb->getEntityManager();
-        $query = $em->createQuery("SELECT COUNT(u.createdAt) as registrationCount, DATE_FORMAT(u.createdAt, '%Y-%m-%d') as registerDate  FROM ".$this->class." u WHERE u.createdAt >= '".$dateFrom."' AND u.createdAt <= '".$dateTo."' GROUP BY registerDate ORDER BY u.createdAt ASC")
+        $sql = "SELECT COUNT(u.createdAt) as registrationCount, DATE_FORMAT(u.createdAt, '%Y-%m-%d') as registerDate  FROM ".$this->class." u WHERE u.createdAt >= '".$dateFrom."' AND u.createdAt <= '".$dateTo."' GROUP BY registerDate ORDER BY u.createdAt ASC";
+		$query = $em->createQuery($sql)
                     ->setMaxResults($resultCount);
 
         try {
