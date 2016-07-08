@@ -48,7 +48,7 @@ class UserManager extends BaseUserManager
         }
     }
 	
-	public function fetchRegistrationCount2($resultCount = 5) {
+	public function fetchRegistrationCount2($resultCount = 5,$dateFrom=null,$dateTo=null) {
 
         $qb = $this->repository->createQueryBuilder('u');
         $em = $qb->getEntityManager();
