@@ -17,8 +17,8 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
      */
     public function requestAction()
     {
-        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request']);
+        $template = $this->container->get('rz_core.template_loader')->getTemplates();
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.request']);
     }
 
     /**
@@ -27,32 +27,32 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
     public function sendEmailAction()
     {
         $username = $this->container->get('request')->request->get('username');
-        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+        $template = $this->container->get('rz_core.template_loader')->getTemplates();
         /** @var $user UserInterface */
         $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'invalid_username', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.request'], array('account_error'=>'invalid_username', 'username' => $username));
         }
 
         if(!$user->isEnabled()) {
-            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_disabled', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.request'], array('account_error'=>'account_disabled', 'username' => $username));
         }
 
         if($user->isLocked()) {
-            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_locked', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.request'], array('account_error'=>'account_locked', 'username' => $username));
         }
 
         if($user->isExpired() || ($user->getExpiresAt() && $user->getExpiresAt()->diff(new \DateTime()) >= 0)) {
-            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_expired', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.request'], array('account_error'=>'account_expired', 'username' => $username));
         }
 
         if($user->isCredentialsExpired() || ($user->getCredentialsExpireAt() && $user->getCredentialsExpireAt()->diff(new \DateTime()) >= 0)) {
-            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_request'], array('account_error'=>'account_credentials_expired', 'username' => $username));
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.request'], array('account_error'=>'account_credentials_expired', 'username' => $username));
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
-            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_password_already_requested']);
+            return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.password_already_requested'], array('username' => $username));
         }
 
         if (null === $user->getConfirmationToken() || '' == $user->getConfirmationToken()) {
@@ -66,7 +66,7 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
         $user->setPasswordRequestedAt(new \DateTime());
         $this->container->get('fos_user.user_manager')->updateUser($user);
 
-        return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_check_email'));
+        return new RedirectResponse($this->container->get('router')->generate('sonata_user_resetting_check_email'));
     }
 
     /**
@@ -80,11 +80,11 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
 
         if (empty($email)) {
             // the user does not come from the sendEmail action
-            return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_request'));
+            return new RedirectResponse($this->container->get('router')->generate('sonata_user_resetting_request'));
         }
 
-        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting_check_email'], array(
+        $template = $this->container->get('rz_core.template_loader')->getTemplates();
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.check_email'], array(
             'email' => $email,
         ));
     }
@@ -101,7 +101,7 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
         }
 
         if (!$user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
-            return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_request'));
+            return new RedirectResponse($this->container->get('router')->generate('sonata_user_resetting_request'));
         }
 
         $form = $this->container->get('rz.user.resetting.form');
@@ -110,25 +110,37 @@ class ResettingSonataUserController extends ResettingFOSUser1Controller
 
         if ($process) {
             if($user->isEnabled() &&
-               !$user->isLocked() &&
-               !($user->isCredentialsExpired() || ($user->getCredentialsExpireAt() && $user->getCredentialsExpireAt()->diff(new \DateTime()) >= 0))  &&
-               !($user->isExpired() || ($user->getExpiresAt() && $user->getExpiresAt()->diff(new \DateTime()) >= 0)) ) {
+                !$user->isLocked() &&
+                !($user->isCredentialsExpired() || ($user->getCredentialsExpireAt() && $user->getCredentialsExpireAt()->diff(new \DateTime()) >= 0))  &&
+                !($user->isExpired() || ($user->getExpiresAt() && $user->getExpiresAt()->diff(new \DateTime()) >= 0)) ) {
 
                 $this->setFlash('rz_user_success', 'resetting.flash.success');
                 $response = new RedirectResponse($this->getRedirectionUrl($user));
                 $this->authenticateUser($user, $response);
             } else {
-                $response = new RedirectResponse($this->container->get('router')->generate('fos_user_security_login'));
+                $response = new RedirectResponse($this->container->get('router')->generate('sonata_user_security_login'));
                 $this->setFlash('rz_user_error', 'account.flash.error');
             }
             return $response;
         }
 
-        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
+        $template = $this->container->get('rz_core.template_loader')->getTemplates();
 
-        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting'], array(
+        return $this->container->get('templating')->renderResponse($template['rz_user.template.resetting.form'], array(
             'token' => $token,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * Generate the redirection url when the resetting is completed.
+     *
+     * @param \FOS\UserBundle\Model\UserInterface $user
+     *
+     * @return string
+     */
+    protected function getRedirectionUrl(UserInterface $user)
+    {
+        return $this->container->get('router')->generate('sonata_user_profile_show');
     }
 }

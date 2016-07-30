@@ -1,31 +1,23 @@
 {% trans_default_domain 'RzUserBundle' %}
-<div class="row-fluid">
-    <div class="span6 offset3">
-        <div class="sonata-user-reset-password">
-            {% if invalid_username is defined %}
-                <div class="form-errors">
-                    <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
-                </div>
-            {% endif %}
-            <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="contact-form contact-form-register" novalidate>
-                {{ form_errors(form) }}
-                <p class="form_info">{{ 'form.label_new_password'|trans({}, 'RzUserBundle') }}</p>
-                {{ form_widget(form['new'].first) }}
-                <div class="form-errors">
-                    {{ form_errors(form['new'].first) }}
-                </div>
-
-                <p class="form_info">{{ 'form.label_new_password_confirmation'|trans({}, 'RzUserBundle') }}</p>
-                {{ form_widget(form['new'].second) }}
-                <div class="form-errors">
-                    {{ form_errors(form['new'].second) }}
-                </div>
-
-                {{ form_rest(form) }}
-                <div class="registration-submit">
-                    <input class="btn btn-rzcms-theme btn-register" type="submit" value="{{ 'resetting.reset.submit'|trans({}, 'RzUserBundle') }}" />
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="register-box-body">
+	<p class="login-box-msg">{{ 'security.resettings.change_password' | trans({}, 'SonataUserBundle') }}</p>
+	<form action="{{ path('sonata_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" role="form" novalidate="novalidate">
+		{{ form_errors(form) }}
+		<div class="form-group has-feedback{% if form.new.first.vars.errors|length %} has-error{% endif %}">
+			{{ form_widget(form.new.first) }}<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+			{{ form_errors(form.new.first) }}
+		</div>
+		<div class="form-group has-feedback{% if form.new.second.vars.errors|length %} has-error{% endif %}">
+			{{ form_widget(form.new.second) }}<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+			{{ form_errors(form.new.second) }}
+		</div>
+	    {{ form_rest(form) }}
+		<div class="row">
+			<!-- /.col -->
+			<div class="col-xs-12">
+				<button type="submit" class="btn btn-primary pull-right">{{ 'resetting.reset.submit'|trans({}, 'SonataUserBundle') }}</button>
+			</div>
+			<!-- /.col -->
+		</div>
+	</form>
 </div>

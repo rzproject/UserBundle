@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="" >
+        <body>
+            <trans-unit id="breadcrumb.profile.link_change_password">
+                <source>breadcrumb.profile.link_change_password</source>
+                <target>Change Password</target>
+            </trans-unit>
+            <trans-unit id="form.label_new_password">
+                <source>form.label_new_password</source>
+                <target>Password</target>
+            </trans-unit>
+            <trans-unit id="form.label_new_password_confirmation">
+                <source>form.label_new_password_confirmation</source>
+                <target>Verify New Password</target>
+            </trans-unit>
+            <trans-unit id="form.current_password">
+                <source>form.current_password</source>
+                <target>Current Password</target>
+            </trans-unit>
+            <trans-unit id="profile_about_me">
+                <source>profile_about_me</source>
+                <target>About Me</target>
+            </trans-unit>
+            <trans-unit id="profile_about_me_details">
+                <source>profile_about_me_details</source>
+                <target>Profile</target>
+            </trans-unit>
+            <trans-unit id="profile_about_me_created_at">
+                <source>profile_about_me_created_at</source>
+                <target>Join Date</target>
+            </trans-unit>
+             <trans-unit id="profile_about_me_last_login">
+                 <source>profile_about_me_last_login</source>
+                 <target>Last Login</target>
+             </trans-unit>
+             <trans-unit id="breadcrumb.profile.link_edit_profile">
+                 <source>breadcrumb.profile.link_edit_profile</source>
+                 <target>Edit Profile</target>
+             </trans-unit>
+             <trans-unit id="sonata_user_submit.submit">
+                 <source>sonata_user_submit.submit</source>
+                 <target>Update Profile</target>
+             </trans-unit>
+             <trans-unit id="registration.submit">
+                 <source>registration.submit</source>
+                 <target>Register</target>
+             </trans-unit>
+             <trans-unit id="form.terms_accepted">
+                 <source>form.terms_accepted</source>
+                 <target> I agree to the terms.</target>
+             </trans-unit>
+             <trans-unit id="form.label_gender_select_one">
+                 <source>form.label_gender_select_one</source>
+                 <target>-Select Gender-</target>
+             </trans-unit>
+             <trans-unit id="form.label_date_of_birth">
+                 <source>form.label_date_of_birth</source>
+                 <target>Brithdate</target>
+             </trans-unit>
+             <trans-unit id="message.terms_accepted">
+                 <source>message.terms_accepted</source>
+                 <target>You must agree to the terms.</target>
+             </trans-unit>
+              <trans-unit id="user_registration_logo">
+                  <source>user_registration_logo</source>
+                  <target><![CDATA[<b>Sandbox</b>]]></target>
+              </trans-unit>
+              <trans-unit id="rz_user.validation.gender_blank">
+                  <source>rz_user.validation.gender_blank</source>
+                  <target>Gender required</target>
+              </trans-unit>
+              <trans-unit id="rz_user.validation.date_of_birth_blank">
+                  <source>rz_user.validation.date_of_birth_blank</source>
+                  <target>Brithdate required</target>
+              </trans-unit>
+              <trans-unit id="registration.login">
+                  <source>registration.login</source>
+                  <target>Already have and account. Log me in!</target>
+              </trans-unit>
+              <trans-unit id="title_user_authentication">
+                  <source>title_user_authentication</source>
+                  <target><![CDATA[<b>Sandbox</b>]]></target>
+              </trans-unit>
+              <trans-unit id="title_user_resetting">
+                  <source>title_user_resetting</source>
+                  <target><![CDATA[<b>Sandbox</b>]]></target>
+              </trans-unit>
+              <trans-unit id="sub_title_user_authentication">
+                  <source>sub_title_user_authentication</source>
+                  <target>Sign in to start your session</target>
+              </trans-unit>
+              <trans-unit id="security.login.remember_me">
+                  <source>security.login.remember_me</source>
+                  <target>Remember Me</target>
+              </trans-unit>
+              <trans-unit id="security.login.submit">
+                  <source>security.login.submit</source>
+                  <target>Login</target>
+              </trans-unit>
+              <trans-unit id="security.login.forgot_password">
+                  <source>security.login.forgot_password</source>
+                  <target>I forgot my password</target>
+              </trans-unit>
+              <trans-unit id="security.login.register">
+                  <source>security.login.register</source>
+                  <target>I don't have an account.</target>
+              </trans-unit>
+              <trans-unit id="security.resetting.title">
+                  <source>security.resetting.title</source>
+                  <target>Password Reset Request</target>
+              </trans-unit>
+              <trans-unit id="security.registration.title">
+                  <source>security.registration.title</source>
+                  <target>Registration Confirmation</target>
+              </trans-unit>
+              <trans-unit id="resetting.request.invalid_username">
+                  <source>resetting.request.invalid_username</source>
+                  <target><![CDATA[The username or email address <b>"%username%"</b> does not exist.]]></target>
+              </trans-unit>
+              <trans-unit id="resetting.request.account_disabled">
+                  <source>resetting.request.account_disabled</source>
+                  <target><![CDATA[Account for <b>"%username%"</b> does is disabled.]]></target>
+              </trans-unit>
+              <trans-unit id="resetting.request.account_locked">
+                  <source>resetting.request.account_locked</source>
+                  <target><![CDATA[Account for <b>"%username%"</b> is locked.]]></target>
+              </trans-unit>
+              <trans-unit id="resetting.request.account_expired">
+                  <source>resetting.request.account_expired</source>
+                  <target><![CDATA[Account for <b>"%username%"</b> is expired.]]></target>
+              </trans-unit>
+              <trans-unit id="resetting.request.account_credentials_expired">
+                  <source>resetting.request.account_credentials_expired</source>
+                  <target><![CDATA[Credential of account for <b>"%username%"</b> is expired.]]></target>
+              </trans-unit>
+              <trans-unit id="user_resetting_password_already_reqested">
+                  <source>user_resetting_password_already_reqested</source>
+                  <target><![CDATA[<p style="color:#fff">Password reset for <b>"%username%"</b> was already requested. Please check your email for reset instructions.</p>]]></target>
+              </trans-unit>
+              <trans-unit id="resetting.email.appname">
+                  <source>resetting.email.appname</source>
+                  <target>Sandbox</target>
+              </trans-unit>
+              <trans-unit id="registration.email.appname">
+                  <source>registration.email.appname</source>
+                  <target>Sandbox</target>
+              </trans-unit>
+              <trans-unit id="resetting.email.title">
+                  <source>resetting.email.title</source>
+                  <target><![CDATA[Password Reset Request]]></target>
+              </trans-unit>
+              <trans-unit id="registration.email.title">
+                  <source>registration.email.title</source>
+                  <target><![CDATA[You’re on your way to super-productivity and beyond!]]></target>
+              </trans-unit>
+              <trans-unit id="resetting.email.message_1">
+                  <source>resetting.email.message_1</source>
+                  <target><![CDATA[<p>Hi %username%,</p><p style="line-height:160%">You recently requested to reset your password for %appname% account. Click on the button below to reset it.</p>]]></target>
+              </trans-unit>
+              <trans-unit id="registration.email.message_1">
+                  <source>registration.email.message_1</source>
+                  <target><![CDATA[<p>Hi %username%,</p><p style="line-height:160%">Just one more step! Just click on the big button below to activate your account!</p>]]></target>
+              </trans-unit>
+              <trans-unit id="resetting.email.reset_button">
+                  <source>resetting.email.reset_button</source>
+                  <target>Reset Password</target>
+              </trans-unit>
+              <trans-unit id="registration.email.confirm">
+                  <source>registration.email.confirm</source>
+                  <target>Activate Account!</target>
+              </trans-unit>
+              <trans-unit id="resetting.email.administrator">
+                  <source>resetting.email.administrator</source>
+                  <target>Web Master</target>
+              </trans-unit>
+              <trans-unit id="resetting.email.message_2">
+                  <source>resetting.email.message_2</source>
+                  <target>
+                      <![CDATA[<p style="line-height:160%">If you did not request a password reset, please ignore this email or reply to let us know. This password reset is only valid until %ttl% minutes.</p>
+                               <p style="line-height:160%">Thanks,</p>
+                               <p style="line-height:160%">%administrator%</p>]]>
+                  </target>
+              </trans-unit>
+              <trans-unit id="registration.email.message_2">
+                  <source>registration.email.message_2</source>
+                  <target>This email was sent to you becouse we want to make the world a better place.</target>
+              </trans-unit>
+              <trans-unit id="resetting.email.message_3">
+                  <source>resetting.email.message_3</source>
+                  <target>
+                      <![CDATA[<p style="line-height:160%"><b style="color: #333333;">P.S.</b> We also love hearing from you and helping you with any issues you have. Please reply to this email if you want to ask questions or just say hi.</p>]]>
+                  </target>
+              </trans-unit>
+              <trans-unit id="resetting.email.message_4">
+                  <source>resetting.email.message_4</source>
+                  <target>
+                      <![CDATA[Have a question? <a href="mailto:%email%" target="_blank" style="color: #127DB3; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;">%email%</a></p>]]>
+                  </target>
+              </trans-unit>
+              <trans-unit id="resetting.email.message_5">
+                  <source>resetting.email.message_5</source>
+                  <target>This email was sent to you becouse we want to make the world a better place.</target>
+              </trans-unit>
+              <trans-unit id="security.resettings.change_password">
+                  <source>security.resettings.change_password</source>
+                  <target>Password Reset</target>
+              </trans-unit>
+              <trans-unit id="resetting.reset.submit">
+                  <source>resetting.reset.submit</source>
+                  <target>Reset Password</target>
+              </trans-unit>
+              <trans-unit id="gender_total">
+                  <source>gender_total</source>
+                  <target>TOTAL</target>
+              </trans-unit>
+              <trans-unit id="block_user_authentication_logs_stats_title">
+                  <source>block_user_authentication_logs_stats_title</source>
+                  <target>Today's Total Logged User</target>
+              </trans-unit>
+              <trans-unit id="block_user_authentication_logs_title">
+                  <source>block_user_authentication_logs_title</source>
+                  <target>Recent User Logins</target>
+              </trans-unit>
+              <trans-unit id="block_title_profile_gender">
+                  <source>block_title_profile_gender</source>
+                  <target>User Gender</target>
+              </trans-unit>
+              <trans-unit id="block_title_user_authentication_logs">
+                  <source>block_title_user_authentication_logs</source>
+                  <target>Recent User Logins</target>
+              </trans-unit>
+            <trans-unit id="block_title_user_age_demographics">
+                <source>block_title_user_age_demographics</source>
+                <target>User Age</target>
+            </trans-unit>
+            <trans-unit id="block_auth_log_x_axis_label">
+                <source>block_auth_log_x_axis_label</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="block_auth_log_y_axis_label">
+                <source>block_auth_log_y_axis_label</source>
+                <target>Logs</target>
+            </trans-unit>
+            <trans-unit id="block_age_demographics_x_axis_label">
+                <source>block_age_demographics_x_axis_label</source>
+                <target>Age</target>
+            </trans-unit>
+            <trans-unit id="block_age_demographics_y_axis_label">
+                <source>block_age_demographics_y_axis_label</source>
+                <target>User Count</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

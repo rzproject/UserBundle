@@ -1,7 +1,15 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% trans_default_domain 'SonataUserBundle' %}
 
-{% trans_default_domain 'FOSUserBundle' %}
-
-{% block fos_user_content %}
-    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
-{% endblock fos_user_content %}
+<div class="register-logo">
+	<b>{{ "registration.email.appname" | trans({}, 'SonataUserBundle')}}</b>
+</div>
+<div class="register-box-body">
+	<p class="login-box-msg">{{ 'security.registration.title'|trans({}, 'SonataUserBundle') }}</p>
+	<div class="help-block text-center">
+		<img style="width: 300px;" src="{{  asset('bundles/rzuser/img/default-email/hero-wide3.png') }}" alt="User Image">
+	</div>
+	<div class="help-block text-center">
+		<b><p>{{ 'registration.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}</p></b>
+	</div>
+</div>
+<br>

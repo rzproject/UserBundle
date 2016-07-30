@@ -1,42 +1,53 @@
-{% extends rz_admin_get_template('rz_user.template.layout') %}
-
-{% trans_default_domain 'RzUserBundle' %}
+{% extends "RzUserBundle::layout.html.twig" %}
 
 
-{% block rz_user_breadcrumb %}
-    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.profile_login_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
-{% endblock %}
-
-
-{% block rz_user_title %}<h1>Login</h1>{% endblock %}
 {% block rz_user_header_content %}{% endblock %}
-{% block rz_user_message %}{% endblock rz_user_message %}
-
 {% block fos_user_content %}
-{#<script src="{{ asset('bundles/rzuser/js/rz/login-form.js') }}" type="text/javascript"></script>#}
-<div class="row-fluid">
-    <div class="span4 offset4">
-        {% if error %}
-            <div class="alert alert-danger alert-login">
-                {{ error.messageKey|trans(error.messageData) }}
-            </div>
-        {% endif %}
-        <form class="contact-form" action="{{ path("fos_user_security_check") }}" method="post">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-            <p class="form_info">{{ 'security.login.username'|trans }} <span class="required">*</span></p>
-            <input class="span12" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-            <p class="form_info">{{ 'security.login.password'|trans }} <span class="required">*</span></p>
-            <input class="span12" type="password" id="password" name="_password" required="required" />
-            <div class="remember span12">
-                <input class='icheck-me' data-skin="square" data-color="aero" id="remember" type="checkbox" id="remember_me" name="_remember_me" value="on"/> <label> {{ 'security.login.remember_me'|trans }}</label>
-                <a class="forgot-password" href="{{ path('fos_user_resetting_request') }}">{{ 'security.login.forgotten_password'|trans({}, 'RzUserBundle') }}</a>
-            </div>
-            {{ block('action_buttons') }}
-        </form>
-    </div>
-</div>
-{% endblock fos_user_content %}
+	<div class="login-logo">
+		{{ 'title_user_authentication'|trans({}, 'SonataUserBundle')| raw }}
+	</div>
+	<div class="login-box-body">
+		<p class="login-box-msg">{{ 'sub_title_user_authentication'|trans({}, 'SonataUserBundle')| raw }}</p>
+		{% block sonata_user_login %}
+			{% block sonata_user_login_error %}
+				{% if error %}
+					<div class="alert alert-danger alert-error">{{ error|trans({}, 'SonataUserBundle') }}</div>
+				{% endif %}
+			{% endblock %}
 
-{% block action_buttons %}
-    <input class="btn btn-rzcms-theme span12" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-{% endblock action_buttons %}
+			{% block sonata_user_login_form %}
+				<form action="{{ path("sonata_user_security_check") }}" method="post" role="form" autocomplete="off">
+
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+
+					<div class="form-group has-feedback{% if error|length %} has-error{% endif %}">
+						<input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'security.login.username'|trans({}, 'SonataUserBundle') }}"/><span class="glyphicon glyphicon-user form-control-feedback"></span>
+					</div>
+
+					<div class="form-group has-feedback{% if error|length %} has-error{% endif %}">
+						<input type="password" class="form-control" id="password" name="_password" required="required" placeholder="{{ 'security.login.password'|trans({}, 'SonataUserBundle') }}"/><span class="glyphicon glyphicon-lock form-control-feedback"></span>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-8">
+							<div class="checkbox icheck">
+								<label class="" for="remember_me">
+									<div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;">
+										<input type="checkbox" id="remember_me" name="_remember_me" value="on"/></div> {{ 'security.login.remember_me'|trans({}, 'SonataUserBundle') }}
+								</label>
+							</div>
+						</div>
+						<!-- /.col -->
+						<div class="col-xs-4">
+							<button type="submit" class="btn btn-primary btn-block btn-flat"  id="_submit" name="_submit" >{{ 'security.login.submit'|trans({}, 'SonataUserBundle') }}</button>
+						</div>
+						<!-- /.col -->
+					</div>
+				</form>
+			{% endblock %}
+
+			<a href="{{ path("sonata_user_resetting_request") }}">{{ 'security.login.forgot_password'|trans({}, 'SonataUserBundle')  }}</a><br>
+			<a href="{{ path("sonata_user_registration_register") }}" class="text-center">{{ 'security.login.register'|trans({}, 'SonataUserBundle')  }}</a>
+		{% endblock %}
+	</div>
+{% endblock fos_user_content %}

@@ -8,7 +8,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Rz\UserBundle\Model\PasswordExpireConfigManagerInterface;
+use Rz\UserBundle\Model\ConfigManagerInterface;
 
 class InteractiveLoginListener
 {
@@ -16,7 +16,7 @@ class InteractiveLoginListener
     protected $configManager;
     protected $session;
 
-    public function __construct(Session $session, UserManagerInterface $userManager, PasswordExpireConfigManagerInterface $configManager)
+    public function __construct(Session $session, UserManagerInterface $userManager, ConfigManagerInterface $configManager)
     {
         $this->session = $session;
         $this->userManager = $userManager;
@@ -27,8 +27,6 @@ class InteractiveLoginListener
     {
         $user = $event->getAuthenticationToken()->getUser();
         if ($user instanceof UserInterface) {
-
-
             // default FOS security checks
             if($user->getExpiresAt()) {
                 $daysToExpire = $user->getExpiresAt()->diff(new \DateTime());

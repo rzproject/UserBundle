@@ -1,81 +1,90 @@
 <?php
 
-
-
 namespace Rz\UserBundle\Event\Listener;
 
-use Sonata\CoreBundle\Model\ManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Sonata\CoreBundle\Model\ManagerInterface;
 use Sonata\UserBundle\Model\UserInterface;
-
 
 class UserAgeDemographicsListener
 {
     protected $collectionManager;
     protected $userAgeDemographicsManager;
     protected $enabled;
+    protected $context;
+    protected $userHelper;
 
-    public function __construct($enabled = true, ManagerInterface $userAgeDemographicsManager, ManagerInterface $collectionManager)
+    public function __construct($enabled = true, ManagerInterface $userAgeDemographicsManager, ManagerInterface $collectionManager, $context = null)
     {
         $this->enabled = $enabled;
         $this->userAgeDemographicsManager = $userAgeDemographicsManager;
         $this->collectionManager = $collectionManager;
+        $this->context = $context;
     }
 
     public function postPersist(LifecycleEventArgs $args)
     {
-//        $entity = $args->getEntity();
-//        $entityManager = $args->getEntityManager();
-//
-//        // perhaps you only want to act on some "Product" entity
-//        if ($entity instanceof UserInterface) {
-//            dump($entity);
-//            die();
-//            // ... do something with the Product
-//        }
+        $entity = $args->getEntity();
+        if ($this->enabled && $entity instanceof UserInterface) {
+            if ($entity->getDateOfBirth()) {
+                $age = $this->getAge($entity->getDateOfBirth());
+                if ($ageBracket = $this->getUserHelper()->getAgeBracket($age, $this->context)) {
+                    $this->create($entity, $ageBracket);
+                }
+            }
+        }
     }
 
 
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        // perhaps you only want to act on some "Product" entity
         if ($this->enabled && $entity instanceof UserInterface) {
-            //get
-            if($entity->getDateOfBirth()) {
+            if ($entity->getDateOfBirth()) {
                 $age = $this->getAge($entity->getDateOfBirth());
-                if($ageBracket = $this->getAgeBracket($age)) {
-                    if(!$ageDemographics = $this->userAgeDemographicsManager->findOneBy(array('user'=>$entity))) {
-                        $ageDemographics = $this->userAgeDemographicsManager->create();
-                        $ageDemographics->setUser($entity);
-                        $ageDemographics->setCollection($ageBracket);
+                if ($ageBracket = $this->getUserHelper()->getAgeBracket($age, $this->context)) {
+                    if (!$ageDemographics = $this->userAgeDemographicsManager->findOneBy(array('user'=>$entity))) {
+                        $this->create($entity, $ageBracket);
                     } else {
-                        $ageDemographics->setCollection($ageBracket);
+                        $this->update($ageDemographics, $ageBracket);
                     }
-                    $this->userAgeDemographicsManager->save($ageDemographics);
                 }
             }
         }
     }
 
-    protected function getAge($bDate) {
+    protected function create($user, $collection)
+    {
+        $ageDemographics = $this->userAgeDemographicsManager->create();
+        $ageDemographics->setUser($user);
+        $ageDemographics->setCollection($collection);
+        $this->userAgeDemographicsManager->save($ageDemographics);
+    }
+
+    protected function update($ageDemographics, $collection)
+    {
+        $ageDemographics->setCollection($collection);
+        $this->userAgeDemographicsManager->save($ageDemographics);
+    }
+
+    protected function getAge($bDate)
+    {
         return date_diff($bDate, date_create('today'))->y;
     }
 
-    protected function getAgeBracket($age = null) {
-        if($age) {
-            $ageBrackets = $this->collectionManager->findByContextId('rz-user-age-demographics');
-            foreach ($ageBrackets as $bracket) {
-                if($settings = $bracket->getSettings()) {
-                    if(array_key_exists('min', $settings) && array_key_exists('max', $settings)) {
-                        if(((int)$settings['min']) <= $age && (((int)$settings['max']) >= $age)) {
-                            return $bracket;
-                        }
-                    }
-                }
-            }
-        } else {
-            return null;
-        }
+    /**
+     * @return mixed
+     */
+    public function getUserHelper()
+    {
+        return $this->userHelper;
+    }
+
+    /**
+     * @param mixed $userHelper
+     */
+    public function setUserHelper($userHelper)
+    {
+        $this->userHelper = $userHelper;
     }
 }

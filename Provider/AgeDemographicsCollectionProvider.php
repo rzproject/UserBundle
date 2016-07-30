@@ -6,38 +6,16 @@ namespace Rz\UserBundle\Provider;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\ClassificationBundle\Model\CollectionInterface;
-use Rz\ClassificationBundle\Provider\BaseCollectionProvider;
+use Rz\ClassificationBundle\Provider\Collection\BaseProvider;
 
-class AgeDemographicsCollectionProvider extends BaseCollectionProvider
+class AgeDemographicsCollectionProvider extends BaseProvider
 {
-    protected $mediaAdmin;
-    protected $mediaManager;
-
     /**
      * @param string $name
      */
     public function __construct($name)
     {
         parent::__construct($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildEditForm(FormMapper $formMapper)
-    {
-        $this->buildCreateForm($formMapper);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildCreateForm(FormMapper $formMapper)
-    {
-        $formMapper
-            ->with('Settings', array('class' => 'col-md-6'))
-                ->add('settings', 'sonata_type_immutable_array', array('keys' => $this->getFormSettingsKeys($formMapper), 'attr'=>array('class'=>'rz-immutable-container')))
-            ->end();
     }
 
     /**

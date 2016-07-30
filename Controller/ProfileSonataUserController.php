@@ -10,99 +10,39 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\UserBundle\FOSUserEvents;
+use Sonata\UserBundle\Controller\ProfileFOSUser1Controller;
 
-
-class ProfileSonataUserController extends Controller
+class ProfileSonataUserController extends ProfileFOSUser1Controller
 {
     /**
-     * @return Response
+     * Renders a view.
      *
-     * @throws AccessDeniedException
-     */
-    public function showAction()
-    {
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException('This user does not have access to this section.');
-        }
-
-        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-
-        return $this->render($template['rz_user.template.profile'], array(
-            'user'   => $user,
-            'blocks' => $this->container->getParameter('sonata.user.configuration.profile_blocks')
-        ));
-    }
-
-    /**
-     * @return Response
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
      *
-     * @throws AccessDeniedException
+     * @return Response A Response instance
      */
-    public function editAuthenticationAction()
+    public function render($view, array $parameters = array(), Response $response = null)
     {
+        $template = $this->get('rz_core.template_loader')->getTemplates();
+        switch ($view) {
+            case 'SonataUserBundle:Profile:show.html.twig':
+                return parent::render($template['rz_user.template.profile.show'], $parameters, $response);
+                break;
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException('This user does not have access to this section.');
+            case 'SonataUserBundle:Profile:edit_authentication.html.twig':
+                return parent::render($template['rz_user.template.profile.edit_authentication'], $parameters, $response);
+                break;
+
+            case 'SonataUserBundle:Profile:edit_profile.html.twig':
+                return parent::render($template['rz_user.template.profile.edit'], $parameters, $response);
+                break;
+
+            default:
+                return parent::render($view, $parameters, $response);
+                break;
         }
-
-        $form = $this->container->get('rz.user.profile.update_password.form');
-
-        $formHandler = $this->container->get('rz.user.profile.update_password.form.handler');
-
-        $process = $formHandler->process($user);
-        if ($process) {
-            $this->setFlash('rz_user_success', 'profile.flash.updated');
-            $this->container->get('session')->remove('_rz_user.password_expire.'.$user->getId());
-            return new RedirectResponse($this->generateUrl('fos_user_profile_show'));
-        }
-
-        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-        return $this->render($template['rz_user.template.profile_edit_authentication'], array(
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * @return Response
-     *
-     * @throws AccessDeniedException
-     */
-    public function editProfileAction()
-    {
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException('This user does not have access to this section.');
-        }
-
-        $form = $this->container->get('rz.user.profile.form');
-        $formHandler = $this->container->get('rz.user.profile.form.handler');
-
-        $process = $formHandler->process($user);
-        if ($process) {
-            $this->setFlash('rz_user_success', 'profile.flash.updated');
-
-            return new RedirectResponse($this->generateUrl('fos_user_profile_show'));
-        }
-
-
-        $template = $this->container->get('rz_admin.template.loader')->getTemplates();
-
-        return $this->render($template['rz_user.template.profile_edit'], array(
-            'form'               => $form->createView(),
-            'breadcrumb_context' => 'user_profile',
-        ));
-    }
-
-    /**
-     * @param string $action
-     * @param string $value
-     */
-    protected function setFlash($action, $value)
-    {
-        $this->container->get('session')->getFlashBag()->set($action, $value);
     }
 }

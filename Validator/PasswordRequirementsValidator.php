@@ -5,7 +5,7 @@ namespace Rz\UserBundle\Validator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Rz\UserBundle\Model\PasswordStrengthConfigManagerInterface;
+use Rz\UserBundle\Model\ConfigManagerInterface;
 
 class PasswordRequirementsValidator extends ConstraintValidator
 {
@@ -13,9 +13,9 @@ class PasswordRequirementsValidator extends ConstraintValidator
     protected $configManager;
 
     /**
-     * @param PasswordStrengthConfigManagerInterface $configManager
+     * @param ConfigManagerInterface $configManager
      */
-    public function __construct(PasswordStrengthConfigManagerInterface $configManager)
+    public function __construct(ConfigManagerInterface $configManager)
     {
         $this->configManager = $configManager;
     }
@@ -43,6 +43,8 @@ class PasswordRequirementsValidator extends ConstraintValidator
         }
 
         $requireLetters = $this->configManager->getRequirementRequireLetters() ?:$constraint->requireLetters;
+
+        
         if ($requireLetters && !preg_match('/\pL/', $value)) {
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->missingLettersMessage)->addViolation();

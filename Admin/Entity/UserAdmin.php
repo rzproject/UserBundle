@@ -112,7 +112,7 @@ class UserAdmin extends BaseUserAdmin
             $formMapper
                 ->tab('Security')
                     ->with('Groups')
-                        ->add('groups', 'sonata_type_model_autocomplete', array(
+                        ->add('groups', 'sonata_type_model', array(
                             'property' => 'name',
                             'required' => false,
                             'multiple' => true,
