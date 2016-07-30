@@ -1,0 +1,17 @@
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+	<!-- small box -->
+	<div class="small-box {{ settings.color }}">
+		<div class="inner">
+			<h3>{{ settings.currentLoggedUser.total }}</h3>
+			<p>{{ settings.text|trans({}, admin.translationDomain) }}</p>
+		</div>
+		<div class="icon">
+			<i class="fa {{ settings.icon }}"></i>
+		</div>
+		<a href="{{ admin.generateUrl('list', {}) }}" class="small-box-footer">
+			{{ 'stats_view_more'|trans({}, 'SonataAdminBundle') }} <i class="fa fa-arrow-circle-right"></i>
+		</a>
+	</div>
+{% endblock %}

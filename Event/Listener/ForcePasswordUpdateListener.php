@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Routing\Router;
 
-use Rz\UserBundle\Model\PasswordExpireConfigManagerInterface;
+use Rz\UserBundle\Model\ConfigManagerInterface;
 
 
 class ForcePasswordUpdateListener
@@ -23,7 +23,7 @@ class ForcePasswordUpdateListener
     protected $session;
     protected $router;
 
-    public function __construct(ChainRouter $router, SecurityContext $securityContext, Session $session, PasswordExpireConfigManagerInterface $configManager)
+    public function __construct(ChainRouter $router, SecurityContext $securityContext, Session $session, ConfigManagerInterface $configManager)
     {
         $this->securityContext = $securityContext;
         $this->configManager = $configManager;
@@ -35,7 +35,7 @@ class ForcePasswordUpdateListener
     {
         if (($this->securityContext->getToken() ) && ( $this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) ) {
             $user = $this->securityContext->getToken()->getUser();
-
+            
             if($event->getRequest()->attributes->get('page') !== null && $event->getRequest()->attributes->get('page') instanceof \Sonata\PageBundle\Model\SnapshotPageProxy) {
                 $page =$event->getRequest()->attributes->get('page')->getPage();
                 if($page instanceof \Sonata\PageBundle\Model\PageInterface && $page->getName() != 'fos_user_change_password' && $this->session->get('_rz_user.password_expire.'.$user->getId()) === 'password_expire') {

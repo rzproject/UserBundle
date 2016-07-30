@@ -1,26 +1,52 @@
-{% block sonata_profile_header %}
-    {% block sonata_page_breadcrumb %}{% endblock %}
-
-    {% block sonata_page_tite  %}
-    <h1>{% block rz_profile_title %}{% trans from 'RzUserBundle' %}rz_profile_title{% endtrans %}{% endblock %}</h1>
-    {% endblock %}
-
-    {% block sonata_page_error_display  %}
-    <div class="row row-fluid">
-        <div class="span12">
-            {% for message in app.session.flashbag.get('fos_user_success') %}
-                <div class="alert alert-success">
-                    {{ message|trans({}, "FOSUserBundle") }}
-                </div>
-            {% endfor %}
-            {% for message in app.session.flashbag.get('sonata_user_success') %}
-                <div class="alert alert-success">
-                    {{ message|trans({}, "RzUserBundle") }}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endblock %}
-
+{% block sonata_page_breadcrumb %}
+<section class="content-header">
+<h1>{% block sonata_profile_title %}{% trans from 'SonataUserBundle' %}sonata_profile_title{% endtrans %}{% endblock %}</h1>
+{% if breadcrumb_context is not defined %}
+    {% set breadcrumb_context = 'user_index' %}
+{% endif %}
+{{ sonata_block_render_event('breadcrumb', { 'context': breadcrumb_context, 'current_uri': app.request.requestUri, 'menu_template': 'RzSeoBundle:Block:breadcrumb.html.twig', }) }}
+</section>
 {% endblock %}
-{% block sonata_profile_content %}{% endblock %}
+
+<div class="content">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="box box-primary">
+				<div class="box-body box-profile">
+					<img class="profile-user-img img-responsive img-circle" src="{{ asset('/bundles/rznews/images/news-placeholder.jpg') }}" alt="User profile picture" />
+					<h3 class="profile-username text-center">{{ app.user.username }}</h3>
+					<p class="text-muted text-center">{{ app.user.email }}</p>
+					{% block sonata_profile_menu %}
+						{{ sonata_block_render({'type': 'sonata.user.block.menu'}, {'current_uri': app.request.requestUri, 'menu_class' : 'profile list-group list-group-unbordered', 'menu_template' : 'RzUserBundle:Block:block_side_menu_template.html.twig' }) }}
+					{% endblock %}
+				</div>
+				<!-- /.box-body -->
+			</div>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">{% trans from 'SonataUserBundle' %}profile_about_me{% endtrans %}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<strong><i class="fa fa-user margin-r-5"></i> {% trans from 'SonataUserBundle' %}profile_about_me_details{% endtrans %}</strong>
+					{% if app.user.firstname != '' and app.user.lastname != '' %}
+					<p class="text-muted">{{ app.user.firstname }} {{ app.user.lastname }}</p>
+					{% else %}
+					<p class="text-muted">{{ app.user.username }}</p>
+					{% endif %}
+					<hr>
+					<strong><i class="fa fa-fw fa-calendar margin-r-5"></i> {% trans from 'SonataUserBundle' %}profile_about_me_created_at{% endtrans %}</strong>
+					<p class="text-muted">{{ app.user.createdAt|date("Y-m-d H:i:s") }}</p>
+					<hr>
+					<strong><i class="fa fa-fw fa-calendar-check-o margin-r-5"></i> {% trans from 'SonataUserBundle' %}profile_about_me_last_login{% endtrans %}</strong>
+					<p class="text-muted">{{ app.user.lastLogin|date("Y-m-d H:i:s") }}</p>
+				</div>
+				<!-- /.box-body -->
+			</div>
+		</div>
+		<div class="col-md-9">
+			{% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+			{% block sonata_profile_content '' %}
+		</div>
+	</div>
+</div>

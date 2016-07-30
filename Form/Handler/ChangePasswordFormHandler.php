@@ -33,13 +33,12 @@ class ChangePasswordFormHandler
     public function process(UserInterface $user)
     {
         $this->form->setData($user);
+        $this->form->handleRequest($this->request);
 
-        if ('POST' === $this->request->getMethod()) {
-            $this->form->bind($this->request);
-
-            if ($this->form->isValid()) {
+        if ($this->form->isSubmitted()) {
+            $isFormValid = $this->form->isValid();
+            if ($isFormValid) {
                 $this->onSuccess($user);
-
                 return true;
             }
         }

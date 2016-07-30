@@ -1,14 +1,14 @@
-{% extends rz_admin_get_template('rz_user.template.layout') %}
+{% extends rz_core_get_template('rz_user.template.layout') %}
 
-{% block rz_user_breadcrumb %}
-    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.profile_reset_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
-{% endblock %}
+{% trans_default_domain 'SonataUserBundle' %}
 
-{% block rz_user_title %}<h1>{{ "title_user_resetting" | trans({}, 'RzUserBundle')}}</h1>{% endblock %}
+{% block rz_user_header %}{% endblock %}
 
-{% block rz_user_header_content %}{% endblock %}
+{% block rz_user_message %}{% endblock rz_user_message %}
 
 {% block fos_user_content %}
-    {% include rz_admin_get_template('rz_user.template.resetting_content') %}
+	<div class="lockscreen-logo">
+		{{ "title_user_resetting" | trans({}, 'SonataUserBundle') | raw}}
+	</div>
+    {% include rz_core_get_template('rz_user.template.resetting.form_content') %}
 {% endblock fos_user_content %}
-

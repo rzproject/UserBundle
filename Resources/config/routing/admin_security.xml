@@ -15,4 +15,6 @@
     <route id="sonata_user_admin_security_logout" pattern="/logout">
         <default key="_controller">RzUserBundle:AdminSecuritySonataUser:logout</default>
     </route>
+
+
 </routes>

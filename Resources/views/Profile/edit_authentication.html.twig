@@ -1,43 +1,24 @@
-{% block sonata_page_breadcrumb %}
-    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.profile_authentication_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
-{% endblock %}
+{% sonata_template_box 'This is the user authentication edition template. Feel free to override it.' %}
 
-{% block sonata_page_tite  %}
-    <h1>{{ "title_user_account" | trans({}, 'RzUserBundle')}}</h1>
-    <h2 class="small">{{ "title_user_edit_authentication" | trans({}, 'RzUserBundle')}}</h2>
-{% endblock %}
-
-{% block sonata_profile_content %}
-<div class="row-fluid">
-    <div class="span6 offset3">
-        <div class="sonata-user-edit-authentication">
-            <form action="{{ path('fos_user_profile_edit_authentication') }}" method="POST" class="contact-form contact-form-profile-authentication" novalidate>
-                {{ form_errors(form) }}
-                <p class="form_info">{{ 'form.label_current_password'|trans({}, 'RzUserBundle') }}:</p>
-                {{ form_widget(form.current_password) }}
-                <div class="form-errors">
-                    {{ form_errors(form.current_password) }}
-                </div>
-
-                <p class="form_info">{{ 'form.label_new_password'|trans({}, 'RzUserBundle') }}</p>
-                {{ form_widget(form['plainPassword'].first) }}
-                <div class="form-errors">
-                {{ form_errors(form['plainPassword'].first) }}
-                </div>
-
-                <p class="form_info">{{ 'form.label_new_password_confirmation'|trans({}, 'RzUserBundle') }}</p>
-                {{ form_widget(form['plainPassword'].second) }}
-                <div class="form-errors">
-                {{ form_errors(form['plainPassword'].second) }}
-                </div>
-
-                {{ form_rest(form) }}
-                <div class="profile-submit">
-                    <input class="btn btn-rzcms-themes" type="submit" name="submit" value="{{ 'profile.edit.submit'|trans({}, 'RzUserBundle') }}" />
-                    <a class="btn btn-rzcms-theme-red" type="button" href="{{ path('fos_user_profile_show') }}"/>{{ 'profile.edit.cancel' | trans({}, 'RzUserBundle') }}</a>
-                </div>
-            </form>
+<div class="row">
+    <div class="span6 col-lg-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ 'title_user_edit_authentication'|trans({}, 'SonataUserBundle') }}</h3>
+            </div>
+            <div class="panel-body">
+                {% include rz_core_get_template('rz_user.template.profile.edit_authentication_content') %}
+            </div>
+        </div>
+    </div>
+    <div class="span6 col-lg-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ 'sonata_change_password_link'|trans({}, 'SonataUserBundle') }}</h3>
+            </div>
+            <div class="panel-body">
+                {% render url("sonata_user_change_password") %}
+            </div>
         </div>
     </div>
 </div>
-{% endblock %}

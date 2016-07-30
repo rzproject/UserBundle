@@ -47,7 +47,7 @@ class ProfileType extends AbstractType
 
         $builder->add('current_password', 'password', array(
                                             'label' => 'form.current_password',
-                                            'translation_domain' => 'FOSUserBundle',
+                                            'translation_domain' => 'SonataUserBundle',
                                             'mapped' => false,
                                             'constraints' => $constraint,
                                         ));
@@ -56,22 +56,21 @@ class ProfileType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $this->configureOptions($resolver);
+        $resolver->setDefaults(array(
+            'data_class' => $this->class,
+            'intention'  => 'profile',
+        ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function getBlockPrefix()
     {
-        $resolver->setDefaults(array(
-            'data_class' => $this->class
-        ));
+        return 'rz_user_profile';
     }
 
     /**
@@ -79,7 +78,7 @@ class ProfileType extends AbstractType
      */
     public function getName()
     {
-        return 'rz_user_profile';
+        return $this->getBlockPrefix();
     }
 
 
@@ -91,23 +90,30 @@ class ProfileType extends AbstractType
      */
     protected function buildUserForm(FormBuilderInterface $builder, array $options)
     {
+        $now = new \DateTime();
+
         $builder
-            ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'RzUserBundle'))
-            ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'RzUserBundle', 'read_only'=>true, 'attr'=>array('class'=>'span12')))
-            ->add('firstname', null, array('label' => 'form.firstname', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('lastname', null, array('label' => 'form.lastname','translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('website', null, array('label' => 'form.website', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('phone', null, array('required' => false, 'label' => 'form.phone', 'translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
-            ->add('dateOfBirth', 'birthday', array('label' => 'form.dateOfBirth','translation_domain' => 'RzUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('username', null, array('label' => 'form.label_username', 'translation_domain' => 'SonataUserBundle'))
+            ->add('email', 'email', array('label' => 'form.label_email', 'translation_domain' => 'SonataUserBundle', 'read_only'=>true, 'attr'=>array('class'=>'span12')))
+            ->add('firstname', null, array('label' => 'form.label_firstname', 'translation_domain' => 'SonataUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('lastname', null, array('label' => 'form.label_lastname','translation_domain' => 'SonataUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('website', null, array('label' => 'form.label_website', 'translation_domain' => 'SonataUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('phone', null, array('required' => false, 'label' => 'form.label_phone', 'translation_domain' => 'SonataUserBundle', 'attr'=>array('class'=>'span12')))
+            ->add('dateOfBirth', 'sonata_type_date_picker', array(
+                'years'       => range(1900, $now->format('Y')),
+                'dp_min_date' => '1-1-1900',
+                'dp_max_date' => $now->format('c'),
+                'required'    => false,
+            ))
             ->add('gender', 'choice', array(
-                              'label' => 'form.gender',
+                              'label' => 'form.label_gender',
                               'choices' => array(
                                   UserInterface::GENDER_UNKNOWN => 'gender_unknown',
                                   UserInterface::GENDER_FEMALE  => 'gender_female',
                                   UserInterface::GENDER_MAN     => 'gender_male',
                               ),
                               'required' => true,
-                              'translation_domain' => 'RzUserBundle',
+                              'translation_domain' => 'SonataUserBundle',
                               'attr'=>array('class'=>'span12')
                           ));
     }

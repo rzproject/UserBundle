@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- profile form -->
+        <service id="rz.user.profile.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%rz.user.profile.form.name%</argument>
+            <argument>%rz.user.profile.form.type%</argument>
+            <argument>null</argument>
+            <argument type="collection">
+                <argument key="validation_groups">%rz.user.profile.form.validation_groups%</argument>
+                <argument key="translation_domain">SonataUserBundle</argument>
+            </argument>
+        </service>
+
+        <service id="rz.user.profile.form.type" class="Rz\UserBundle\Form\Type\ProfileType">
+            <argument>%fos_user.model.user.class%</argument>
+            <tag name="form.type" alias="rz_user_profile" />
+        </service>
+    </services>
+
+</container>
+

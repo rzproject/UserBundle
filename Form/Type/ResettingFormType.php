@@ -11,13 +11,22 @@ class ResettingFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder->add('new', 'repeated', array(
-            'type' => 'password',
-            'options' => array('translation_domain' => 'RzUserBundle'),
-            'first_options' => array('label' => 'form.label_new_password', 'attr'=>array('class'=>'span12')),
-            'second_options' => array('label' => 'form.label_new_password_confirmation', 'attr'=>array('class'=>'span12')),
-            'invalid_message' => 'fos_user.password.mismatch',
-        ));
+                        'type' => 'password',
+                        'options' => array('translation_domain' => 'SonataUserBundle'),
+                        'first_options' => array(
+                            'label' => 'form.password',
+                            'attr' => array('placeholder'=>'form.password'),
+                            'required'    => true,
+                        ),
+                        'second_options' => array(
+                            'label' => 'form.password_confirmation',
+                            'attr' => array('placeholder'=>'form.password_confirmation'),
+                            'required'    => true,
+                        ),
+                        'invalid_message' => 'fos_user.password.mismatch',)
+            );
     }
 
     /**
@@ -38,11 +47,23 @@ class ResettingFormType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Rz\UserBundle\Form\Model\ChangePassword',
             'intention'  => 'resetting',
+            'validation_groups' => array('Registration'),
         ));
     }
 
-    public function getName()
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'rz_user_resetting';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }

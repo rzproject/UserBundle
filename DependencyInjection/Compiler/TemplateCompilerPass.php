@@ -18,12 +18,18 @@ class TemplateCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('rz_admin.template.loader');
+        $definition = $container->getDefinition('rz_core.template_loader');
         $templates = $container->getParameter('rz_user.templates');
-        $rzuserTemplates = array();
-        foreach($templates as $key => $template) {
-            $rzuserTemplates[sprintf('rz_user.template.%s', $key)] = $template;
+        $bunldeTemplates = [];
+        foreach($templates as $key => $templates) {
+            if(is_array($templates)) {
+                foreach ($templates as $id=>$template) {
+                    $bunldeTemplates[sprintf('rz_user.template.%s.%s', $key, $id)] = $template;
+                }
+            } else {
+                $bunldeTemplates[sprintf('rz_user.template.%s', $key)] = $templates;
+            }
         }
-        $definition->addMethodCall('setTemplates', array($rzuserTemplates));
+        $definition->addMethodCall('setTemplates', array($bunldeTemplates));
     }
 }

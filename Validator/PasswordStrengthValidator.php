@@ -4,7 +4,7 @@ namespace Rz\UserBundle\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Rz\UserBundle\Model\PasswordStrengthConfigManagerInterface;
+use Rz\UserBundle\Model\ConfigManagerInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
@@ -34,9 +34,9 @@ class PasswordStrengthValidator extends ConstraintValidator
     protected $configManager;
 
     /**
-     * @param PasswordStrengthConfigManagerInterface $configManager
+     * @param ConfigManagerInterface $configManager
      */
-    public function __construct(PasswordStrengthConfigManagerInterface $configManager)
+    public function __construct(ConfigManagerInterface $configManager)
     {
         $this->configManager = $configManager;
     }

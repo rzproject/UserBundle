@@ -1,19 +1,25 @@
-{% extends rz_admin_get_template('rz_user.template.layout') %}
+{% extends rz_core_get_template('rz_user.template.layout') %}
 
-{% block rz_user_breadcrumb %}
-    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.profile_reset_email_sent_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
-{% endblock %}
+{% trans_default_domain 'SonataUserBundle' %}
 
-{% block rz_user_title %}<h1>{{ "title_user_resetting" | trans({}, 'RzUserBundle')}}</h1>{% endblock %}
+{% block rz_user_header %}{% endblock %}
 
-{% block rz_user_header_content %}{% endblock %}
+{% block rz_user_message %}{% endblock rz_user_message %}
 
 {% block fos_user_content %}
-    <div class="row-fluid">
-        <div class="span6 offset3">
-            <div class="sonata-user-reset-password">
-                <p>{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}</p>
-            </div>
-        </div>
-    </div>
+	<div class="lockscreen-logo">
+		{{ "title_user_resetting" | trans({}, 'SonataUserBundle') | raw}}
+	</div>
+	<div class="lockscreen-name">{{ 'security.resetting.title' | trans({}, 'SonataUserBundle') }}</div>
+
+	<div class="help-block text-center">
+		<img style="width: 400px;" src="{{  asset('bundles/rzuser/img/default-email/hero-wide2.png') }}" alt="User Image">
+	</div>
+
+	<div class="callout callout-danger">
+		<h4><i class="icon fa fa-ban"></i> Alert!</h4>
+		<div class="help-block text-center">
+			<p style="color:#fff;">{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}</p>
+		</div>
+	</div>
 {% endblock fos_user_content %}

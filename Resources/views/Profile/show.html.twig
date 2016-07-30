@@ -1,8 +1,4 @@
-{% extends "RzUserBundle:Profile:action.html.twig" %}
-
-{% block sonata_page_breadcrumb %}
-    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.profile_dashboard_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
-{% endblock %}
+{% extends rz_core_get_template('rz_user.template.profile.action') %}
 
 {% block sonata_profile_content %}
     <div class="row row-fluid">
@@ -16,9 +12,7 @@
         <div class="{% if has_center %}span4 col-lg-4{% else %}span6 col-lg-6{% endif %}">
             {% for block in blocks %}
                 {% if block.position == 'left' %}
-                    <div class="user-profile">
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                    </div>
                 {% endif %}
             {% endfor %}
         </div>
@@ -27,9 +21,7 @@
             <div class="span4 col-lg-4">
                 {% for block in blocks %}
                     {% if block.position == 'center' %}
-                        <div class="user-profile">
                         {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                        </div>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -38,9 +30,7 @@
         <div class="{% if has_center %}span4 col-lg-4{% else %}span6 col-lg-6{% endif %}">
             {% for block in blocks %}
                 {% if block.position == 'right' %}
-                    <div class="user-profile">
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                    </div>
                 {% endif %}
             {% endfor %}
         </div>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="rz.user.block.profile_age_demographics.class">Rz\UserBundle\Block\ProfileAgeDemogrphicsBlockService</parameter>
+    </parameters>
+
+    <services>
+        <service id="rz.user.block.profile_age_demographics" class="%rz.user.block.profile_age_demographics.class%">
+            <tag name="sonata.block" />
+            <argument>rz.user.block.profile_age_demographics</argument>
+            <argument type="service" id="templating" />
+            <argument type="service" id="rz.user.manager.user_age_demographics" />
+            <argument type="service" id="sonata.classification.manager.collection" />
+            <argument type="service" id="translator" />
+            <argument>%rz.user.block.profile_age_demographics.context%</argument>
+        </service>
+    </services>
+</container>

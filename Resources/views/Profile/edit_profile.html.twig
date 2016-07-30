@@ -1,87 +1,25 @@
-{% extends "RzUserBundle:Profile:action.html.twig" %}
-
+{% extends rz_core_get_template('rz_user.template.profile.action') %}
 
 {% block sonata_page_breadcrumb %}
-    {{ sonata_block_render_event('breadcrumb', { 'context': 'rz.user.block.profile_edit_breadcrumb', 'current_uri': app.request.requestUri, 'container_attr': {'class': 'breadcrumb'}, 'separator': '<i class="icon-angle-right"></i>', 'current_class': 'active' }) }}
-{% endblock %}
-
-{% block sonata_page_tite  %}
-    <h1>{{ "title_user_account" | trans({}, 'RzUserBundle')}}</h1>
-    <h2 class="small">{{ "title_user_edit_profile" | trans({}, 'RzUserBundle')}}</h2>
+    <section class="content-header">
+        <h1>{% block sonata_profile_title %}{% trans from 'SonataUserBundle' %}sonata_profile_title{% endtrans %}{% endblock %}</h1>
+        {% if breadcrumb_context is not defined %}
+            {% set breadcrumb_context = 'user_index' %}
+        {% endif %}
+        {{ sonata_block_render_event('breadcrumb', { 'context': breadcrumb_context, 'current_uri': app.request.requestUri, 'menu_template': 'RzSeoBundle:Block:breadcrumb.html.twig', }) }}
+    </section>
 {% endblock %}
 
 {% block sonata_profile_content %}
-    {# TODO: refactor to auto load js#}
-    <link href="{{ asset('bundles/rmzamorabootstrap/plugins/datepicker/css/datepicker.css') }}" type="text/css" media="all" rel="stylesheet">
-    <link href="{{ asset('bundles/rmzamorabootstrap/plugins/select/css/select.css') }}" type="text/css" media="all" rel="stylesheet">
-    <script src="{{ asset('bundles/rmzamorabootstrap/plugins/datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/rmzamorabootstrap/plugins/select/js/select.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/rzuser/js/rz/profile-form.js') }}" type="text/javascript"></script>
-    <div class="row-fluid">
-        <div class="span6 offset3">
-            <div class="sonata-user-edit-profile">
-                <form action="{{ path('fos_user_profile_edit') }}" method="POST" class="contact-form contact-form-profile">
-                    {{ form_errors(form) }}
 
-                    <p class="form_info">{{ 'form.label_email'|trans({}, 'RzUserBundle') }}</p>
-                    {{ form_widget(form.email) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.email) }}
-                    </div>
-
-                    <p class="form_info">{{ 'form.label_firstname'|trans({}, 'RzUserBundle') }} <span class="required">*</span></p>
-                    {{ form_widget(form.firstname) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.firstname) }}
-                    </div>
-
-                    <p class="form_info">{{ 'form.label_lastname'|trans({}, 'RzUserBundle') }} <span class="required">*</span></p>
-                    {{ form_widget(form.lastname) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.lastname) }}
-                    </div>
-
-                    <p class="form_info">{{ 'form.label_website'|trans({}, 'RzUserBundle') }}</p>
-                    {{ form_widget(form.website) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.website) }}
-                    </div>
-
-                    <p class="form_info">{{ 'form.label_phone'|trans({}, 'RzUserBundle') }}</p>
-                    {{ form_widget(form.phone) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.phone) }}
-                    </div>
-
-                    <p class="form_info">{{ 'form.label_gender'|trans({}, 'RzUserBundle') }}</p>
-                    {{ form_widget(form.gender) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.gender) }}
-                    </div>
-
-                    <p class="form_info">{{ 'form.label_dateOfBirth'|trans({}, 'RzUserBundle') }}</p>
-                    {{ form_widget(form.dateOfBirth) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.dateOfBirth) }}
-                    </div>
-
-                    <p class="form_info">{{ 'form.label_username'|trans({}, 'RzUserBundle') }} <span class="required">*</span></p>
-                    {{ form_widget(form.username) }}
-
-                    <p class="form_info">{{ 'form.label_current_password'|trans({}, 'RzUserBundle') }} <span class="required">*</span></p>
-                    {{ form_widget(form.current_password) }}
-                    <div class="form-errors">
-                        {{ form_errors(form.current_password) }}
-                    </div>
-
-                    {{ form_rest(form) }}
-
-                    <div class="profile-submit">
-                        <input class="btn btn-rzcms-themes"type="submit" name="submit" value="{{ 'profile.edit.submit'|trans({}, 'RzUserBundle') }}" />
-                        <a class="btn btn-rzcms-theme-red" type="button" href="{{ path('fos_user_profile_show') }}"/>{{ 'profile.edit.cancel' | trans({}, 'RzUserBundle') }}</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+	{{ form_errors(form) }}
+	<div class="box box-danger">
+		<div class="box-header with-border">
+			<h3 class="box-title">{{ "title_user_account" | trans({}, 'SonataUserBundle') }}</h3>
+		</div>
+		{% block fos_user_content %}
+			{% include rz_core_get_template('rz_user.template.profile.edit_content') %}
+		{% endblock fos_user_content %}
+		<!-- /.box-body -->
+	</div>
 {% endblock %}
